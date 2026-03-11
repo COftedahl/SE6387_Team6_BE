@@ -1,0 +1,10 @@
+import express from 'express';
+
+const unitsRouter = express.Router();
+
+//function to retrieve all units from an army
+unitsRouter.get("armyunits", async (req, res) => {
+
+})
+
+export default unitsRouter;
