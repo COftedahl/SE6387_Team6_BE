@@ -1,0 +1,23 @@
+## This file describes the API's required for the back end based on the SSD ##
+
+NOTE: any items with a "||" should be checked to see which of the options are applicable
+
+----  <HTTP REQUEST ENDPOINTS>  -----
+getMap(location) => map + amenities
+getAmenities(location?) => amenity[]
+getAmenitiesOfType(type) => amenity[]
+getSuggestedAmenities((filters || AcctID), location) => amenity[]
+getAmenityDetails(ID) => amenityDetails
+filterAmenities(filters) => amenity[]
+navigate(source, target) => navigation (map w/ instructions) (could send navID for this)
+cancelNavigation(navID) => void || map (this request could use either websocket or http communication)
+-----  </HTTP REQUEST ENDPOINTS> ------
+
+-----  <WEBSOCKET MESSAGES>  -----
+BE.offerReroute(newRouteDetails) => FE.acceptReroute | FE.denyReroute
+FE.acceptReroute(navID) => BE returns newNavID
+//No FE.denyReroute method needed - happens only in the FE, no websocket communication used
+BE.updateNavDetails(newEnvDetails) => FE.updateNavDetails
+FE.updatePosition(newPos) => BE.updatePosition
+BE.updatePosition(newPos) => FE.updateInstruction
+-----  </WEBSOCKET MESSAGES> -----
