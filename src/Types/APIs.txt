@@ -6,11 +6,10 @@ NOTE: any items with a "||" should be checked to see which of the options are ap
 getMap(location) => map + amenities
 getAmenities(location?) => amenity[]
 getAmenitiesOfType(type) => amenity[]
-getSuggestedAmenities((filters || AcctID), location) => amenity[]
+getSuggestedAmenities(filters, location) => amenity[]
 getAmenityDetails(ID) => amenityDetails
 filterAmenities(filters) => amenity[]
 navigate(source, target) => navigation (map w/ instructions) (could send navID for this)
-cancelNavigation(navID) => void || map (this request could use either websocket or http communication)
 -----  </HTTP REQUEST ENDPOINTS> ------
 
 -----  <WEBSOCKET MESSAGES>  -----
@@ -20,4 +19,5 @@ FE.acceptReroute(navID) => BE returns newNavID
 BE.updateNavDetails(newEnvDetails) => FE.updateNavDetails
 FE.updatePosition(newPos) => BE.updatePosition
 BE.updatePosition(newPos) => FE.updateInstruction
+FE.cancelNavigation(navID) => void
 -----  </WEBSOCKET MESSAGES> -----
