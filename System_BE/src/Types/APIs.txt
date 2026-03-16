@@ -9,10 +9,10 @@ getAmenitiesOfType(type) => amenity[]
 getSuggestedAmenities(filters, location) => amenity[]
 getAmenityDetails(ID) => amenityDetails
 filterAmenities(filters) => amenity[]
-navigate(source, target) => navigation (map w/ instructions) (could send navID for this)
 -----  </HTTP REQUEST ENDPOINTS> ------
 
 -----  <WEBSOCKET MESSAGES>  -----
+navigate(source, target) => navigation (map w/ instructions) (could send navID for this)//this should be the creation of websocket connection
 BE.offerReroute(newRouteDetails) => FE.acceptReroute | FE.denyReroute
 FE.acceptReroute(navID) => BE returns newNavID
 //No FE.denyReroute method needed - happens only in the FE, no websocket communication used
