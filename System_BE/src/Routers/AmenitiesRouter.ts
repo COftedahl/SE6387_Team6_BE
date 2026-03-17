@@ -7,7 +7,7 @@ import AmenityIDSchema from '../Express-Validation Schemas/AmenityID';
 import FiltersSchema from '../Express-Validation Schemas/Filters';
 import IFilter from '../Types/IFilter';
 import ILocation from '../Types/ILocation';
-import IAmenityType from '../Types/IAmenityType';
+import AmenityType from '../Types/IAmenityType';
 
 const amenitiesRouter = express.Router();
 
@@ -50,7 +50,7 @@ amenitiesRouter.post("oftype", async (req, res) => {
   //store the data corresponding to the item to delete
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
-  const amenityType: IAmenityType = data.amenityType;
+  const amenityType: AmenityType = data.amenityType;
 })
 
 /*

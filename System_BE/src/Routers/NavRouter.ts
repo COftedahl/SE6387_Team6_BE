@@ -26,4 +26,14 @@ navRouter.post("map", async (req, res) => {
   const location: ILocation = {x: data.locationX, y: data.locationY};
 })
 
+/*
+ * function called when the client requests a websocket connection
+ * @param ws: the websocket created
+ */
+navRouter.ws('/', function(ws, req) {
+  ws.on('message', function(msg) {
+    
+  });
+});
+
 export default navRouter;
