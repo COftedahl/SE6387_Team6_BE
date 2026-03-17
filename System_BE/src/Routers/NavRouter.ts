@@ -1,16 +1,16 @@
-import express from 'express';
+import { Router } from 'websocket-express';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
 import ILocation from '../Types/ILocation';
 import LocationSchema from '../Express-Validation Schemas/Location';
 
-const navRouter = express.Router();
+const navRouter = new Router();
 
 /*
  * function to get the map
  * @param location: the location of the user
  * @return: map with amenities
  */
-navRouter.post("map", async (req, res) => {
+navRouter.post("/map", async (req, res) => {
   //https://docs.mapbox.com/api/navigation/http-post/
   await checkSchema(LocationSchema).run(req);
   const error = validationResult(req);

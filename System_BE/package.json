@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node swagger.js",
+    "swagger": "node swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,11 +19,15 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-validator": "^7.3.1",
-    "express-ws": "^5.0.2",
     "node": "^22.22.1",
-    "typescript": "^5.9.3"
+    "swagger-ui-express": "^5.0.1",
+    "typescript": "^5.9.3",
+    "websocket-express": "^4.0.1",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
-    "@types/express-ws": "^3.0.6"
+    "@types/express-ws": "^3.0.6",
+    "@types/swagger-ui-express": "^4.1.8",
+    "swagger-autogen": "^2.23.7"
   }
 }

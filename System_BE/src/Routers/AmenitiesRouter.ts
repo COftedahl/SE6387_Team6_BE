@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router } from 'websocket-express';
 import { checkSchema, validationResult, matchedData } from 'express-validator';
 import LocationSchema from '../Express-Validation Schemas/Location';
 import LocationPlusTypeSchema from '../Express-Validation Schemas/LocationPlusType';
@@ -9,14 +9,14 @@ import IFilter from '../Types/IFilter';
 import ILocation from '../Types/ILocation';
 import AMENITY_TYPE from '../Types/AmenityType';
 
-const amenitiesRouter = express.Router();
+const amenitiesRouter = new Router();
 
 /*
  * function to retrieve all amenities
  * @param location: the location of the user
  * @return: IAmenity[]
  */
-amenitiesRouter.post("all", async (req, res) => {
+amenitiesRouter.post("/all", async (req, res) => {
   await checkSchema(LocationSchema).run(req);
   const error = validationResult(req);
 
@@ -37,7 +37,7 @@ amenitiesRouter.post("all", async (req, res) => {
  * @param type: desired amenity type
  * @return: IAmenity[]
  */
-amenitiesRouter.post("oftype", async (req, res) => {
+amenitiesRouter.post("/oftype", async (req, res) => {
   await checkSchema(LocationPlusTypeSchema).run(req);
   const error = validationResult(req);
 
@@ -59,7 +59,7 @@ amenitiesRouter.post("oftype", async (req, res) => {
  * @param filters: filters given by the user
  * @return: IAmenity[]
  */
-amenitiesRouter.post("suggested", async (req, res) => {
+amenitiesRouter.post("/suggested", async (req, res) => {
   await checkSchema(LocationPlusFiltersSchema).run(req);
   const error = validationResult(req);
 
@@ -80,7 +80,7 @@ amenitiesRouter.post("suggested", async (req, res) => {
  * @param id: the ID of the amenity for which to retrieve details
  * @return: IAmenityDetails
  */
-amenitiesRouter.post("details", async (req, res) => {
+amenitiesRouter.post("/details", async (req, res) => {
   await checkSchema(AmenityIDSchema).run(req);
   const error = validationResult(req);
 
@@ -99,7 +99,7 @@ amenitiesRouter.post("details", async (req, res) => {
  * @param filters: the filters to apply
  * @return: IAmenity[]
  */
-amenitiesRouter.post("filter", async (req, res) => {
+amenitiesRouter.post("/filter", async (req, res) => {
   await checkSchema(FiltersSchema).run(req);
   const error = validationResult(req);
 

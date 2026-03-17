@@ -1,19 +1,26 @@
+import express from 'express';
+import swaggerUI from "swagger-ui-express";
+const swaggerjsonFilePath = import("../swagger-output.json");
+import { WebSocketExpress } from 'websocket-express';
 import amenitiesRouter from "./Routers/AmenitiesRouter";
 import navRouter from "./Routers/NavRouter";
 import testRouter from "./Routers/TestRouter";
 
-let express = require ('express');
+const appRouter = new WebSocketExpress(); 
 
-const appRouter = express(); 
-var expressWs = require('express-ws')(appRouter);
-const PORT = 5000;
+const setupApp = async () => {
+  const PORT = 5000;
+  appRouter.use(express.json());
+  appRouter.use("/apidocs", swaggerUI.serve, swaggerUI.setup(await swaggerjsonFilePath));
+  appRouter.use("/", testRouter);
+  appRouter.use("/nav/", navRouter);
+  appRouter.use("/amenities/", amenitiesRouter);
 
-appRouter.use(express.json());
-appRouter.use("/", testRouter);
-appRouter.use("/nav/", navRouter);
-appRouter.use("/amenities/", amenitiesRouter);
-appRouter.listen(PORT, () => {
-  console.log("App listening at port " + PORT)
-});
+  appRouter.listen(PORT, () => {
+    console.log("App listening at port " + PORT)
+  });
+}
+
+setupApp();
 
 export default appRouter;
