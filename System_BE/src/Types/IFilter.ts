@@ -1,4 +1,4 @@
-export default interface Filter {
+export default interface IFilter {
   filterKey: string, 
   value: string, 
 }

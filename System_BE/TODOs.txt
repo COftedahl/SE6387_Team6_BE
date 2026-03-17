@@ -1,0 +1,3 @@
+03_17: 
+-UCR shows sending account_id for getMapSuggestions() request to the recommendation system - should be changed to sending filters instead
+-UCR shows sending source & target in reroute() request to the navigation system - should we do this or just use the already-computed new path

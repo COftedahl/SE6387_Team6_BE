@@ -1,9 +1,0 @@
-class C {
-  text: string = "";
-
-  funct = () => {
-    //do something
-  }
-}
-
-export default C;
