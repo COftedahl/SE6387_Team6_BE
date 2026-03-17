@@ -17,6 +17,7 @@ const amenitiesRouter = new Router();
  * @return: IAmenity[]
  */
 amenitiesRouter.post("/all", async (req, res) => {
+  /* #swagger.parameters['location'] = { in: 'body', name: 'location', description: 'send the location of the user', required: true, schema: {$ref: "#/components/schemas/location"} } */
   await checkSchema(LocationSchema).run(req);
   const error = validationResult(req);
 
@@ -34,10 +35,12 @@ amenitiesRouter.post("/all", async (req, res) => {
 /*
  * function to retrieve all amenities of a particular type
  * @param location: the location of the user
- * @param type: desired amenity type
+ * @param amenityType: desired amenity type
  * @return: IAmenity[]
  */
 amenitiesRouter.post("/oftype", async (req, res) => {
+  /* #swagger.parameters['location'] = { in: 'body', name: 'location', description: 'send the location of the user', required: true, schema: {$ref: "#/components/schemas/location"} } */
+  /* #swagger.parameters['amenityType'] = { in: 'body', name: 'amenityType', description: 'send the type of amnenity desired', required: true, schema: {$ref: "#/components/schemas/amenityType"} } */
   await checkSchema(LocationPlusTypeSchema).run(req);
   const error = validationResult(req);
 
@@ -60,6 +63,8 @@ amenitiesRouter.post("/oftype", async (req, res) => {
  * @return: IAmenity[]
  */
 amenitiesRouter.post("/suggested", async (req, res) => {
+  /* #swagger.parameters['location'] = { in: 'body', name: 'location', description: 'send the location of the user', required: true, schema: {$ref: "#/components/schemas/location"} } */
+  /* #swagger.parameters['filters'] = { in: 'body', name: 'filters', description: 'send the filters to apply', required: true, schema: {$ref: "#/components/schemas/filters"} } */
   await checkSchema(LocationPlusFiltersSchema).run(req);
   const error = validationResult(req);
 
@@ -81,6 +86,7 @@ amenitiesRouter.post("/suggested", async (req, res) => {
  * @return: IAmenityDetails
  */
 amenitiesRouter.post("/details", async (req, res) => {
+  /* #swagger.parameters['amenityID'] = { in: 'body', name: 'amenityID', description: 'send the id of the desired amenity', required: true, schema: {$ref: "#/components/schemas/amenityID"} } */
   await checkSchema(AmenityIDSchema).run(req);
   const error = validationResult(req);
 
@@ -100,6 +106,7 @@ amenitiesRouter.post("/details", async (req, res) => {
  * @return: IAmenity[]
  */
 amenitiesRouter.post("/filter", async (req, res) => {
+  /* #swagger.parameters['filters'] = { in: 'body', name: 'filters', description: 'send the filters to apply', required: true, schema: {$ref: "#/components/schemas/filters"} } */
   await checkSchema(FiltersSchema).run(req);
   const error = validationResult(req);
 

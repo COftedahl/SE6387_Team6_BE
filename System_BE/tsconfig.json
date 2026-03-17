@@ -9,7 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
   },
-  "include": ["src/**/*.ts", "index.ts", "swagger.js"],
+  "include": ["src/**/*.ts", "index.ts", "Swagger/swagger.js"],
   "exclude": ["node_modules"],
   "lib": ["es2015"],
   "types": ["node", "express"]

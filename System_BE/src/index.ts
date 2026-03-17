@@ -1,6 +1,6 @@
 import express from 'express';
 import swaggerUI from "swagger-ui-express";
-const swaggerjsonFilePath = import("../swagger-output.json");
+const swaggerjsonFilePath = import("../Swagger/swagger-output.json");
 import { WebSocketExpress } from 'websocket-express';
 import amenitiesRouter from "./Routers/AmenitiesRouter";
 import navRouter from "./Routers/NavRouter";

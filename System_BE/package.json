@@ -4,8 +4,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node swagger.js",
-    "swagger": "node swagger.js",
+    "start": "node Swagger/swagger-prestartup.js",
+    "swagger": "node Swagger/swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

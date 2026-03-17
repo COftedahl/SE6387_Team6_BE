@@ -11,6 +11,7 @@ const navRouter = new Router();
  * @return: map with amenities
  */
 navRouter.post("/map", async (req, res) => {
+  /* #swagger.parameters['location'] = { in: 'body', name: 'location', description: 'send the location of the user', required: true, schema: {$ref: "#/components/schemas/location"} } */
   //https://docs.mapbox.com/api/navigation/http-post/
   await checkSchema(LocationSchema).run(req);
   const error = validationResult(req);

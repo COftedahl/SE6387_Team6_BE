@@ -1,0 +1,256 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Smart Amenities Backend API",
+    "description": "Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. ",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/nav/map": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "body",
+            "description": "send the location of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/location"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/amenities/all": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "body",
+            "description": "send the location of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/location"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/amenities/oftype": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "body",
+            "description": "send the location of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/location"
+            }
+          },
+          {
+            "name": "amenityType",
+            "in": "body",
+            "description": "send the type of amnenity desired",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityType"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/amenities/suggested": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "body",
+            "description": "send the location of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/location"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "body",
+            "description": "send the filters to apply",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/filters"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/amenities/details": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "amenityID",
+            "in": "body",
+            "description": "send the id of the desired amenity",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityID"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/amenities/filter": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "filters",
+            "in": "body",
+            "description": "send the filters to apply",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/filters"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "location": {
+        "type": "object",
+        "properties": {
+          "locationX": {
+            "type": "string"
+          },
+          "locationY": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "locationX",
+          "locationY"
+        ],
+        "example": {
+          "locationX": "10.11",
+          "locationY": "12.13"
+        }
+      },
+      "amenityID": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "AM2"
+        }
+      },
+      "filters": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "filterKey": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filterKey",
+                "value"
+              ],
+              "example": {
+                "filterKey": "type",
+                "value": "RESTROOM"
+              }
+            }
+          }
+        },
+        "required": [
+          "filters"
+        ],
+        "example": [
+          {
+            "filterKey": "type",
+            "value": "RESTROOM"
+          }
+        ]
+      },
+      "amenityType": {
+        "type": "object",
+        "properties": {
+          "amenityType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "amenityType"
+        ],
+        "example": {
+          "amenityType": "RESTROOM"
+        }
+      }
+    }
+  }
+}
