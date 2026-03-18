@@ -4,9 +4,10 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
+    "test": "jest --roots \"tests\"",
+    "test api": "jest --roots \"tests\" --runTestsByPath \"tests/APITests.test.ts\"",
     "start": "node Swagger/swagger-prestartup.js",
-    "swagger": "node Swagger/swagger.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "swagger": "node Swagger/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -26,8 +27,16 @@
     "ws": "^8.19.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-typescript": "^7.28.5",
     "@types/express-ws": "^3.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^7.2.0",
     "@types/swagger-ui-express": "^4.1.8",
+    "babel-jest": "^30.3.0",
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2",
     "swagger-autogen": "^2.23.7"
   }
 }

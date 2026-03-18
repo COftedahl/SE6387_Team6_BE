@@ -5,8 +5,10 @@ import { WebSocketExpress } from 'websocket-express';
 import amenitiesRouter from "./Routers/AmenitiesRouter";
 import navRouter from "./Routers/NavRouter";
 import testRouter from "./Routers/TestRouter";
+import { Server } from 'http';
 
 const appRouter = new WebSocketExpress(); 
+let server: Server = appRouter.createServer();
 
 const setupApp = async () => {
   const PORT = 5000;
@@ -16,11 +18,11 @@ const setupApp = async () => {
   appRouter.use("/nav/", navRouter);
   appRouter.use("/amenities/", amenitiesRouter);
 
-  appRouter.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log("App listening at port " + PORT)
   });
 }
 
 setupApp();
 
-export default appRouter;
+export default server;
