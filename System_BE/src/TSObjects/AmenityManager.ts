@@ -2,6 +2,7 @@ import AMENITY_STATUS from "../Types/AmenityStatus";
 import IAmenity from "../Types/IAmenity";
 import IAmenityDetails from "../Types/IAmenityDetails";
 import AMENITY_TYPE from "../Types/AmenityType";
+import ACCESSIBILITY_CLASS from "../Types/AccessibilityClass";
 
 class AmenityManager {
   /* 
@@ -19,6 +20,11 @@ class AmenityManager {
    */
   public getAmenityDetails = (id: string): IAmenityDetails => {
     return {
+      currentOccupancy: 0,
+      currentAvailableSlots: 0,
+      capacity: 0,
+      status: AMENITY_STATUS.OPEN,
+      lastUpdated: "",
       id: "",
       type: AMENITY_TYPE.BAR,
       room: "",
@@ -26,12 +32,16 @@ class AmenityManager {
         x: "",
         y: ""
       },
-      currentOccupancy: 0,
-      currentAvailableSlots: 0,
-      capacity: 0,
-      status: AMENITY_STATUS.OPEN,
-      lastUpdated: ""
+      accessibilityClass: ACCESSIBILITY_CLASS.ACCESSIBLE,
     }
+  }
+
+  /* 
+   * function to get the details of a all amenities
+   * @return: IAmenityDetails[] details about the amenities
+   */
+  public getAllAmenityDetails = (): IAmenityDetails[] => {
+    return [];
   }
 }
 

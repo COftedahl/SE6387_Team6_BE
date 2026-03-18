@@ -8,8 +8,17 @@ import FiltersSchema from '../Express-Validation Schemas/Filters';
 import IFilter from '../Types/IFilter';
 import ILocation from '../Types/ILocation';
 import AMENITY_TYPE from '../Types/AmenityType';
+import AmenityManager from '../TSObjects/AmenityManager';
+import FilteringSystem from '../TSObjects/FilteringSystem';
+import InfrastructuralResourcesManager from '../TSObjects/InfrastructuralResourcesManager';
+import RecommendationSystem from '../TSObjects/RecommendationSystem';
 
 const amenitiesRouter = new Router();
+//initialize all objects needed by the router once to be used for the duration of the server
+const amenityManager: AmenityManager = new AmenityManager();
+const infrastructureManager: InfrastructuralResourcesManager = new InfrastructuralResourcesManager();
+const filteringSystem: FilteringSystem = new FilteringSystem(amenityManager);
+const recommendationSystem: RecommendationSystem = new RecommendationSystem(filteringSystem);
 
 /*
  * function to retrieve all amenities
@@ -23,7 +32,7 @@ amenitiesRouter.post("/all", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location argument"});
+    res.status(422).send({ response: "Error in location argument" });
     return;
   }
 
@@ -46,7 +55,7 @@ amenitiesRouter.post("/oftype", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location and type argument"});
+    res.status(422).send({ response: "Error in location and type argument" });
     return;
   }
 
@@ -70,7 +79,7 @@ amenitiesRouter.post("/suggested", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location and filters argument"});
+    res.status(422).send({ response: "Error in location and filters argument" });
     return;
   }
 
@@ -92,7 +101,7 @@ amenitiesRouter.post("/details", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in amenity id argument"});
+    res.status(422).send({ response: "Error in amenity id argument" });
     return;
   }
 
@@ -112,7 +121,7 @@ amenitiesRouter.post("/filter", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in filters argument"});
+    res.status(422).send({ response: "Error in filters argument" });
     return;
   }
 
