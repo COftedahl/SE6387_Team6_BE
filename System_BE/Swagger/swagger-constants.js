@@ -9,5 +9,9 @@ export const SWAGGER_doc = {
     description: 'Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. '
   },
   host: 'localhost:5000', 
+  schemes: [
+    "http", 
+    "ws", 
+  ], 
   ...SWAGGER_components_schemas_and_examples, 
 };

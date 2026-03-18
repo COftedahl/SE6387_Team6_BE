@@ -8,7 +8,8 @@
   "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
-    "http"
+    "http",
+    "ws"
   ],
   "paths": {
     "/": {
@@ -38,6 +39,16 @@
         "responses": {
           "422": {
             "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/nav": {
+      "get": {
+        "description": "This endpoint IS NOT an HTTP GET request endpoint - it is used with websockets protocol. Use this endpoint to create a websocket conection. ",
+        "responses": {
+          "200": {
+            "description": "Creating websocket connection"
           }
         }
       }

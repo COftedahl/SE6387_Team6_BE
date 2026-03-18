@@ -32,6 +32,16 @@ navRouter.post("/map", async (req, res) => {
  * @param ws: the websocket created
  */
 navRouter.ws('/', function(ws, req) {
+  // #swagger.start
+    /*
+      #swagger.path = '/nav'
+      #swagger.method = 'get'
+      #swagger.description = 'This endpoint IS NOT an HTTP GET request endpoint - it is used with websockets protocol. Use this endpoint to create a websocket conection. '
+    */
+    /* 
+      #swagger.responses[200] = { description: 'Creating websocket connection' }  
+    */
+  // #swagger.end
   ws.on('message', function(msg) {
     
   });
