@@ -1,0 +1,53 @@
+import AMENITY_TYPE from '../src/Types/AmenityType';
+import { testAmenity1, testAmenity2, testAmenity3, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_FILTERING_SYSTEM, TESTING_ORIGINAL_LOG } from './constants';
+
+const logs: string[] = [];
+
+/* 
+ * eliminates console logging output during tests to unclutter the test report;
+ * if need to see console logs during tests, then comment out the beforeAll function 
+ * or just run the pertient code in the afterAll function when you need to see the log
+ */
+beforeAll(() => {
+  logs.splice(0,logs.length);
+  console.log = (...args) => {
+    logs.push(args.join(' '));
+  };
+});
+
+/* 
+ * restores the console.log function to regular operation
+ */
+afterAll(() => {
+  console.log = TESTING_ORIGINAL_LOG;
+});
+
+describe("Filtering System unit tests", () => {
+  test("get available amenities succeeds with no filters", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAvailableAmenities([])).toEqual(expect.arrayContaining([testAmenity1, testAmenity2, testAmenity3]));
+  });
+  test("get available amenities succeeds with filters", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAvailableAmenities([{filterKey: "type", value: "RESTROOM"}])).toEqual(expect.arrayContaining([testAmenity2]));
+  });
+  test("get available amenities returns empty", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAvailableAmenities([{filterKey: "amenityType", value: "RESTROOM"}, {filterKey: "accessibilityClass", value: "ACCESSIBLE"}])).toEqual(expect.arrayContaining([]));
+  });
+  test("get amenity details succeeds with no filters", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAmenityDetails([])).toEqual(expect.arrayContaining([testAmenityDetails1, testAmenityDetails2, testAmenityDetails3]));
+  });
+  test("get amenity details succeeds with filters", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAmenityDetails([{filterKey: "accessibilityClass", value: "ACCESSIBLE"}])).toEqual(expect.arrayContaining([testAmenityDetails1, testAmenityDetails3]));
+  });
+  test("get amenity details returns empty", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAmenityDetails([{filterKey: "amenityType", value: "RESTROOM"}, {filterKey: "accessibilityClass", value: "ACCESSIBLE"}])).toEqual(expect.arrayContaining([]));
+  });
+  test("get available amenities of type succeeds with no filters", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAvailableAmenitiesOfType(AMENITY_TYPE.BAR,[])).toEqual(expect.arrayContaining([testAmenity1]));
+  });
+  test("get available amenities of type succeeds with filters", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAvailableAmenitiesOfType(AMENITY_TYPE.COFFEE,[{filterKey: "type", value: "COFFEE"}, {filterKey: "accessibilityClass", value: "ACCESSIBLE"}])).toEqual(expect.arrayContaining([testAmenity3]));
+  });
+  test("get available amenities of type returns empty", () => {
+    expect(TESTING_FILTERING_SYSTEM.getAvailableAmenitiesOfType(AMENITY_TYPE.RESTROOM,[{filterKey: "amenityType", value: "RESTROOM"}, {filterKey: "accessibilityClass", value: "ACCESSIBLE"}])).toEqual(expect.arrayContaining([]));
+  });
+});

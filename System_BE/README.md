@@ -8,15 +8,23 @@
 *Note that the swagger docs are automatically updated every time <pre>npm start</pre> is run.*
 
 # How to run tests
+*Run any of the following with the text <pre>-- --coverage</pre> appended to get code coverage results as well.*
+
+*To view the coverage report, access the files in "coverage/lcov-report/[filename].html" and view in browser.*
 <dl>
   <dt>Option 1: </dt>
   <dl>
-    Run the API tests only. Run <pre>npm run "test api"</pre>
+    Run all tests. Run <pre>npm run test</pre>
   </dl>
 
   <dt>Option 2: </dt>
   <dl>
-    Run all tests. Run <pre>npm run test</pre>
+    Run the API tests only. Run <pre>npm run "api tests"</pre>
+  </dl>
+
+  <dt>Option 3: </dt>
+  <dl>
+    Run the unit tests only. Run <pre>npm run "unit tests"</pre>
   </dl>
 </dl>
 
