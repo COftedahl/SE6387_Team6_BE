@@ -6,6 +6,7 @@ import amenitiesRouter from "./Routers/AmenitiesRouter";
 import navRouter from "./Routers/NavRouter";
 import testRouter from "./Routers/TestRouter";
 import { Server } from 'http';
+import cors from 'cors';
 
 const appRouter = new WebSocketExpress(); 
 let server: Server = appRouter.createServer();
@@ -13,6 +14,7 @@ let server: Server = appRouter.createServer();
 const setupApp = async () => {
   const PORT = 5000;
   appRouter.use(express.json());
+  appRouter.use(cors({origin: "*"}))
   appRouter.use("/apidocs", swaggerUI.serve, swaggerUI.setup(await swaggerjsonFilePath));
   appRouter.use("/", testRouter);
   appRouter.use("/nav/", navRouter);
