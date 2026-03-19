@@ -16,8 +16,8 @@ class RecommendationSystem {
    * @param userLocation: ILocation[] current location of the user
    * @return: IAmenity[] of the suggested amenities
    */
-  public getMapSuggestions = (filters: IFilter[], userLocation: ILocation, sortBy: AMENITY_SORTING_TYPE) => {
-    const possibleAmenities: IAmenity[] = this.filteringSystem.getAvailableAmenities(filters);
+  public getMapSuggestions = async (filters: IFilter[], userLocation: ILocation, sortBy: AMENITY_SORTING_TYPE): Promise<IAmenity[]> => {
+    const possibleAmenities: IAmenity[] = await this.filteringSystem.getAvailableAmenities(filters);
     return this.generateSuggestions(possibleAmenities, userLocation, sortBy);
   }
 

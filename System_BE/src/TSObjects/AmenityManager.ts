@@ -9,7 +9,13 @@ class AmenityManager {
    * function to retrieve amenities
    * @return: IAmenity[]
    */
-  public getAmenities = (): IAmenity[] => {
+  public getAmenities = async (): Promise<IAmenity[]> => {
+    if (process.env.AMENITY_MANAGER_AMENITIES_ENDPOINT_METHOD && process.env.AMENITY_MANAGER_AMENITIES_ENDPOINT) {
+      const result = await fetch(process.env.AMENITY_MANAGER_AMENITIES_ENDPOINT, {
+        method: process.env.AMENITY_MANAGER_AMENITIES_ENDPOINT_METHOD,
+      }).then((res) => res.json());
+      return JSON.parse(result);
+    }
     return [];
   }
 
@@ -18,7 +24,14 @@ class AmenityManager {
    * @param id: string indicating the id of the amenity for which details should be retrieved
    * @return: IAmenityDetails details about the amenity
    */
-  public getAmenityDetails = (id: string): IAmenityDetails => {
+  public getAmenityDetails = async (id: string): Promise<IAmenityDetails> => {
+    if (process.env.AMENITY_MANAGER_AMENITY_DETAILS_ENDPOINT_METHOD && process.env.AMENITY_MANAGER_AMENITY_DETAILS_ENDPOINT) {
+      const result = await fetch(process.env.AMENITY_MANAGER_AMENITY_DETAILS_ENDPOINT, {
+        method: process.env.AMENITY_MANAGER_AMENITY_DETAILS_ENDPOINT_METHOD,
+        body: JSON.stringify({id: id}),
+      }).then((res) => res.json());
+      return JSON.parse(result);
+    }
     return {
       currentOccupancy: 0,
       currentAvailableSlots: 0,
@@ -40,7 +53,13 @@ class AmenityManager {
    * function to get the details of a all amenities
    * @return: IAmenityDetails[] details about the amenities
    */
-  public getAllAmenityDetails = (): IAmenityDetails[] => {
+  public getAllAmenityDetails = async (): Promise<IAmenityDetails[]> => {
+    if (process.env.AMENITY_MANAGER_ALL_AMENITY_DETAILS_ENDPOINT_METHOD && process.env.AMENITY_MANAGER_ALL_AMENITY_DETAILS_ENDPOINT) {
+      const result = await fetch(process.env.AMENITY_MANAGER_ALL_AMENITY_DETAILS_ENDPOINT, {
+        method: process.env.AMENITY_MANAGER_ALL_AMENITY_DETAILS_ENDPOINT_METHOD,
+      }).then((res) => res.json());
+      return JSON.parse(result);
+    }
     return [];
   }
 }

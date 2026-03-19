@@ -16,8 +16,8 @@ class FilteringSystem {
    * @param filters: IFilter[] represnting the filters
    * @return: IAmenityDetails[] details of amenities satisfying the filters
    */
-  public getAmenityDetails = (filters: IFilter[]): IAmenityDetails[] => {
-    const allAmenities: IAmenityDetails[] = this.amenityManager.getAllAmenityDetails();
+  public getAmenityDetails = async (filters: IFilter[]): Promise<IAmenityDetails[]> => {
+    const allAmenities: IAmenityDetails[] = await this.amenityManager.getAllAmenityDetails();
     return this.filterDetails(allAmenities, filters);
   }
 
@@ -26,8 +26,8 @@ class FilteringSystem {
    * @param filters: IFilter[] of filters to apply
    * @return: IAmenity[] of amenities satisfying the criteria
    */
-  public getAvailableAmenities = (filters: IFilter[]): IAmenity[] => {
-    const allAmenities: IAmenity[] = this.amenityManager.getAmenities();
+  public getAvailableAmenities = async (filters: IFilter[]): Promise<IAmenity[]> => {
+    const allAmenities: IAmenity[] = await this.amenityManager.getAmenities();
     return this.filter(allAmenities, filters);
   }
 
@@ -37,8 +37,8 @@ class FilteringSystem {
    * @param filters: IFilter[] of filters to apply
    * @return: IAmenity[] of amenities satisfying the criteria
    */
-  public getAvailableAmenitiesOfType = (type: AMENITY_TYPE, filters: IFilter[]): IAmenity[] => {
-    const allAmenities: IAmenity[] = this.amenityManager.getAmenities();
+  public getAvailableAmenitiesOfType = async (type: AMENITY_TYPE, filters: IFilter[]): Promise<IAmenity[]> => {
+    const allAmenities: IAmenity[] = await this.amenityManager.getAmenities();
     const updatedFilters: IFilter[] = [...filters.filter((filter: IFilter) => filter.filterKey !== "type"), { filterKey: "type", value: type }];
     return this.filter(allAmenities, updatedFilters);
   }

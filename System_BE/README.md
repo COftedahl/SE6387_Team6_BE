@@ -10,6 +10,8 @@
 # How to run tests
 *Run any of the following with the text <pre>-- --coverage</pre> appended to get code coverage results as well.*
 
+*Run any of the following with the text <pre>-- --verbose</pre> appended to get a succinct list of passes and fails for each test file as well. (If you add "-- --coverage" as seen above and want verbose, can use "-- --coverage --verbose")*
+
 *To view the coverage report, access the files in "coverage/lcov-report/[filename].html" and view in browser.*
 <dl>
   <dt>Option 1: </dt>
@@ -30,5 +32,8 @@
 
 
 <style>
-  pre {color: black;}
+  pre {
+    color: black;
+    background-color: rgb(220,235,245) !important;
+  }
 </style>
