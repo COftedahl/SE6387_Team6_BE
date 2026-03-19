@@ -21,6 +21,8 @@ beforeAll(async () => {
       "Content-Type": "application/json",
     }, 
     body: JSON.stringify({data: [testAmenityDetails1, testAmenityDetails2, testAmenityDetails3]})
+  }).catch(() => {
+    fail("Failed to set the data in the amenity manager external system - make sure the system is running before executing amenity manager tests.")
   });
 });
 
@@ -31,6 +33,7 @@ afterAll(async () => {
   console.log = TESTING_ORIGINAL_LOG;
 });
 
+//NOTE: the amenity manager external system must be running for these tests 
 describe("Amenity Manager unit tests", () => {
   test("get amenities succeeds", async () => {
     expect(await TESTING_AMENITY_MANAGER.getAmenities()).toEqual(expect.arrayContaining([testAmenity1, testAmenity2, testAmenity3]));

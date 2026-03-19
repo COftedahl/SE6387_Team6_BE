@@ -1,6 +1,7 @@
 import request from 'supertest';
+import dotenv from 'dotenv';
 import appRouter from '../src/index';
-import { TESTING_AMENITIES_ROUTE_PATH, TESTING_NAV_ROUTE_PATH, TESTING_ORIGINAL_LOG } from './constants';
+import { testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_AMENITIES_ROUTE_PATH, TESTING_NAV_ROUTE_PATH, TESTING_ORIGINAL_LOG } from './constants';
 
 const logs: string[] = [];
 
@@ -9,11 +10,21 @@ const logs: string[] = [];
  * if need to see console logs during tests, then comment out the beforeAll function 
  * or just run the pertient code in the afterAll function when you need to see the log
  */
-beforeAll(() => {
+beforeAll(async () => {
   logs.splice(0,logs.length);
   console.log = (...args) => {
     logs.push(args.join(' '));
   };
+  dotenv.config();
+  await fetch(process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT ?? "", {
+    method: process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT_METHOD ?? "", 
+    headers: {
+      "Content-Type": "application/json",
+    }, 
+    body: JSON.stringify({data: [testAmenityDetails1, testAmenityDetails2, testAmenityDetails3]})
+  }).catch(() => {
+    fail("Failed to set the data in the amenity manager external system - make sure the system is running before executing API tests.")
+  });
 });
 
 /* 
@@ -31,7 +42,7 @@ describe("Amenities Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/all correct post body", async () => {
-    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/all").send({locationX: "1",locationY: "2"});
+    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/all").send({x: "1",y: "2"});
     expect(result.status).toBe(200);
   });
   test("/oftype incorrect post body", async () => {
@@ -39,7 +50,7 @@ describe("Amenities Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/oftype correct post body", async () => {
-    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/oftype").send({locationX: "1",locationY: "2", amenityType: "RESTROOM"});
+    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/oftype").send({x: "1",y: "2", amenityType: "RESTROOM"});
     expect(result.status).toBe(200);
   });
   test("/suggested incorrect post body", async () => {
@@ -47,7 +58,7 @@ describe("Amenities Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/suggested correct post body", async () => {
-    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/suggested").send({locationX: "1",locationY: "2", filters: []});
+    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/suggested").send({x: "1",y: "2", filters: []});
     expect(result.status).toBe(200);
   });
   test("/details incorrect post body", async () => {
@@ -74,7 +85,7 @@ describe("Nav Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/map correct post body", async () => {
-    const result = await request(appRouter).post(TESTING_NAV_ROUTE_PATH + "/map").send({locationX: "1",locationY: "2"});
+    const result = await request(appRouter).post(TESTING_NAV_ROUTE_PATH + "/map").send({x: "1",y: "2"});
     expect(result.status).toBe(200);
   });
 });
