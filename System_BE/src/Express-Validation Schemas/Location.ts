@@ -1,10 +1,10 @@
 const LocationSchema = {
-  locationX: {
+  x: {
     exists: true, 
     isString: true, 
     notEmpty: true, 
   }, 
-  locationY: {
+  y: {
     exists: true, 
     isString: true, 
     notEmpty: true, 

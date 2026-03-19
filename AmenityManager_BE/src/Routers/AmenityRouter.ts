@@ -33,7 +33,7 @@ amenityRouter.post("/", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location argument" });
+    res.status(422).send({ response: "Error in id argument" });
     return;
   }
 
@@ -69,7 +69,7 @@ amenityRouter.post("/details", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location argument" });
+    res.status(422).send({ response: "Error in id argument" });
     return;
   }
 

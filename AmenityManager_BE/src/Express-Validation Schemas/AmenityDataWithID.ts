@@ -22,12 +22,12 @@ const AmenityDataWithIDSchema = {
   location: {
     exists: true, 
   }, 
-  'location.locationX': {
+  'location.x': {
     exists: true, 
     isString: true, 
     notEmpty: true, 
   }, 
-  'location.locationY': {
+  'location.y': {
     exists: true, 
     isString: true, 
     notEmpty: true, 

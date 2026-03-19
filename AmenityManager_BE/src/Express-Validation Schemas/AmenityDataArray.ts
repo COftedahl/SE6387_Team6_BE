@@ -21,12 +21,12 @@ const AmenityDataArraySchema = {
   'data.*.location': {
     exists: true, 
   }, 
-  'data.*.location.locationX': {
+  'data.*.location.x': {
     exists: true, 
     isString: true, 
     notEmpty: true, 
   }, 
-  'data.*.location.locationY': {
+  'data.*.location.y': {
     exists: true, 
     isString: true, 
     notEmpty: true, 
