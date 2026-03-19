@@ -4,6 +4,9 @@ import IAmenityDetails from '../Types/IAmenityDetails';
 import AmenityIDSchema from '../Express-Validation Schemas/AmenityID';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
 import AmenityDataArraySchema from '../Express-Validation Schemas/AmenityDataArray';
+import convertDetailsToAmenityData from '../Functions/ConvertDetailsToAmenityData';
+import AmenityDataWithIDSchema from '../Express-Validation Schemas/AmenityDataWithID';
+import AmenityDetailsDataWithIDSchema from '../Express-Validation Schemas/AmenityDetailsDataWithID';
 
 const amenityRouter = express.Router();
 
@@ -121,6 +124,70 @@ amenityRouter.post("/setdetails", async (req, res) => {
   //store the data parsed
   const data: IAmenityDetails[] = matchedData(req).data; 
   amenityDetailsData = data;
+  amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
+
+  res.status(200).send({ response: "Success" });
+})
+
+/*
+ * function to update the stored data for one amenity
+ * @param oldID: string representing the ID of the amenity being updated
+ * @param data: IAmenity[] of the data to store
+ */
+amenityRouter.post("/update", async (req, res) => {
+  await checkSchema(AmenityDataWithIDSchema).run(req);
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    console.log(error.mapped());
+    res.status(422).send({ response: "Error in data argument" });
+    return;
+  }
+
+  //store the data parsed
+  const data: any = matchedData(req); 
+  const idUpdating: string = data.oldID;
+  const newAmenity: IAmenity = { ...data, oldID: undefined };
+
+  const indexOfExistingElement: number = amenityData.findIndex((currAmenity: IAmenity) => currAmenity.id === idUpdating);
+  if (indexOfExistingElement < 0) {
+    res.status(422).send({ response: "Provided id \"" + idUpdating + "\" does not match any existing amenities" });
+    return;
+  }
+
+  amenityData.splice(indexOfExistingElement, 1, newAmenity);
+
+  res.status(200).send({ response: "Success" });
+})
+
+/*
+ * function to update the stored details data for one amenity - also updates the stored amenity data
+ * @param oldID: string representing the ID of the amenity being updated
+ * @param data: IAmenityDetails[] of the data to store
+ */
+amenityRouter.post("/update", async (req, res) => {
+  await checkSchema(AmenityDetailsDataWithIDSchema).run(req);
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    console.log(error.mapped());
+    res.status(422).send({ response: "Error in data argument" });
+    return;
+  }
+
+  //store the data parsed
+  const data: any = matchedData(req); 
+  const idUpdating: string = data.oldID;
+  const newAmenityDetails: IAmenityDetails = { ...data, oldID: undefined };
+
+  const indexOfExistingElement: number = amenityDetailsData.findIndex((currAmenity: IAmenity) => currAmenity.id === idUpdating);
+  if (indexOfExistingElement < 0) {
+    res.status(422).send({ response: "Provided id \"" + idUpdating + "\" does not match any existing amenities" });
+    return;
+  }
+
+  amenityDetailsData.splice(indexOfExistingElement, 1, newAmenityDetails);
+  amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
 
   res.status(200).send({ response: "Success" });
 })
