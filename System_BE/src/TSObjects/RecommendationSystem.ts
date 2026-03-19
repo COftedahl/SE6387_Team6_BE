@@ -1,6 +1,5 @@
 import AMENITY_SORTING_TYPE from "../Types/AmenitySortingType";
 import IAmenity from "../Types/IAmenity";
-import IAmenityDetails from "../Types/IAmenityDetails";
 import IFilter from "../Types/IFilter";
 import ILocation from "../Types/ILocation";
 import FilteringSystem from "./FilteringSystem";
@@ -53,14 +52,14 @@ class RecommendationSystem {
   private static getAmenitySortingFunction = (sortBy: AMENITY_SORTING_TYPE): ((a: IAmenity, b: IAmenity, userLocation: ILocation) => number) => {
     switch (sortBy) {
       case AMENITY_SORTING_TYPE.BEST_ROUTE: 
-        return (a: IAmenity, b: IAmenity, userLocation: ILocation) => (RecommendationSystem.distanceBetween(a.location, userLocation) > RecommendationSystem.distanceBetween(a.location, userLocation) ? 1 : 0);
+        return (a: IAmenity, b: IAmenity, userLocation: ILocation) => (RecommendationSystem.distanceBetween(a.location, userLocation) > RecommendationSystem.distanceBetween(b.location, userLocation) ? 1 : 0);
         break;
       case AMENITY_SORTING_TYPE.LEAST_WALKING: 
-        return (a: IAmenity, b: IAmenity, userLocation: ILocation) => (RecommendationSystem.distanceBetween(a.location, userLocation) > RecommendationSystem.distanceBetween(a.location, userLocation) ? 1 : 0);
+        return (a: IAmenity, b: IAmenity, userLocation: ILocation) => (RecommendationSystem.distanceBetween(a.location, userLocation) > RecommendationSystem.distanceBetween(b.location, userLocation) ? 1 : 0);
         break;
       default: 
       case AMENITY_SORTING_TYPE.LEAST_WAIT_TIME: 
-        return (a: IAmenity, b: IAmenity, userLocation: ILocation) => (RecommendationSystem.distanceBetween(a.location, userLocation) > RecommendationSystem.distanceBetween(a.location, userLocation) ? 1 : 0);
+        return (a: IAmenity, b: IAmenity, userLocation: ILocation) => (RecommendationSystem.distanceBetween(a.location, userLocation) > RecommendationSystem.distanceBetween(b.location, userLocation) ? 1 : 0);
         break;
     }
   }

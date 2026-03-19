@@ -36,7 +36,7 @@ amenitiesRouter.post("/all", async (req, res) => {
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
 })
@@ -59,7 +59,7 @@ amenitiesRouter.post("/oftype", async (req, res) => {
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
   const amenityType: AMENITY_TYPE = data.amenityType;
@@ -83,7 +83,7 @@ amenitiesRouter.post("/suggested", async (req, res) => {
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
   const filters: IFilter[] = data.filters;
@@ -105,7 +105,7 @@ amenitiesRouter.post("/details", async (req, res) => {
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const amenityID: string = matchedData(req).id; 
 })
 
@@ -125,7 +125,7 @@ amenitiesRouter.post("/filter", async (req, res) => {
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const filters: IFilter[] = matchedData(req).filters;
 })
 
