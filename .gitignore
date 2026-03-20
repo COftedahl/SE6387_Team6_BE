@@ -2,6 +2,9 @@
 */node_modules/*
 
 */dist
-*/dist*
+*/dist/*
+
+*/coverage
+*/coverage/*
 
 */.env

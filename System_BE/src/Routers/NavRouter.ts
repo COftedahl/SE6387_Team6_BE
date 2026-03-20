@@ -2,8 +2,11 @@ import { Router } from 'websocket-express';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
 import ILocation from '../Types/ILocation';
 import LocationSchema from '../Express-Validation Schemas/Location';
+import NavigationSystem from '../TSObjects/NavigationSystem';
 
 const navRouter = new Router();
+//initialize all objects needed by the router once to be used for the duration of the server
+const navigationSystem: NavigationSystem = new NavigationSystem();
 
 /*
  * function to get the map
@@ -18,7 +21,7 @@ navRouter.post("/map", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location argument"});
+    res.status(422).send({ response: "Error in location argument" });
     return;
   }
 
