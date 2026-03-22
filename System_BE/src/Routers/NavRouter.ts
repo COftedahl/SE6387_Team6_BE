@@ -3,6 +3,8 @@ import { checkSchema, matchedData, validationResult } from 'express-validator';
 import ILocation from '../Types/ILocation';
 import LocationSchema from '../Express-Validation Schemas/Location';
 import NavigationSystem from '../TSObjects/NavigationSystem';
+import { encode } from '../Functions/geohasher';
+import { promisify } from 'util';
 
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
@@ -28,6 +30,10 @@ navRouter.post("/map", async (req, res) => {
   //store the data corresponding to the item to delete
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
+  const map: any = await fetch(process.env.DFW_MAP_URL ?? "", {},).then((res) => res.text()).catch((e) => console.log(e))
+
+  const encodedLatLong: string = encode(Number.parseFloat(location.x), Number.parseFloat(location.y), 1);
+  res.json({map: map, encodedLatLong: encodedLatLong});
 })
 
 /*
