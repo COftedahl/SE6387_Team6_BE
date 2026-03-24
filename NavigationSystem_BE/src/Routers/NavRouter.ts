@@ -3,9 +3,12 @@ import fs from 'fs';
 import { ChildProcess, spawn } from 'child_process';
 import { checkSchema, validationResult, matchedData } from 'express-validator';
 import WeightsUpdateSchema from '../Express-Validation Schemas/WeightsUpdateSchema';
+import { isContainerRunning, removeContainer, runCmd, stopContainer, waitForExit } from '../Functions/DockerFunctions';
 
 const navRouter = express.Router();
 let backendProcess: null | ChildProcess = null;
+const OSRMDockerContainerName: string = "OSRMContainer";
+const weightUpdatesFileName = "weightUpdates.csv";
 
 const toDockerPath = (p: string) => {
   if (process.platform !== 'win32') return p;
@@ -21,6 +24,7 @@ const dockerHostDir = toDockerPath(hostDir);
 const volume = `${dockerHostDir}/${dataDir}:/data`;
 const args = [
   'run',
+  '--name', OSRMDockerContainerName,  
   '-t',
   '-i',
   '-p', '5003:5000',
@@ -32,6 +36,7 @@ const args = [
 ];
 const updateCommandArgs = [
   'run',
+  '--name', OSRMDockerContainerName,  
   '-t',
   '-i',
   '-p', '5003:5000',
@@ -39,14 +44,21 @@ const updateCommandArgs = [
   'ghcr.io/project-osrm/osrm-backend',
   'osrm-customize',
   '/data/' + OSRMFileName, 
-  '--segment-speed-file', 
+  '--segment-speed-file', '/data/' + weightUpdatesFileName, 
 ];
 
 /*
  * function to start the navigation system
  */
 navRouter.get("/start", async (req, res) => {
-  if (backendProcess === null) {
+  const containerIsRunning: any = await isContainerRunning(OSRMDockerContainerName);
+  console.log("Container is already running: ", containerIsRunning);
+  if (backendProcess === null || !containerIsRunning) {
+    if (containerIsRunning) {
+      await stopContainer(OSRMDockerContainerName);
+      await waitForExit(OSRMDockerContainerName);
+    }
+    await removeContainer(OSRMDockerContainerName);
     backendProcess = spawn('docker', args, { stdio: 'inherit' });
     res.json({ message: "Routing backend started" })
     return;
@@ -73,25 +85,21 @@ navRouter.post("/update", async (req, res) => {
   const updateWeightsFileString: string = matchedData(req).fileContents; 
 
   try {
-    const weightUpdatesFileName = "weightUpdates.csv";
     //write the weight updates to a CSV file
     fs.writeFileSync(dataDir + weightUpdatesFileName, updateWeightsFileString);
     if (backendProcess !== null) {
-      //add listener for when routing server terminates
-      backendProcess.once("exit", (code) => {
-        if (backendProcess !== null) {
-          //add listener for updating the weights finishes
-          backendProcess.once("exit", (code) => {
-            //restart the routing service once the weights are updated
-            backendProcess = spawn('docker', args, { stdio: 'inherit' });
-            res.json({ message: "Routing backend restarted" })
-          });
-        }
-        //update the weights using the written file
-        backendProcess = spawn("docker", [...updateCommandArgs, '/data/' + weightUpdatesFileName, ], { stdio: 'inherit' });
-      });
-      backendProcess.kill('SIGTERM');
+      
+      await stopContainer(OSRMDockerContainerName);
+      await waitForExit(OSRMDockerContainerName);
+      await removeContainer(OSRMDockerContainerName);
+      console.log("Server container stopped");
+      await runCmd('docker', updateCommandArgs);
+      await waitForExit(OSRMDockerContainerName);
+      await removeContainer(OSRMDockerContainerName);
+      console.log("Update data container stopped");
     }
+    backendProcess = spawn('docker', args, { stdio: 'inherit' });
+    res.json({ message: "Routing backend updated and restarted" })
   }
   catch (e) {
     console.log("Error updating weights - ", e);
