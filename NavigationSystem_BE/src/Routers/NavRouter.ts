@@ -47,12 +47,29 @@ const updateCommandArgs = [
   '--segment-speed-file', '/data/' + weightUpdatesFileName, 
 ];
 
+/* 
+ * function to be run on startup, should start the backend nav server
+ */
+const handleStartup = async () => {
+  const containerIsRunning: any = await isContainerRunning(OSRMDockerContainerName);
+  if (backendProcess === null || !containerIsRunning) {
+    if (containerIsRunning) {
+      await stopContainer(OSRMDockerContainerName);
+      await waitForExit(OSRMDockerContainerName);
+    }
+    await removeContainer(OSRMDockerContainerName);
+    backendProcess = spawn('docker', args, { stdio: 'inherit' });
+  }
+}
+
+//here, call the startup function when the router is started
+handleStartup();
+
 /*
  * function to start the navigation system
  */
 navRouter.get("/start", async (req, res) => {
   const containerIsRunning: any = await isContainerRunning(OSRMDockerContainerName);
-  console.log("Container is already running: ", containerIsRunning);
   if (backendProcess === null || !containerIsRunning) {
     if (containerIsRunning) {
       await stopContainer(OSRMDockerContainerName);

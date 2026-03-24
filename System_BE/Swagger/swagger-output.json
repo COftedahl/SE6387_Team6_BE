@@ -32,7 +32,7 @@
             "description": "send the location of the user",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/location"
+              "$ref": "#/components/schemas/locationWithZoom"
             }
           }
         ],
@@ -200,20 +200,44 @@
       "location": {
         "type": "object",
         "properties": {
-          "locationX": {
+          "x": {
             "type": "string"
           },
-          "locationY": {
+          "y": {
             "type": "string"
           }
         },
         "required": [
-          "locationX",
-          "locationY"
+          "x",
+          "y"
         ],
         "example": {
-          "locationX": "10.11",
-          "locationY": "12.13"
+          "x": "10.11",
+          "y": "12.13"
+        }
+      },
+      "locationWithZoom": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "string"
+          },
+          "y": {
+            "type": "string"
+          },
+          "zoom": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "zoom"
+        ],
+        "example": {
+          "x": "10.11",
+          "y": "12.13",
+          "zoom": 15
         }
       },
       "amenityID": {

@@ -4,7 +4,7 @@ const AmenityDetailsDataArraySchema = {
   ...AmenityDataArraySchema, 
   'data.*.currentOccupancy': {
     exists: true, 
-    isNumber: true, 
+    isInt: true, 
     notEmpty: true, 
   },  
   'data.*.currentAvailableSlots': {
