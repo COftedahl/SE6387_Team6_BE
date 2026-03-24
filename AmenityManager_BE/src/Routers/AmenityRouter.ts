@@ -7,6 +7,7 @@ import AmenityDataArraySchema from '../Express-Validation Schemas/AmenityDataArr
 import convertDetailsToAmenityData from '../Functions/ConvertDetailsToAmenityData';
 import AmenityDataWithIDSchema from '../Express-Validation Schemas/AmenityDataWithID';
 import AmenityDetailsDataWithIDSchema from '../Express-Validation Schemas/AmenityDetailsDataWithID';
+import SubscriptionManager from '../TSObjects/SubscriptionManager';
 
 const amenityRouter = express.Router();
 
@@ -104,6 +105,8 @@ amenityRouter.post("/set", async (req, res) => {
   const data: IAmenity[] = matchedData(req).data; 
   amenityData = data;
 
+  SubscriptionManager.notifySubscribers();
+
   res.status(200).send({ response: "Success" });
 })
 
@@ -125,6 +128,8 @@ amenityRouter.post("/setdetails", async (req, res) => {
   const data: IAmenityDetails[] = matchedData(req).data; 
   amenityDetailsData = data;
   amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
+
+  SubscriptionManager.notifySubscribers();
 
   res.status(200).send({ response: "Success" });
 })
@@ -156,6 +161,8 @@ amenityRouter.post("/update", async (req, res) => {
   }
 
   amenityData.splice(indexOfExistingElement, 1, newAmenity);
+  
+  SubscriptionManager.notifySubscribers();
 
   res.status(200).send({ response: "Success" });
 })
@@ -188,6 +195,8 @@ amenityRouter.post("/update", async (req, res) => {
 
   amenityDetailsData.splice(indexOfExistingElement, 1, newAmenityDetails);
   amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
+  
+  SubscriptionManager.notifySubscribers();
 
   res.status(200).send({ response: "Success" });
 })
