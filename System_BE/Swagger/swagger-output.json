@@ -29,7 +29,7 @@
           {
             "name": "location",
             "in": "body",
-            "description": "send the location of the user",
+            "description": "send the location of the user with zoom level to center the map",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/locationWithZoom"
