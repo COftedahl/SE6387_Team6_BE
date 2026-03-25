@@ -3,6 +3,9 @@ import { checkSchema, matchedData, validationResult } from 'express-validator';
 import ILocation from '../Types/ILocation';
 import NavigationSystem from '../TSObjects/NavigationSystem';
 import LocationPlusZoomSchema from '../Express-Validation Schemas/LocationPlusZoom';
+import IWSMessage from '../Types/_for_websockets/IWSMessage';
+import WS_MESSAGE_TYPE from '../Types/_for_websockets/WSMessageType';
+import IWSNavigateMessageBody from '../Types/_for_websockets/IWSNavigateMessageBody';
 
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
@@ -38,7 +41,7 @@ navRouter.post("/map", async (req, res) => {
  * function called when the client requests a websocket connection
  * @param ws: the websocket created
  */
-navRouter.ws('/', function(ws, req) {
+navRouter.ws('/', async (req, res) => {
   // #swagger.start
     /*
       #swagger.path = '/nav'
@@ -49,9 +52,70 @@ navRouter.ws('/', function(ws, req) {
       #swagger.responses[200] = { description: 'Creating websocket connection' }  
     */
   // #swagger.end
-  ws.on('message', function(msg) {
-    
+  const ws = await res.accept();
+  // console.log("NEXT: ", next);
+  // console.log("REQ: ", req);
+  // console.log("WS: ", ws);
+  // ws.on("open", () => console.log("Connected"));
+  const navID: string = navigationSystem.initializeConnection(ws);
+
+  ws.on("message", async (data) => {
+    try {
+      const messageString: string = data.toString('utf-8');
+      console.log("received message ", messageString);
+      const message: IWSMessage = JSON.parse(messageString);
+      switch(message.messageType) {
+        case WS_MESSAGE_TYPE.ACCEPT_REROUTE: 
+          
+          break;
+        case WS_MESSAGE_TYPE.CANCEL_NAVIGATION: 
+          navigationSystem.endNavigation(navID);
+          break;
+        case WS_MESSAGE_TYPE.REQUEST_NAVIGATE: 
+          //expect body of message to follow type IWSNavigateMessageBody
+          const messageBody: IWSNavigateMessageBody = message.body;
+          await navigationSystem.navigate(messageBody.source, messageBody.target, navID);
+          break;
+        case WS_MESSAGE_TYPE.UPDATE_POSITION: 
+
+          break;
+      }
+    }
+    catch (e) {
+      console.log("Error parsing Websocket message from connection " + navID + "; ", e);
+    }
   });
+
+  ws.on("close", () => {
+    navigationSystem.endNavigation(navID);
+  })
+
+  req.on("open", () => console.log("Connected"));
+
+  req.on("message", async (data) => {
+    const message: IWSMessage = data;
+    console.log("received message ", message);
+    switch(message.messageType) {
+      case WS_MESSAGE_TYPE.ACCEPT_REROUTE: 
+        
+        break;
+      case WS_MESSAGE_TYPE.CANCEL_NAVIGATION: 
+        navigationSystem.endNavigation(navID);
+        break;
+      case WS_MESSAGE_TYPE.REQUEST_NAVIGATE: 
+        //expect body of message to follow type IWSNavigateMessageBody
+        const messageBody: IWSNavigateMessageBody = message.body;
+        await navigationSystem.navigate(messageBody.source, messageBody.target, navID);
+        break;
+      case WS_MESSAGE_TYPE.UPDATE_POSITION: 
+
+        break;
+    }
+  });
+
+  req.on("close", () => {
+    navigationSystem.endNavigation(navID);
+  })
 });
 
 export default navRouter;

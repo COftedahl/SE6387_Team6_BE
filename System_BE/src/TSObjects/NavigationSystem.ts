@@ -1,8 +1,14 @@
+import IWSConnection from "../Types/_for_websockets/IWSConnection";
+import IWSMessage from "../Types/_for_websockets/IWSMessage";
+import WS_MESSAGE_TYPE from "../Types/_for_websockets/WSMessageType";
 import ILocation from "../Types/ILocation";
 import IPath from "../Types/IPath";
 import ITileNumber from "../Types/ITileNumber";
 
 class NavigationSystem {
+  private navigationConnections: IWSConnection[] = [];
+  private static readonly NAV_ID_PREFIX: string = "NAVID_";
+  private nextNavID: number = 1;
   /* 
    * function to get the map to display to the user
    * @param location: ILocation indicating the user's location
@@ -23,12 +29,48 @@ class NavigationSystem {
   }
 
   /* 
+   * function to call when a client connects
+   * @param connection: the Websocket object indicating the connection between client and server
+   * @return: string containing the new connection's navID
+   * SIDE EFFECTS: sends ID message to the corresponding connection
+   */
+  public initializeConnection = (connection: any): string => {
+    const newConnection: IWSConnection = {
+      navID: NavigationSystem.NAV_ID_PREFIX + this.nextNavID, 
+      connection: connection, 
+    }
+    this.navigationConnections.push(newConnection);
+    this.nextNavID += 1;
+    const idMessage: IWSMessage = {
+      messageType: WS_MESSAGE_TYPE.SEND_NAV_ID, 
+      body: newConnection.navID,
+    }
+    connection.send(JSON.stringify(idMessage));
+    return newConnection.navID;
+  }
+
+  /* 
    * function to handle starting navigation
    * @param source: ILocation of the starting location
    * @param target: ILocation of the ending location
+   * @param connection: the Websocket object indicating the connection between client and server
+   * @return: IPath containing the path to use for navigation
+   * SIDE EFFECTS: sends PATH message to the corresponding connection
    */
-  public navigate = async (source: ILocation, target: ILocation) => {
-    
+  public navigate = async (source: ILocation, target: ILocation, navID: string): Promise<IPath> => {
+    const connection: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
+    if (connection !== undefined) {
+      const path: IPath = await this.getPath(source, target);
+      const pathMessage: IWSMessage = {
+        messageType: WS_MESSAGE_TYPE.SEND_PATH, 
+        body: path, 
+      }
+      connection.connection.send(JSON.stringify(pathMessage));
+      return path
+    }
+    else {
+      throw new Error("Invalid NavID \"" + navID + "\" for navigate request");
+    }
   }
 
   /* 
@@ -39,33 +81,60 @@ class NavigationSystem {
    */
   public getPath = async (source: ILocation, target: ILocation): Promise<IPath> => {
     const result = await fetch((process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT ?? "") + 
-      (source.y + "," + source.x) + ";" + (target.y + "," + target.x), 
+      (source.x + "," + source.y) + ";" + (target.x + "," + target.y), 
       {
         method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
       }
     ).then((res) => res.json());
     console.log(result);
     return {
-      source: {x: "", y: ""},
-      target: {x: "", y: ""},
-      route: undefined,
-    }
+      source: source, 
+      target: target, 
+      route: result.waypoints.map((waypoint: any) => { 
+        return {
+          x: waypoint.location[0], 
+          y: waypoint.location[1], 
+        }
+      }),
+    };
   }
 
   /* 
    * function to reroute the user (use a different path)
+   * @param navID: string containing the navigation ID of the navigation being rerouted
    * @param newPath: IPath of the new path to follow
+   * SIDE EFFECTS: sends PATH message to the corresponding connection
    */
-  public reroute = async (newPath: IPath) => {
-    //TODO: should this stick with the UCR, which uses target & source as params to start new nav, or use the already-computed reroute path?
+  public reroute = async (navID: string, newPath: IPath) => {
+    const removingConnection: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
+    if (removingConnection !== undefined) {
+      const rerouteMessage: IWSMessage = {
+        messageType: WS_MESSAGE_TYPE.SEND_PATH, 
+        body: newPath, 
+      }
+      removingConnection.connection.send(JSON.stringify(rerouteMessage));
+    }
+    else {
+      throw new Error("Invalid NavID \"" + navID + "\" for reroute request");
+    }
   }
 
   /* 
    * function to handle ending navigation
    * @param navID: string containing the navigation ID of the navigation being ended
+   * SIDE EFFECTS: removes corresponding IWSConnection object from this.navigationConnections and closes the websocket connection
    */
   public endNavigation = (navID: string) => {
-    
+    console.log("Closing connection for ID ", navID);
+    const removingConnectionIndex: number = this.navigationConnections.findIndex((wsConnection: IWSConnection) => wsConnection.navID === navID);
+    if (removingConnectionIndex >= 0) {
+      const removingConnection: IWSConnection = this.navigationConnections[removingConnectionIndex];
+      this.navigationConnections.splice(removingConnectionIndex, 1);
+      removingConnection.connection.close();
+    }
+    else {
+      throw new Error("Invalid NavID \"" + navID + "\" for end navigation request");
+    }
   }
 
   /* 
