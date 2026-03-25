@@ -4,8 +4,9 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest --roots \"tests\"",
-    "test api": "jest --roots \"tests\" --runTestsByPath \"tests/APITests.test.ts\"",
+    "test": "jest --roots \"tests\" --collectCoverageFrom **/{TSObjects,Routers}/**",
+    "api tests": "jest --roots \"tests\" --runTestsByPath \"tests/APITests.test.ts\" --collectCoverageFrom **/Routers/**",
+    "unit tests": "jest --roots \"tests\" --testPathIgnorePatterns tests/APITests.test.ts --collectCoverageFrom **/{TSObjects,Routers}/**",
     "start": "node Swagger/swagger-prestartup.js",
     "swagger": "node Swagger/swagger.js"
   },

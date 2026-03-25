@@ -4,13 +4,13 @@ const SWAGGER_components_schemas_and_examples = {
       location: {
         type: 'object',
         properties: {
-          locationX: {type: 'string'},
-          locationY: {type: 'string'},
+          x: {type: 'string'},
+          y: {type: 'string'},
         },
-        required: ['locationX', 'locationY'],
+        required: ['x', 'y'],
         example: {
-          locationX: "10.11",
-          locationY: "12.13",
+          x: "10.11",
+          y: "12.13",
         }
       },
       amenityID: {

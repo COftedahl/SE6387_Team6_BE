@@ -8,8 +8,20 @@ import FiltersSchema from '../Express-Validation Schemas/Filters';
 import IFilter from '../Types/IFilter';
 import ILocation from '../Types/ILocation';
 import AMENITY_TYPE from '../Types/AmenityType';
+import AmenityManager from '../TSObjects/AmenityManager';
+import FilteringSystem from '../TSObjects/FilteringSystem';
+import InfrastructuralResourcesManager from '../TSObjects/InfrastructuralResourcesManager';
+import RecommendationSystem from '../TSObjects/RecommendationSystem';
+import IAmenityDetails from '../Types/IAmenityDetails';
+import IAmenity from '../Types/IAmenity';
+import AMENITY_SORTING_TYPE from '../Types/AmenitySortingType';
 
 const amenitiesRouter = new Router();
+//initialize all objects needed by the router once to be used for the duration of the server
+const amenityManager: AmenityManager = new AmenityManager();
+const infrastructureManager: InfrastructuralResourcesManager = new InfrastructuralResourcesManager();
+const filteringSystem: FilteringSystem = new FilteringSystem(amenityManager);
+const recommendationSystem: RecommendationSystem = new RecommendationSystem(filteringSystem);
 
 /*
  * function to retrieve all amenities
@@ -23,13 +35,15 @@ amenitiesRouter.post("/all", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location argument"});
+    res.status(422).send({ response: "Error in location argument" });
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
+  const amenities: IAmenity[] = await amenityManager.getAmenities();
+  res.json(amenities);
 })
 
 /*
@@ -46,14 +60,16 @@ amenitiesRouter.post("/oftype", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location and type argument"});
+    res.status(422).send({ response: "Error in location and type argument" });
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
   const amenityType: AMENITY_TYPE = data.amenityType;
+  const amenities: IAmenity[] = await filteringSystem.getAvailableAmenitiesOfType(amenityType, []);
+  res.json(amenities);
 })
 
 /*
@@ -70,14 +86,17 @@ amenitiesRouter.post("/suggested", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in location and filters argument"});
+    res.status(422).send({ response: "Error in location and filters argument" });
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const data: any = matchedData(req); 
   const location: ILocation = {x: data.locationX, y: data.locationY};
   const filters: IFilter[] = data.filters;
+
+  const recommendations: IAmenity[] = await recommendationSystem.getMapSuggestions(filters, location, AMENITY_SORTING_TYPE.LEAST_WAIT_TIME);
+  res.json(recommendations);
 })
 
 /*
@@ -92,12 +111,14 @@ amenitiesRouter.post("/details", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in amenity id argument"});
+    res.status(422).send({ response: "Error in amenity id argument" });
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const amenityID: string = matchedData(req).id; 
+  const details: IAmenityDetails = await amenityManager.getAmenityDetails(amenityID);
+  res.json(details);
 })
 
 /*
@@ -112,12 +133,14 @@ amenitiesRouter.post("/filter", async (req, res) => {
 
   if (!error.isEmpty()) {
     console.log(error.mapped());
-    res.status(422).send({ response: "Error in filters argument"});
+    res.status(422).send({ response: "Error in filters argument" });
     return;
   }
 
-  //store the data corresponding to the item to delete
+  //store the data parsed
   const filters: IFilter[] = matchedData(req).filters;
+  const filteredAmenities: IAmenity[] = await filteringSystem.getAvailableAmenities(filters);
+  res.json(filteredAmenities);
 })
 
 export default amenitiesRouter;
