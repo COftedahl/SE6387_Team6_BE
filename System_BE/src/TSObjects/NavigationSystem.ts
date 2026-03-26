@@ -53,14 +53,15 @@ class NavigationSystem {
    * function to handle starting navigation
    * @param source: ILocation of the starting location
    * @param target: ILocation of the ending location
+   * @param useAccessibleRouting: boolean indicating whether accessible routing is needed
    * @param connection: the Websocket object indicating the connection between client and server
    * @return: IPath containing the path to use for navigation
    * SIDE EFFECTS: sends PATH message to the corresponding connection
    */
-  public navigate = async (source: ILocation, target: ILocation, navID: string): Promise<IPath> => {
+  public navigate = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean, navID: string): Promise<IPath> => {
     const connection: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
     if (connection !== undefined) {
-      const path: IPath = await this.getPath(source, target);
+      const path: IPath = await this.getPath(source, target, useAccessibleRouting);
       const pathMessage: IWSMessage = {
         messageType: WS_MESSAGE_TYPE.SEND_PATH, 
         body: path, 
@@ -77,11 +78,13 @@ class NavigationSystem {
    * function to get the path between two points
    * @param source: ILocation to start at
    * @param target: ILocation to end at
+   * @param useAccessibleRouting: boolean indicating whether accessible routing is needed
    * @return: IPath to follow
    */
-  public getPath = async (source: ILocation, target: ILocation): Promise<IPath> => {
+  public getPath = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean): Promise<IPath> => {
     const result = await fetch((process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT ?? "") + 
-      (source.x + "," + source.y) + ";" + (target.x + "," + target.y), 
+      (source.x + "," + source.y) + ";" + (target.x + "," + target.y)
+      + (useAccessibleRouting ? "?exclude=inaccessible" : ""), 
       {
         method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
       }
