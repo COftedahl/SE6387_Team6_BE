@@ -4,8 +4,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8995426",
-            "y": "-97.0369953"
+            "x": "-97.0369953",
+            "y": "32.8995426"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -14,8 +14,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8958653",
-            "y": "-97.0433911"
+            "x": "-97.0433911",
+            "y": "32.8958653"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -24,8 +24,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8958709",
-            "y": "-97.0444012"
+            "x": "-97.0444012",
+            "y": "32.8958709"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -34,8 +34,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8947198",
-            "y": "-97.0414821"
+            "x": "-97.0414821",
+            "y": "32.8947198"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -44,8 +44,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8975034",
-            "y": "-97.0358445"
+            "x": "-97.0358445",
+            "y": "32.8975034"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -54,8 +54,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9068427",
-            "y": "-97.0428482"
+            "x": "-97.0428482",
+            "y": "32.9068427"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -64,8 +64,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9068817",
-            "y": "-97.0427259"
+            "x": "-97.0427259",
+            "y": "32.9068817"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -74,8 +74,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9069282",
-            "y": "-97.0423684"
+            "x": "-97.0423684",
+            "y": "32.9069282"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -84,8 +84,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9069222",
-            "y": "-97.0424739"
+            "x": "-97.0424739",
+            "y": "32.9069222"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -94,8 +94,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9063749",
-            "y": "-97.0439193"
+            "x": "-97.0439193",
+            "y": "32.9063749"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -104,8 +104,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9058791",
-            "y": "-97.0444795"
+            "x": "-97.0444795",
+            "y": "32.9058791"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -114,8 +114,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9050170",
-            "y": "-97.0448708"
+            "x": "-97.0448708",
+            "y": "32.9050170"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -124,8 +124,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9044270",
-            "y": "-97.0448193"
+            "x": "-97.0448193",
+            "y": "32.9044270"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -134,8 +134,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9035882",
-            "y": "-97.0445344"
+            "x": "-97.0445344",
+            "y": "32.9035882"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -144,8 +144,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9063569",
-            "y": "-97.0439586"
+            "x": "-97.0439586",
+            "y": "32.9063569"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -154,8 +154,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8965739",
-            "y": "-97.0446775"
+            "x": "-97.0446775",
+            "y": "32.8965739"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -164,8 +164,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8959882",
-            "y": "-97.0442106"
+            "x": "-97.0442106",
+            "y": "32.8959882"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -174,8 +174,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8972240",
-            "y": "-97.0450415"
+            "x": "-97.0450415",
+            "y": "32.8972240"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -184,8 +184,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9042318",
-            "y": "-97.0359195"
+            "x": "-97.0359195",
+            "y": "32.9042318"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -194,8 +194,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8990585",
-            "y": "-97.0442206"
+            "x": "-97.0442206",
+            "y": "32.8990585"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -204,8 +204,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8987729",
-            "y": "-97.0445669"
+            "x": "-97.0445669",
+            "y": "32.8987729"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -214,8 +214,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8991425",
-            "y": "-97.0443703"
+            "x": "-97.0443703",
+            "y": "32.8991425"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -224,8 +224,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9071481",
-            "y": "-97.0451503"
+            "x": "-97.0451503",
+            "y": "32.9071481"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -234,8 +234,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8964408",
-            "y": "-97.0361189"
+            "x": "-97.0361189",
+            "y": "32.8964408"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -244,8 +244,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8952265",
-            "y": "-97.0378949"
+            "x": "-97.0378949",
+            "y": "32.8952265"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -254,8 +254,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9035669",
-            "y": "-97.0445269"
+            "x": "-97.0445269",
+            "y": "32.9035669"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -264,8 +264,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8927414",
-            "y": "-97.0385275"
+            "x": "-97.0385275",
+            "y": "32.8927414"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -274,8 +274,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9128151",
-            "y": "-97.0355134"
+            "x": "-97.0355134",
+            "y": "32.9128151"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -284,8 +284,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9127780",
-            "y": "-97.0355174"
+            "x": "-97.0355174",
+            "y": "32.9127780"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -294,8 +294,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8910531",
-            "y": "-97.0357856"
+            "x": "-97.0357856",
+            "y": "32.8910531"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -304,8 +304,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8911049",
-            "y": "-97.0357977"
+            "x": "-97.0357977",
+            "y": "32.8911049"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -314,8 +314,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8925652",
-            "y": "-97.0371894"
+            "x": "-97.0371894",
+            "y": "32.8925652"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -324,8 +324,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8925699",
-            "y": "-97.0371965"
+            "x": "-97.0371965",
+            "y": "32.8925699"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -334,8 +334,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8925745",
-            "y": "-97.0372052"
+            "x": "-97.0372052",
+            "y": "32.8925745"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -344,8 +344,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8927416",
-            "y": "-97.0386140"
+            "x": "-97.0386140",
+            "y": "32.8927416"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -354,8 +354,8 @@ const ALL_AMENITIES: any[] = [
         "type": "NURSING_ROOM",
         "room": "",
         "location": {
-            "x": "32.9066842",
-            "y": "-97.0438691"
+            "x": "-97.0438691",
+            "y": "32.9066842"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -364,8 +364,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8879413",
-            "y": "-97.0388605"
+            "x": "-97.0388605",
+            "y": "32.8879413"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -374,8 +374,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8881645",
-            "y": "-97.0389313"
+            "x": "-97.0389313",
+            "y": "32.8881645"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -384,8 +384,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8902636",
-            "y": "-97.0357045"
+            "x": "-97.0357045",
+            "y": "32.8902636"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -394,8 +394,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8903171",
-            "y": "-97.0356978"
+            "x": "-97.0356978",
+            "y": "32.8903171"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -404,8 +404,8 @@ const ALL_AMENITIES: any[] = [
         "type": "NURSING_ROOM",
         "room": "",
         "location": {
-            "x": "32.8907316",
-            "y": "-97.0358077"
+            "x": "-97.0358077",
+            "y": "32.8907316"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -414,8 +414,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8910125",
-            "y": "-97.0359606"
+            "x": "-97.0359606",
+            "y": "32.8910125"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -424,8 +424,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8926419",
-            "y": "-97.0378291"
+            "x": "-97.0378291",
+            "y": "32.8926419"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -434,8 +434,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8926613",
-            "y": "-97.0379170"
+            "x": "-97.0379170",
+            "y": "32.8926613"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -444,8 +444,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8998659",
-            "y": "-97.0389253"
+            "x": "-97.0389253",
+            "y": "32.8998659"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -454,8 +454,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8996943",
-            "y": "-97.0372449"
+            "x": "-97.0372449",
+            "y": "32.8996943"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -464,8 +464,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8877692",
-            "y": "-97.0344566"
+            "x": "-97.0344566",
+            "y": "32.8877692"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -474,8 +474,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8974864",
-            "y": "-97.0358124"
+            "x": "-97.0358124",
+            "y": "32.8974864"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -484,8 +484,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8974104",
-            "y": "-97.0358252"
+            "x": "-97.0358252",
+            "y": "32.8974104"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -494,8 +494,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8889247",
-            "y": "-97.0361912"
+            "x": "-97.0361912",
+            "y": "32.8889247"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -504,8 +504,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8886988",
-            "y": "-97.0362805"
+            "x": "-97.0362805",
+            "y": "32.8886988"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -514,8 +514,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8881757",
-            "y": "-97.0370557"
+            "x": "-97.0370557",
+            "y": "32.8881757"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -524,8 +524,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8879406",
-            "y": "-97.0389845"
+            "x": "-97.0389845",
+            "y": "32.8879406"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -534,8 +534,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8881998",
-            "y": "-97.0370678"
+            "x": "-97.0370678",
+            "y": "32.8881998"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -544,8 +544,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8881513",
-            "y": "-97.0370346"
+            "x": "-97.0370346",
+            "y": "32.8881513"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -554,8 +554,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8879423",
-            "y": "-97.0389186"
+            "x": "-97.0389186",
+            "y": "32.8879423"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -564,8 +564,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8888619",
-            "y": "-97.0362440"
+            "x": "-97.0362440",
+            "y": "32.8888619"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -574,8 +574,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8931780",
-            "y": "-97.0418192"
+            "x": "-97.0418192",
+            "y": "32.8931780"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -584,8 +584,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8934135",
-            "y": "-97.0418191"
+            "x": "-97.0418191",
+            "y": "32.8934135"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -594,8 +594,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8934739",
-            "y": "-97.0418144"
+            "x": "-97.0418144",
+            "y": "32.8934739"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -604,8 +604,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8938009",
-            "y": "-97.0418127"
+            "x": "-97.0418127",
+            "y": "32.8938009"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -614,8 +614,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8934365",
-            "y": "-97.0418513"
+            "x": "-97.0418513",
+            "y": "32.8934365"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -624,8 +624,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8956777",
-            "y": "-97.0420002"
+            "x": "-97.0420002",
+            "y": "32.8956777"
         },
         "accessibilityClass": "INACCESSIBLE"
     },
@@ -634,8 +634,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8971301",
-            "y": "-97.0442853"
+            "x": "-97.0442853",
+            "y": "32.8971301"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -644,8 +644,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.8965130",
-            "y": "-97.0438919"
+            "x": "-97.0438919",
+            "y": "32.8965130"
         },
         "accessibilityClass": "ACCESSIBLE"
     },
@@ -654,8 +654,8 @@ const ALL_AMENITIES: any[] = [
         "type": "RESTROOM",
         "room": "",
         "location": {
-            "x": "32.9068538",
-            "y": "-97.0380140"
+            "x": "-97.0380140",
+            "y": "32.9068538"
         },
         "accessibilityClass": "ACCESSIBLE"
     }

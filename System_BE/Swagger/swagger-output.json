@@ -134,6 +134,15 @@
             "schema": {
               "$ref": "#/components/schemas/filters"
             }
+          },
+          {
+            "name": "sortMethod",
+            "in": "body",
+            "description": "send the sort method to use",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/sortMethod"
+            }
           }
         ],
         "responses": {
@@ -224,6 +233,20 @@
         "example": {
           "x": "10.11",
           "y": "12.13"
+        }
+      },
+      "sortMethod": {
+        "type": "object",
+        "properties": {
+          "sortMethod": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sortMethod"
+        ],
+        "example": {
+          "sortMethod": "BEST_ROUTE"
         }
       },
       "locationWithZoom": {

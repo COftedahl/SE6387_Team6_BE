@@ -4,5 +4,4 @@
 -UCR doesn't use the external systems, instead just uses DB's
 -use the location sent in AmenitiesRouter
 -add to the successful API tests so they are not only checking the return status
--update the recommendation system to use the table endpoint of the nav backend or amenity wait time from amenity system
 -update navigation to allow parameters for accessible routing or not

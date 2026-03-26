@@ -58,7 +58,7 @@ describe("Amenities Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/suggested correct post body", async () => {
-    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/suggested").send({x: "1",y: "2", filters: []});
+    const result = await request(appRouter).post(TESTING_AMENITIES_ROUTE_PATH + "/suggested").send({x: "1",y: "2", filters: [], sortMethod: "BEST_ROUTE"});
     expect(result.status).toBe(200);
   });
   test("/details incorrect post body", async () => {
@@ -85,7 +85,7 @@ describe("Nav Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/map correct post body", async () => {
-    const result = await request(appRouter).post(TESTING_NAV_ROUTE_PATH + "/map").send({x: "1",y: "2"});
+    const result = await request(appRouter).post(TESTING_NAV_ROUTE_PATH + "/map").send({x: "1",y: "2",zoom:"15"});
     expect(result.status).toBe(200);
   });
 });
