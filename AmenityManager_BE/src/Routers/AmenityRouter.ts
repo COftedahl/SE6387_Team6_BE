@@ -8,11 +8,13 @@ import convertDetailsToAmenityData from '../Functions/ConvertDetailsToAmenityDat
 import AmenityDataWithIDSchema from '../Express-Validation Schemas/AmenityDataWithID';
 import AmenityDetailsDataWithIDSchema from '../Express-Validation Schemas/AmenityDetailsDataWithID';
 import SubscriptionManager from '../TSObjects/SubscriptionManager';
+import ALL_AMENITIES from '../AllAmenitiesAsIAmenities';
+import convertToDefaultAmenityDetails from '../Functions/ConvertToDefaultAmenityDetails';
 
 const amenityRouter = express.Router();
 
-let amenityData: IAmenity[] = [];
-let amenityDetailsData: IAmenityDetails[] = [];
+let amenityData: IAmenity[] = ALL_AMENITIES;
+let amenityDetailsData: IAmenityDetails[] = amenityData.map((amenity) => convertToDefaultAmenityDetails(amenity));
 
 /*
  * function to retrieve all amenities
