@@ -86,7 +86,6 @@ class NavigationSystem {
         method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
       }
     ).then((res) => res.json());
-    console.log(result);
     return {
       source: source, 
       target: target, 

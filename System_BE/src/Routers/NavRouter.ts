@@ -89,33 +89,6 @@ navRouter.ws('/', async (req, res) => {
   ws.on("close", () => {
     navigationSystem.endNavigation(navID);
   })
-
-  req.on("open", () => console.log("Connected"));
-
-  req.on("message", async (data) => {
-    const message: IWSMessage = data;
-    console.log("received message ", message);
-    switch(message.messageType) {
-      case WS_MESSAGE_TYPE.ACCEPT_REROUTE: 
-        
-        break;
-      case WS_MESSAGE_TYPE.CANCEL_NAVIGATION: 
-        navigationSystem.endNavigation(navID);
-        break;
-      case WS_MESSAGE_TYPE.REQUEST_NAVIGATE: 
-        //expect body of message to follow type IWSNavigateMessageBody
-        const messageBody: IWSNavigateMessageBody = message.body;
-        await navigationSystem.navigate(messageBody.source, messageBody.target, navID);
-        break;
-      case WS_MESSAGE_TYPE.UPDATE_POSITION: 
-
-        break;
-    }
-  });
-
-  req.on("close", () => {
-    navigationSystem.endNavigation(navID);
-  })
 });
 
 export default navRouter;

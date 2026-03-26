@@ -17,8 +17,10 @@ const toDockerPath = (p: string) => {
   return `/${drive}${rest}`;
 }
 
-const dataDir = "Backend/data/terminal-d-wider-15/";
-const OSRMFileName = "terminal-d-wider_15.osrm";
+// const dataDir = "Backend/data/terminal-d-wider-15/";
+const dataDir = "Backend/data/terminal-d-wider-15-accessible/";
+// const OSRMFileName = "terminal-d-wider_15.osrm";
+const OSRMFileName = "terminal-d-wider-15-accessible.osrm";
 const hostDir = process.cwd();
 const dockerHostDir = toDockerPath(hostDir);
 const volume = `${dockerHostDir}/${dataDir}:/data`;

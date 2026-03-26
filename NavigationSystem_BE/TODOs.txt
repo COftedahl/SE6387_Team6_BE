@@ -1,3 +1,1 @@
--add a second backend process to run the accessible routes
--Do we want to just automatically start the backend routers when the node server starts instead of using the endpoint? 
 -Add in a switchover mechanism so when updating the weights there isn't downtime (e.g. blue-green deployment)
