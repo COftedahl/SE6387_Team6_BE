@@ -174,7 +174,7 @@ amenityRouter.post("/update", async (req, res) => {
  * @param oldID: string representing the ID of the amenity being updated
  * @param data: IAmenityDetails[] of the data to store
  */
-amenityRouter.post("/update", async (req, res) => {
+amenityRouter.post("/updatedetails", async (req, res) => {
   await checkSchema(AmenityDetailsDataWithIDSchema).run(req);
   const error = validationResult(req);
 
