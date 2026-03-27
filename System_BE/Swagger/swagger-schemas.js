@@ -13,6 +13,30 @@ const SWAGGER_components_schemas_and_examples = {
           y: "12.13",
         }
       },
+      sortMethod: {
+        type: 'object',
+        properties: {
+          sortMethod: {type: 'string'},
+        },
+        required: ['sortMethod'],
+        example: {
+          sortMethod: "BEST_ROUTE",
+        }
+      },
+      locationWithZoom: {
+        type: 'object',
+        properties: {
+          x: {type: 'string'},
+          y: {type: 'string'},
+          zoom: {type: 'number'},
+        },
+        required: ['x', 'y', 'zoom'],
+        example: {
+          x: "10.11",
+          y: "12.13",
+          zoom: 15,
+        }
+      },
       amenityID: {
         type: 'object',
         properties: {

@@ -29,14 +29,17 @@
           {
             "name": "location",
             "in": "body",
-            "description": "send the location of the user",
+            "description": "send the location of the user with zoom level to center the map",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/location"
+              "$ref": "#/components/schemas/locationWithZoom"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "422": {
             "description": "Unprocessable Entity"
           }
@@ -131,6 +134,15 @@
             "schema": {
               "$ref": "#/components/schemas/filters"
             }
+          },
+          {
+            "name": "sortMethod",
+            "in": "body",
+            "description": "send the sort method to use",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/sortMethod"
+            }
           }
         ],
         "responses": {
@@ -190,6 +202,16 @@
           }
         }
       }
+    },
+    "/amenities/notification": {
+      "get": {
+        "description": "This endpoint is called when the amenities are updated",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
@@ -211,6 +233,44 @@
         "example": {
           "x": "10.11",
           "y": "12.13"
+        }
+      },
+      "sortMethod": {
+        "type": "object",
+        "properties": {
+          "sortMethod": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sortMethod"
+        ],
+        "example": {
+          "sortMethod": "BEST_ROUTE"
+        }
+      },
+      "locationWithZoom": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "string"
+          },
+          "y": {
+            "type": "string"
+          },
+          "zoom": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "zoom"
+        ],
+        "example": {
+          "x": "10.11",
+          "y": "12.13",
+          "zoom": 15
         }
       },
       "amenityID": {

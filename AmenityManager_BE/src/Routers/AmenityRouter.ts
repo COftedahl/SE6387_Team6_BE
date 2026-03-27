@@ -7,11 +7,14 @@ import AmenityDataArraySchema from '../Express-Validation Schemas/AmenityDataArr
 import convertDetailsToAmenityData from '../Functions/ConvertDetailsToAmenityData';
 import AmenityDataWithIDSchema from '../Express-Validation Schemas/AmenityDataWithID';
 import AmenityDetailsDataWithIDSchema from '../Express-Validation Schemas/AmenityDetailsDataWithID';
+import SubscriptionManager from '../TSObjects/SubscriptionManager';
+import ALL_AMENITIES from '../AllAmenitiesAsIAmenities';
+import convertToDefaultAmenityDetails from '../Functions/ConvertToDefaultAmenityDetails';
 
 const amenityRouter = express.Router();
 
-let amenityData: IAmenity[] = [];
-let amenityDetailsData: IAmenityDetails[] = [];
+let amenityData: IAmenity[] = ALL_AMENITIES;
+let amenityDetailsData: IAmenityDetails[] = amenityData.map((amenity) => convertToDefaultAmenityDetails(amenity));
 
 /*
  * function to retrieve all amenities
@@ -104,6 +107,8 @@ amenityRouter.post("/set", async (req, res) => {
   const data: IAmenity[] = matchedData(req).data; 
   amenityData = data;
 
+  SubscriptionManager.notifySubscribers();
+
   res.status(200).send({ response: "Success" });
 })
 
@@ -125,6 +130,8 @@ amenityRouter.post("/setdetails", async (req, res) => {
   const data: IAmenityDetails[] = matchedData(req).data; 
   amenityDetailsData = data;
   amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
+
+  SubscriptionManager.notifySubscribers();
 
   res.status(200).send({ response: "Success" });
 })
@@ -156,6 +163,8 @@ amenityRouter.post("/update", async (req, res) => {
   }
 
   amenityData.splice(indexOfExistingElement, 1, newAmenity);
+  
+  SubscriptionManager.notifySubscribers();
 
   res.status(200).send({ response: "Success" });
 })
@@ -165,7 +174,7 @@ amenityRouter.post("/update", async (req, res) => {
  * @param oldID: string representing the ID of the amenity being updated
  * @param data: IAmenityDetails[] of the data to store
  */
-amenityRouter.post("/update", async (req, res) => {
+amenityRouter.post("/updatedetails", async (req, res) => {
   await checkSchema(AmenityDetailsDataWithIDSchema).run(req);
   const error = validationResult(req);
 
@@ -188,6 +197,8 @@ amenityRouter.post("/update", async (req, res) => {
 
   amenityDetailsData.splice(indexOfExistingElement, 1, newAmenityDetails);
   amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
+  
+  SubscriptionManager.notifySubscribers();
 
   res.status(200).send({ response: "Success" });
 })

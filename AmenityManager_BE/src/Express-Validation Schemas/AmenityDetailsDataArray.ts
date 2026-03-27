@@ -4,17 +4,17 @@ const AmenityDetailsDataArraySchema = {
   ...AmenityDataArraySchema, 
   'data.*.currentOccupancy': {
     exists: true, 
-    isNumber: true, 
+    isInt: true, 
     notEmpty: true, 
   },  
   'data.*.currentAvailableSlots': {
     exists: true, 
-    isNumber: true, 
+    isInt: true, 
     notEmpty: true, 
   }, 
   'data.*.capacity': {
     exists: true, 
-    isNumber: true, 
+    isInt: true, 
     notEmpty: true, 
   }, 
   'data.*.status': {

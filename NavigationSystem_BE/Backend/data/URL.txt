@@ -1,0 +1,3 @@
+https://wiki.openstreetmap.org/wiki/Downloading_data
+https://wiki.openstreetmap.org/wiki/Osmconvert
+https://github-wiki-see.page/m/Project-OSRM/osrm-backend/wiki/Running-OSRM
