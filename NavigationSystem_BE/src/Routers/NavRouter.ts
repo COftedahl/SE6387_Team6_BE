@@ -71,6 +71,15 @@ handleStartup();
  * function to start the navigation system
  */
 navRouter.get("/start", async (req, res) => {
+  // #swagger.start
+    /*
+        #swagger.path = '/nav/start'
+        #swagger.method = 'get'
+        #swagger.description = Start the navigation backend if not already running. '
+        #swagger.produces = ['application/json']
+    */
+    // #swagger.responses[200]
+  // #swagger.end
   const containerIsRunning: any = await isContainerRunning(OSRMDockerContainerName);
   if (backendProcess === null || !containerIsRunning) {
     if (containerIsRunning) {
@@ -90,6 +99,18 @@ navRouter.get("/start", async (req, res) => {
  * function to update the edge weights of the nav system
  */
 navRouter.post("/update", async (req, res) => {
+  // #swagger.start
+    /*
+        #swagger.path = '/nav/update'
+        #swagger.method = 'post'
+        #swagger.description = 'Update the weights used to calculate routes'
+        #swagger.produces = ['application/json']
+    */
+    // #swagger.parameters['fileContents'] = { in: 'body', name: 'fileContents', description: 'String representing contents of a CSV file used to update the weights. For more info on the update flow, see https://github.com/Project-OSRM/osrm-backend/wiki/Traffic. ', required: true, schema: {$ref: "#/components/schemas/weightsUpdate"} } */
+    // #swagger.responses[200]
+    // #swagger.responses[422]
+    // #swagger.responses[500]
+  // #swagger.end
   //For more info on the update flow, see https://github.com/Project-OSRM/osrm-backend/wiki/Traffic
   await checkSchema(WeightsUpdateSchema).run(req);
   const error = validationResult(req);

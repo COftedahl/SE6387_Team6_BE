@@ -31,6 +31,7 @@ amenityRouter.get("/", async (req, res) => {
  * @return: IAmenity
  */
 amenityRouter.post("/", async (req, res) => {
+  /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id of the amenity to view', required: true, schema: {$ref: "#/components/schemas/amenityID"} } */
   await checkSchema(AmenityIDSchema).run(req);
   const error = validationResult(req);
 
@@ -67,6 +68,7 @@ amenityRouter.get("/details", async (req, res) => {
  * @return: IAmenityDetails
  */
 amenityRouter.post("/details", async (req, res) => {
+  /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id of the amenity to view', required: true, schema: {$ref: "#/components/schemas/amenityID"} } */
   await checkSchema(AmenityIDSchema).run(req);
   const error = validationResult(req);
 
@@ -94,6 +96,7 @@ amenityRouter.post("/details", async (req, res) => {
  * @param data: IAmenity[] of the data to store
  */
 amenityRouter.post("/set", async (req, res) => {
+  /* #swagger.parameters['data'] = { in: 'body', name: 'data', description: 'array containing the new amenity data to store', required: true, schema: {$ref: "#/components/schemas/amenitiesArray"} } */
   await checkSchema(AmenityDataArraySchema).run(req);
   const error = validationResult(req);
 
@@ -117,6 +120,7 @@ amenityRouter.post("/set", async (req, res) => {
  * @param data: IAmenityDetails[] of the data to store
  */
 amenityRouter.post("/setdetails", async (req, res) => {
+  /* #swagger.parameters['data'] = { in: 'body', name: 'data', description: 'array containing the new amenity data to store', required: true, schema: {$ref: "#/components/schemas/amenitiesDetailsArray"} } */
   await checkSchema(AmenityDataArraySchema).run(req);
   const error = validationResult(req);
 
@@ -142,6 +146,8 @@ amenityRouter.post("/setdetails", async (req, res) => {
  * @param data: IAmenity[] of the data to store
  */
 amenityRouter.post("/update", async (req, res) => {
+  /* #swagger.parameters['data'] = { in: 'body', name: 'data', description: 'new data for the amenity being updated', required: true, schema: {$ref: "#/components/schemas/amenityData"} } */
+  /* #swagger.parameters['oldID'] = { in: 'body', name: 'oldID', description: 'id of the amenity to update', required: true, schema: {$ref: "#/components/schemas/oldID"} } */
   await checkSchema(AmenityDataWithIDSchema).run(req);
   const error = validationResult(req);
 
@@ -175,6 +181,8 @@ amenityRouter.post("/update", async (req, res) => {
  * @param data: IAmenityDetails[] of the data to store
  */
 amenityRouter.post("/updatedetails", async (req, res) => {
+  /* #swagger.parameters['data'] = { in: 'body', name: 'data', description: 'new data for the amenity being updated', required: true, schema: {$ref: "#/components/schemas/amenityDetails"} } */
+  /* #swagger.parameters['oldID'] = { in: 'body', name: 'oldID', description: 'id of the amenity to update', required: true, schema: {$ref: "#/components/schemas/oldID"} } */
   await checkSchema(AmenityDetailsDataWithIDSchema).run(req);
   const error = validationResult(req);
 

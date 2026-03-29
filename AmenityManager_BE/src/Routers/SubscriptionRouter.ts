@@ -12,6 +12,7 @@ const subscriptionRouter = express.Router();
  * @return: string containing the id assigned to the subscriber
  */
 subscriptionRouter.post("/subscribe", async (req, res) => {
+  /* #swagger.parameters['endpoint'] = { in: 'body', name: 'endpoint', description: 'endpoint to call when an update occurs', required: true, schema: {$ref: "#/components/schemas/endpoint"} } */
   await checkSchema(EndpointSchema).run(req);
   const error = validationResult(req);
 
@@ -32,6 +33,7 @@ subscriptionRouter.post("/subscribe", async (req, res) => {
  * @param id: string containing the id of the subscriber to unsubscribe
  */
 subscriptionRouter.post("/unsubscribe", async (req, res) => {
+  /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id of the subscriber to unsubscribe', required: true, schema: {$ref: "#/components/schemas/amenityID"} } */
   await checkSchema(AmenityIDSchema).run(req);
   const error = validationResult(req);
 

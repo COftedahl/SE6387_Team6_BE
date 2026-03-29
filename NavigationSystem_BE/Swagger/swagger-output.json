@@ -1,0 +1,86 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Navigation Backend API",
+    "description": "Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. ",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5002",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/nav/start": {
+      "get": {
+        "description": "Start the navigation backend if not already running. ",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/nav/update": {
+      "post": {
+        "description": "Update the weights used to calculate routes",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "fileContents",
+            "in": "body",
+            "description": "String representing contents of a CSV file used to update the weights. For more info on the update flow, see https://github.com/Project-OSRM/osrm-backend/wiki/Traffic. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/weightsUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "weightsUpdate": {
+        "type": "object",
+        "properties": {
+          "fileContents": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fileContents"
+        ],
+        "example": {
+          "fileContents": "277675936,4053752421,24"
+        }
+      }
+    }
+  }
+}
