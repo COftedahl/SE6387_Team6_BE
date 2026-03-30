@@ -204,7 +204,7 @@ amenityRouter.post("/updatedetails", async (req, res) => {
   }
 
   amenityDetailsData.splice(indexOfExistingElement, 1, newAmenityDetails);
-  amenityData = data.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
+  amenityData = amenityDetailsData.map((details: IAmenityDetails) => convertDetailsToAmenityData(details));
   
   SubscriptionManager.notifySubscribers();
 

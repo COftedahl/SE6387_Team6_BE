@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Occupancy Manager Backend API",
+    "description": "Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. ",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5004",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/amenities/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    },
+    "/amenities/update": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the amenity to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "name": "details",
+            "in": "body",
+            "description": "new occupancy details",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/occupancyDetails"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "12345678"
+        }
+      },
+      "occupancyDetails": {
+        "type": "object",
+        "properties": {
+          "currentOccupancy": {
+            "type": "number"
+          },
+          "currentAvailableSlots": {
+            "type": "number"
+          },
+          "capacity": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "lastUpdated": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currentOccupancy",
+          "currentAvailableSlots",
+          "capacity",
+          "status",
+          "lastUpdated"
+        ],
+        "example": {
+          "currentOccupancy": 2,
+          "currentAvailableSlots": 4,
+          "capacity": 6,
+          "status": "OPEN",
+          "lastUpdated": "03/29/26, 10:10:31"
+        }
+      }
+    }
+  }
+}

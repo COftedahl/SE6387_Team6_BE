@@ -203,6 +203,42 @@
         }
       }
     },
+    "/amenities/updateoccupancy": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id oft eh amenity whose occupancy is being updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityID"
+            }
+          },
+          {
+            "name": "details",
+            "in": "body",
+            "description": "new occupancy data for the amenity",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/occupancyDetails"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    },
     "/amenities/notification": {
       "get": {
         "description": "This endpoint is called when the amenities are updated",
@@ -335,6 +371,40 @@
         ],
         "example": {
           "amenityType": "RESTROOM"
+        }
+      },
+      "occupancyDetails": {
+        "type": "object",
+        "properties": {
+          "currentOccupancy": {
+            "type": "number"
+          },
+          "currentAvailableSlots": {
+            "type": "number"
+          },
+          "capacity": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "lastUpdated": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currentOccupancy",
+          "currentAvailableSlots",
+          "capacity",
+          "status",
+          "lastUpdated"
+        ],
+        "example": {
+          "currentOccupancy": 2,
+          "currentAvailableSlots": 4,
+          "capacity": 6,
+          "status": "OPEN",
+          "lastUpdated": "03/29/26, 10:10:31"
         }
       }
     }

@@ -7,3 +7,7 @@ docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-contract "/
 docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-partition "/data/terminal-d-osm-pbf.osrm" || echo "osrm-partition failed"
 
 docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-customize "/data/terminal-d-osm-pbf.osrm" || echo "osrm-customize failed"
+
+NOTES
+
+for updating the speeds, the base walkway speed is 5

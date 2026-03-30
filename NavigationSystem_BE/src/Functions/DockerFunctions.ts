@@ -31,7 +31,7 @@ export const waitForExit = async (name: string, pollInterval = 500) => {
 
 export const isContainerRunning = async (name: string, timeoutMs = 5000) => {
   return new Promise((resolve, reject) => {
-    const args = ['ps', '-q', '-f', `name=${name}`];
+    const args = ['ps', '-q', '-a', '-f', `name=${name}`];
     const proc = spawn('docker', args);
 
     let out = '';

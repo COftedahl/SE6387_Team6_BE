@@ -58,8 +58,8 @@ const handleStartup = async () => {
     if (containerIsRunning) {
       await stopContainer(OSRMDockerContainerName);
       await waitForExit(OSRMDockerContainerName);
+      await removeContainer(OSRMDockerContainerName);
     }
-    await removeContainer(OSRMDockerContainerName);
     backendProcess = spawn('docker', args, { stdio: 'inherit' });
   }
 }
@@ -85,8 +85,8 @@ navRouter.get("/start", async (req, res) => {
     if (containerIsRunning) {
       await stopContainer(OSRMDockerContainerName);
       await waitForExit(OSRMDockerContainerName);
+      await removeContainer(OSRMDockerContainerName);
     }
-    await removeContainer(OSRMDockerContainerName);
     backendProcess = spawn('docker', args, { stdio: 'inherit' });
     res.json({ message: "Routing backend started" })
     return;
