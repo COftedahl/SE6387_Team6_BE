@@ -3,6 +3,7 @@ const enum AMENITY_TYPE {
   COFFEE = "COFFEE", 
   LOUNGE = "LOUNGE", 
   RESTROOM = "RESTROOM", 
+  NURSING_ROOM = "NURSING_ROOM", 
 }
 
 export default AMENITY_TYPE;

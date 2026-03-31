@@ -2,7 +2,6 @@ import { Router } from 'websocket-express';
 import { checkSchema, validationResult, matchedData } from 'express-validator';
 import LocationSchema from '../Express-Validation Schemas/Location';
 import LocationPlusTypeSchema from '../Express-Validation Schemas/LocationPlusType';
-import LocationPlusFiltersSchema from '../Express-Validation Schemas/LocationPlusFilters';
 import AmenityIDSchema from '../Express-Validation Schemas/AmenityID';
 import FiltersSchema from '../Express-Validation Schemas/Filters';
 import IFilter from '../Types/IFilter';
@@ -15,6 +14,7 @@ import RecommendationSystem from '../TSObjects/RecommendationSystem';
 import IAmenityDetails from '../Types/IAmenityDetails';
 import IAmenity from '../Types/IAmenity';
 import AMENITY_SORTING_TYPE from '../Types/AmenitySortingType';
+import LocationPlusFiltersPlusSortMethodSchema from '../Express-Validation Schemas/LocationPlusFiltersPlusSortMethod';
 
 const amenitiesRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
@@ -41,8 +41,8 @@ amenitiesRouter.post("/all", async (req, res) => {
 
   //store the data parsed
   const data: any = matchedData(req); 
-  const location: ILocation = {x: data.locationX, y: data.locationY};
-  const amenities: IAmenity[] = await amenityManager.getAmenities();
+  const location: ILocation = {x: data.x, y: data.y};
+  const amenities: IAmenity[] = await recommendationSystem.getMapSuggestions([], location, AMENITY_SORTING_TYPE.BEST_ROUTE);
   res.json(amenities);
 })
 
@@ -66,9 +66,9 @@ amenitiesRouter.post("/oftype", async (req, res) => {
 
   //store the data parsed
   const data: any = matchedData(req); 
-  const location: ILocation = {x: data.locationX, y: data.locationY};
+  const location: ILocation = {x: data.x, y: data.y};
   const amenityType: AMENITY_TYPE = data.amenityType;
-  const amenities: IAmenity[] = await filteringSystem.getAvailableAmenitiesOfType(amenityType, []);
+  const amenities: IAmenity[] = await recommendationSystem.getMapSuggestions([{ filterKey: "type", value: amenityType }], location, AMENITY_SORTING_TYPE.BEST_ROUTE);
   res.json(amenities);
 })
 
@@ -76,12 +76,14 @@ amenitiesRouter.post("/oftype", async (req, res) => {
  * function to retrieve amenity suggestions
  * @param location: the location of the user
  * @param filters: filters given by the user
- * @return: IAmenity[]
+ * @param sortMethod: string containing the sort method to use
+ * @return: IAmenity[] in suggestion order, i.e. the most fitting amenity at index 0
  */
 amenitiesRouter.post("/suggested", async (req, res) => {
   /* #swagger.parameters['location'] = { in: 'body', name: 'location', description: 'send the location of the user', required: true, schema: {$ref: "#/components/schemas/location"} } */
   /* #swagger.parameters['filters'] = { in: 'body', name: 'filters', description: 'send the filters to apply', required: true, schema: {$ref: "#/components/schemas/filters"} } */
-  await checkSchema(LocationPlusFiltersSchema).run(req);
+  /* #swagger.parameters['sortMethod'] = { in: 'body', name: 'sortMethod', description: 'send the sort method to use', required: true, schema: {$ref: "#/components/schemas/sortMethod"} } */
+  await checkSchema(LocationPlusFiltersPlusSortMethodSchema).run(req);
   const error = validationResult(req);
 
   if (!error.isEmpty()) {
@@ -92,10 +94,11 @@ amenitiesRouter.post("/suggested", async (req, res) => {
 
   //store the data parsed
   const data: any = matchedData(req); 
-  const location: ILocation = {x: data.locationX, y: data.locationY};
+  const location: ILocation = {x: data.x, y: data.y};
   const filters: IFilter[] = data.filters;
+  const sortMethod: AMENITY_SORTING_TYPE = data.sortMethod;
 
-  const recommendations: IAmenity[] = await recommendationSystem.getMapSuggestions(filters, location, AMENITY_SORTING_TYPE.LEAST_WAIT_TIME);
+  const recommendations: IAmenity[] = await recommendationSystem.getMapSuggestions(filters, location, sortMethod);
   res.json(recommendations);
 })
 
@@ -141,6 +144,25 @@ amenitiesRouter.post("/filter", async (req, res) => {
   const filters: IFilter[] = matchedData(req).filters;
   const filteredAmenities: IAmenity[] = await filteringSystem.getAvailableAmenities(filters);
   res.json(filteredAmenities);
+})
+
+//date-time formatter
+const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat("en-US", {
+  hour12: false, 
+  year: "2-digit", 
+  month: "2-digit", 
+  day: "2-digit", 
+  hour: "2-digit", 
+  minute: "2-digit", 
+  second: "2-digit", 
+});
+
+/*
+ * function called when the amenities are updated
+ */
+amenitiesRouter.get("/notification", async (req, res) => {
+  // #swagger.description = 'This endpoint is called when the amenities are updated'
+  console.log("[" + formatter.format(Date.now()) + "] " + "Amenities update notification received");
 })
 
 export default amenitiesRouter;

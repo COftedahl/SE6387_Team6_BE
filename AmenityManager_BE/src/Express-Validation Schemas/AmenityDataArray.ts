@@ -16,7 +16,6 @@ const AmenityDataArraySchema = {
   'data.*.room': {
     exists: true, 
     isString: true, 
-    notEmpty: true, 
   },  
   'data.*.location': {
     exists: true, 

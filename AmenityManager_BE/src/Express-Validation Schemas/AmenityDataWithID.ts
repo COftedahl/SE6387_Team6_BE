@@ -17,7 +17,6 @@ const AmenityDataWithIDSchema = {
   room: {
     exists: true, 
     isString: true, 
-    notEmpty: true, 
   },  
   location: {
     exists: true, 

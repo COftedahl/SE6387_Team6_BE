@@ -1,0 +1,9 @@
+COMMANDS TO PRE-PROCESS (OSM)/(OSM PBF) FILES
+
+docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-extract -p "/opt/foot.lua" "/data/terminal-d-osm-pbf.osm.pbf" || echo "osrm-extract failed"
+
+docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-contract "/data/terminal-d-osm-pbf.osrm" || echo "osrm-contract failed"
+
+docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-partition "/data/terminal-d-osm-pbf.osrm" || echo "osrm-partition failed"
+
+docker run -t -v "%cd%:/data" ghcr.io/project-osrm/osrm-backend osrm-customize "/data/terminal-d-osm-pbf.osrm" || echo "osrm-customize failed"

@@ -1,5 +1,6 @@
 03_17: 
 -UCR shows sending account_id for getMapSuggestions() request to the recommendation system - should be changed to sending filters instead
 -UCR shows sending source & target in reroute() request to the navigation system - should we do this or just use the already-computed new path
--use the location sent in AmenitiesRouter
+-UCR doesn't use the external systems, instead just uses DB's
 -add to the successful API tests so they are not only checking the return status
+-add in some baseline filters to amenity router endpoints (e.g. amenity status = open)
