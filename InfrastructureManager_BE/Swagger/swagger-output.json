@@ -1,0 +1,171 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Infrastructure Manager Backend API",
+    "description": "Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. ",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5005",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/infrastructure/hallways": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/infrastructure/update": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the hallway to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "name": "crowdLevel",
+            "in": "body",
+            "description": "new crowd level of hallway",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/crowdLevel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    },
+    "/infrastructure/updateall": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "updates",
+            "in": "body",
+            "description": "array of hallways to update with their new crowd levels",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/updatesArr"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    },
+    "/infrastructure/synchronize": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "12345678"
+        }
+      },
+      "crowdLevel": {
+        "type": "object",
+        "properties": {
+          "crowdLevel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crowdLevel"
+        ],
+        "example": {
+          "crowdLevel": "HIGH"
+        }
+      },
+      "updatesArr": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "crowdLevel": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "crowdLevel"
+          ],
+          "example": {
+            "id": "12345678",
+            "crowdLevel": "HIGH"
+          }
+        },
+        "example": [
+          {
+            "id": "12345678",
+            "crowdLevel": "HIGH"
+          }
+        ]
+      }
+    }
+  }
+}
