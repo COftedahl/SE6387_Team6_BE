@@ -9,4 +9,5 @@ export default interface IHallway {
   end: ILocation, 
   status: INFRASTRUCTURE_STATUS, 
   crowdLevel: CROWD_LEVEL, 
+  lastUpdated: string, 
 }

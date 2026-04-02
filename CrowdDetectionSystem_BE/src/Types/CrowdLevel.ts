@@ -1,7 +1,7 @@
 const enum CROWD_LEVEL {
   STANDSTILL = "STANDSTILL", 
   HIGH = "HIGH", 
-  MEDIUM = "HIGH", 
+  MEDIUM = "MEDIUM", 
   LOW = "LOW", 
   EMPTY = "EMPTY", 
 }
