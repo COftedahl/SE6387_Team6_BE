@@ -1,7 +1,0 @@
-const enum INFRASTRUCTURE_STATUS {
-  OPEN = "OPEN", 
-  CLOSED = "CLOSED", 
-  OOS = "OOS", 
-}
-
-export default INFRASTRUCTURE_STATUS;

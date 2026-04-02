@@ -7,10 +7,23 @@ import IDAndLevelSchema from '../Express-Validator Schemas/IDAndLevel';
 import ILeg from '../Types/ILeg';
 import HallwayWaypointConverter from '../TSObjects/HallwayWaypointConverter';
 import SpeedConverter from '../TSObjects/SpeedConverter';
+import INFRASTRUCTURE_STATUS from '../Types/InfrastructureStatus';
+import UpdateHandler from '../TSObjects/UpdateHandler';
+import IDAndStatusSchema from '../Express-Validator Schemas/IDAndStatus';
+import IDAndStatusArrSchema from '../Express-Validator Schemas/IDAndStatusArr';
 
 const hallwayRouter = express.Router();
 
-let hallways: IHallway[] = ALL_HALLWAYS;
+let hallways: IHallway[] = ALL_HALLWAYS.map((hallway) => {
+  return {
+    id: hallway.id, 
+    name: hallway.name, 
+    crowdLevel: CROWD_LEVEL.EMPTY, 
+    start: { x: hallway.start.lon, y: hallway.start.lat }, 
+    end: { x: hallway.end.lon, y: hallway.end.lat }, 
+    status: INFRASTRUCTURE_STATUS.OPEN, 
+  }
+});
 
 /*
  * function to get all hallways
@@ -26,7 +39,7 @@ hallwayRouter.get("/hallways", async (req, res) => {
  * @param crowdLevel: CROWD_LEVEL (string) indicating the new hallway crowd levels
  * SIDE EFFECTS: modifies speeds stored & used in the navigation BE
  */
-hallwayRouter.post("/update", async (req, res) => {
+hallwayRouter.post("/updatecrowd", async (req, res) => {
   /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id of the hallway to update', required: true, schema: {$ref: "#/components/schemas/id"} } */
   /* #swagger.parameters['crowdLevel'] = { in: 'body', name: 'crowdLevel', description: 'new crowd level of hallway', required: true, schema: {$ref: "#/components/schemas/crowdLevel"} } */
   await checkSchema(IDAndLevelSchema).run(req);
@@ -49,28 +62,9 @@ hallwayRouter.post("/update", async (req, res) => {
   }
 
   const newSpeed: number = SpeedConverter.crowdLevelToSpeed(newLevel);
-  let updateString: string = "";
-  const updateGroups: ILeg[] = HallwayWaypointConverter.getHallwayWaypoints(id);
-  updateString = updateGroups.map((leg: ILeg) => leg.start + "," + leg.end + "," + newSpeed).join("\n")
+  const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(id);
 
-  if (updateString.length < 1) {
-    res.status(200).json({ message: "No update needed" })
-    return;
-  }
-
-  const result = await fetch(process.env.NAVIGATION_SYSTEM_UPDATE_ENDPOINT ?? "", {
-    method: process.env.NAVIGATION_SYSTEM_UPDATE_ENDPOINT_METHOD ?? "POST", 
-    headers: {
-      "Content-Type": "application/json"
-    }, 
-    body: JSON.stringify({fileContents: updateString}), 
-  });
-
-  if (result.status === 200) {
-    res.status(200).json({ message: (await result.json()).message })
-    return
-  }
-  res.status(502).json({ message: "Error updating navigation BE" })
+  await UpdateHandler.saveUpdates(updateGroups.map((leg: ILeg) => { return { start: leg.start, end: leg.end, speed: newSpeed } }), res);
 })
 
 /*
@@ -78,8 +72,8 @@ hallwayRouter.post("/update", async (req, res) => {
  * @param updates: {id: string, crowdLevel: CROWD_LEVEL}[] indicating the new hallway crowd levels
  * SIDE EFFECTS: modifies speeds stored & used in the navigation BE
  */
-hallwayRouter.post("/updateall", async (req, res) => {
-  /* #swagger.parameters['updates'] = { in: 'body', name: 'updates', description: 'array of hallways to update with their new crowd levels', required: true, schema: {$ref: "#/components/schemas/updatesArr"} } */
+hallwayRouter.post("/updateallcrowd", async (req, res) => {
+  /* #swagger.parameters['updates'] = { in: 'body', name: 'updates', description: 'array of hallways to update with their new crowd levels', required: true, schema: {$ref: "#/components/schemas/crowdUpdatesArr"} } */
   await checkSchema(IDAndLevelArrSchema).run(req);
   const error = validationResult(req);
 
@@ -102,33 +96,88 @@ hallwayRouter.post("/updateall", async (req, res) => {
   const allNodes: Set<{start: string, end: string, speed: number}> = new Set();
   for (let update of updates) {
     const newSpeed: number = SpeedConverter.crowdLevelToSpeed(update.crowdLevel);
-    const updateGroups: ILeg[] = HallwayWaypointConverter.getHallwayWaypoints(update.id);
+    const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(update.id);
     for (let leg of updateGroups) {
       allNodes.add({start: leg.start, end: leg.end, speed: newSpeed});
     }
   }
   
   const allNodesArr: {start: string, end: string, speed: number}[] = Array.from(allNodes);
-  let updateString: string = allNodesArr.map(({start, end, speed}: {start: string, end: string, speed: number}) => start + "," + end + "," + speed).join("\n")
+  await UpdateHandler.saveUpdates(allNodesArr, res);
+})
 
-  if (updateString.length < 1) {
-    res.status(200).json({ message: "No update needed" })
+/*
+ * function to update a hallway's status
+ * @param id: string indicating id of hallway being updated
+ * @param status: INFRASTRUCTURE_STATUS (string) indicating the new hallway status
+ * SIDE EFFECTS: modifies speeds stored & used in the navigation BE
+ */
+hallwayRouter.post("/updatestatus", async (req, res) => {
+  /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id of the hallway to update', required: true, schema: {$ref: "#/components/schemas/id"} } */
+  /* #swagger.parameters['status'] = { in: 'body', name: 'status', description: 'new status of hallway', required: true, schema: {$ref: "#/components/schemas/status"} } */
+  await checkSchema(IDAndStatusSchema).run(req);
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    console.log(error.mapped());
+    res.status(422).send({ response: "Error in id and status argument" });
     return;
   }
 
-  const result = await fetch(process.env.NAVIGATION_SYSTEM_UPDATE_ENDPOINT ?? "", {
-    method: process.env.NAVIGATION_SYSTEM_UPDATE_ENDPOINT_METHOD ?? "POST", 
-    headers: {
-      "Content-Type": "application/json"
-    }, 
-    body: JSON.stringify({fileContents: updateString}), 
-  });
+  //store the data parsed
+  const data: any = matchedData(req); 
+  const id: string = data.id;
+  const newStatus: INFRASTRUCTURE_STATUS = data.status;
 
-  if (result.status === 200) {
-    res.status(200).json({ message: (await result.json()).message })
+  const hallwayIndex: number = hallways.findIndex((hallway: IHallway) => hallway.id === id);
+  if (hallwayIndex < 0) {
+    res.status(422).json({ message: "Invalid id received: the id " + id + " does not correspond to a saved hallway" })
     return
   }
-  res.status(502).json({ message: "Error updating navigation BE" })
+
+  const newSpeed: number = SpeedConverter.statusToSpeed(hallways[hallwayIndex].crowdLevel, newStatus);
+  const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(id);
+
+  await UpdateHandler.saveUpdates(updateGroups.map((leg: ILeg) => { return { start: leg.start, end: leg.end, speed: newSpeed } }), res);
+})
+
+/*
+ * function to update many hallways' status
+ * @param updates: {id: string, status: INFRASTRUCTURE_STATUS}[] indicating the new hallway statuses
+ * SIDE EFFECTS: modifies speeds stored & used in the navigation BE
+ */
+hallwayRouter.post("/updateallstatus", async (req, res) => {
+  /* #swagger.parameters['updates'] = { in: 'body', name: 'updates', description: 'array of hallways to update with their new statuses', required: true, schema: {$ref: "#/components/schemas/statusUpdatesArr"} } */
+  await checkSchema(IDAndStatusArrSchema).run(req);
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    console.log(error.mapped());
+    res.status(422).send({ response: "Error in id and status argument" });
+    return;
+  }
+
+  //store the data parsed
+  const updates: {id: string, status: INFRASTRUCTURE_STATUS}[] = matchedData(req).updates; 
+
+  for (let update of updates) {
+    if (hallways.find((hallway: IHallway) => hallway.id === update.id) === undefined) {
+      res.status(422).json({ message: "Invalid id received: the id " + update.id + " does not correspond to a saved hallway" })
+      return
+    }
+  }
+
+  const allNodes: Set<{start: string, end: string, speed: number}> = new Set();
+  for (let update of updates) {
+    const newSpeed: number = SpeedConverter.statusToSpeed(hallways.find((hall: IHallway) => hall.crowdLevel)?.crowdLevel ?? CROWD_LEVEL.EMPTY, update.status);
+    const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(update.id);
+    for (let leg of updateGroups) {
+      allNodes.add({start: leg.start, end: leg.end, speed: newSpeed});
+    }
+  }
+  
+  const allNodesArr: {start: string, end: string, speed: number}[] = Array.from(allNodes);
+  await UpdateHandler.saveUpdates(allNodesArr, res);
 })
 
 /*
@@ -140,33 +189,14 @@ hallwayRouter.get("/synchronize", async (req, res) => {
   const allNodes: Set<{start: string, end: string, speed: number}> = new Set();
   for (let hallway of hallways) {
     const newSpeed: number = SpeedConverter.crowdLevelToSpeed(hallway.crowdLevel);
-    const updateGroups: ILeg[] = HallwayWaypointConverter.getHallwayWaypoints(hallway.id);
+    const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(hallway.id);
     for (let leg of updateGroups) {
       allNodes.add({start: leg.start, end: leg.end, speed: newSpeed});
     }
   }
   
   const allNodesArr: {start: string, end: string, speed: number}[] = Array.from(allNodes);
-  let updateString: string = allNodesArr.map(({start, end, speed}: {start: string, end: string, speed: number}) => start + "," + end + "," + speed).join("\n")
-
-  if (updateString.length < 1) {
-    res.status(200).json({ message: "No update needed" })
-    return;
-  }
-  
-  const result = await fetch(process.env.NAVIGATION_SYSTEM_UPDATE_ENDPOINT ?? "", {
-    method: process.env.NAVIGATION_SYSTEM_UPDATE_ENDPOINT_METHOD ?? "POST", 
-    headers: {
-      "Content-Type": "application/json"
-    }, 
-    body: JSON.stringify({fileContents: updateString}), 
-  });
-
-  if (result.status === 200) {
-    res.status(200).json({ message: (await result.json()).message })
-    return
-  }
-  res.status(502).json({ message: "Error updating navigation BE" })
+  await UpdateHandler.saveUpdates(allNodesArr, res);
 })
 
 export default hallwayRouter;

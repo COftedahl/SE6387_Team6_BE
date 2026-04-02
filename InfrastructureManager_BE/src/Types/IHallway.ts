@@ -1,4 +1,4 @@
-import INFRASTRUCTURE_STATUS from "./HallwayStatus";
+import INFRASTRUCTURE_STATUS from "./InfrastructureStatus";
 import ILocation from "./ILocation";
 
 export default interface IHallway {

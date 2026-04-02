@@ -31,7 +31,7 @@
         }
       }
     },
-    "/infrastructure/update": {
+    "/infrastructure/updatecrowd": {
       "post": {
         "description": "",
         "parameters": [
@@ -55,19 +55,13 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "422": {
             "description": "Unprocessable Entity"
-          },
-          "502": {
-            "description": "Bad Gateway"
           }
         }
       }
     },
-    "/infrastructure/updateall": {
+    "/infrastructure/updateallcrowd": {
       "post": {
         "description": "",
         "parameters": [
@@ -77,19 +71,64 @@
             "description": "array of hallways to update with their new crowd levels",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/updatesArr"
+              "$ref": "#/components/schemas/crowdUpdatesArr"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "422": {
             "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/infrastructure/updatestatus": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the hallway to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
           },
-          "502": {
-            "description": "Bad Gateway"
+          {
+            "name": "status",
+            "in": "body",
+            "description": "new status of hallway",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/status"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/infrastructure/updateallstatus": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "updates",
+            "in": "body",
+            "description": "array of hallways to update with their new statuses",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/statusUpdatesArr"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -98,11 +137,8 @@
       "get": {
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "502": {
-            "description": "Bad Gateway"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -138,7 +174,21 @@
           "crowdLevel": "HIGH"
         }
       },
-      "updatesArr": {
+      "status": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "example": {
+          "status": "OPEN"
+        }
+      },
+      "crowdUpdatesArr": {
         "type": "array",
         "items": {
           "type": "object",
@@ -163,6 +213,34 @@
           {
             "id": "12345678",
             "crowdLevel": "HIGH"
+          }
+        ]
+      },
+      "statusUpdatesArr": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "status"
+          ],
+          "example": {
+            "id": "12345678",
+            "status": "OPEN"
+          }
+        },
+        "example": [
+          {
+            "id": "12345678",
+            "status": "OPEN"
           }
         ]
       }

@@ -4,11 +4,13 @@ import swaggerUI from "swagger-ui-express";
 const swaggerjsonFilePath = import("../Swagger/swagger-output.json");
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 const appRouter = express(); 
 
 const setupApp = async () => {
   const PORT = 5005;
+  dotenv.config();
 
   appRouter.use(express.json());
   appRouter.use(cors({origin: "*"}))
