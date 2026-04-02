@@ -21,7 +21,7 @@
         }
       }
     },
-    "/infrastructure/hallways": {
+    "/hallways/": {
       "get": {
         "description": "",
         "responses": {
@@ -31,7 +31,7 @@
         }
       }
     },
-    "/infrastructure/updatecrowd": {
+    "/hallways/updatecrowd": {
       "post": {
         "description": "",
         "parameters": [
@@ -61,7 +61,7 @@
         }
       }
     },
-    "/infrastructure/updateallcrowd": {
+    "/hallways/updateallcrowd": {
       "post": {
         "description": "",
         "parameters": [
@@ -82,7 +82,7 @@
         }
       }
     },
-    "/infrastructure/updatestatus": {
+    "/hallways/updatestatus": {
       "post": {
         "description": "",
         "parameters": [
@@ -112,7 +112,7 @@
         }
       }
     },
-    "/infrastructure/updateallstatus": {
+    "/hallways/updateallstatus": {
       "post": {
         "description": "",
         "parameters": [
@@ -133,7 +133,7 @@
         }
       }
     },
-    "/infrastructure/synchronize": {
+    "/hallways/synchronize": {
       "get": {
         "description": "",
         "responses": {

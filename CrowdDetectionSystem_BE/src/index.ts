@@ -1,5 +1,5 @@
 import testRouter from "./Routers/TestRouter";
-import hallwayRouter from "./Routers/HallwayRouter";
+import crowdRouter from "./Routers/CrowdRouter";
 import swaggerUI from "swagger-ui-express";
 const swaggerjsonFilePath = import("../Swagger/swagger-output.json");
 import express from 'express';
@@ -9,14 +9,14 @@ import dotenv from 'dotenv';
 const appRouter = express(); 
 
 const setupApp = async () => {
-  const PORT = 5005;
+  const PORT = 5006;
   dotenv.config();
 
   appRouter.use(express.json());
   appRouter.use(cors({origin: "*"}))
   appRouter.use("/apidocs", swaggerUI.serve, swaggerUI.setup(await swaggerjsonFilePath));
   appRouter.use("/", testRouter);
-  appRouter.use("/hallways/", hallwayRouter);
+  appRouter.use("/crowd/", crowdRouter);
   appRouter.listen(PORT, () => {console.log("App listening at port " + PORT)});
 }
 

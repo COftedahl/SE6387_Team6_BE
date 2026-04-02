@@ -100,6 +100,16 @@ const SWAGGER_components_schemas_and_examples = {
           lastUpdated: '03/29/26, 10:10:31'
         }
       }, 
+      crowdLevel: {
+        type: 'object', 
+        properties: {
+          crowdLevel: {type: 'string'}
+        }, 
+        required: ['crowdLevel'], 
+        example: {
+          crowdLevel: "HIGH", 
+        }
+      }, 
     }, 
   }
 }

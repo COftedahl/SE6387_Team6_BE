@@ -1,0 +1,106 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Crowd Detection Backend API",
+    "description": "Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. ",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5006",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/crowd/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    },
+    "/crowd/update": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the infrastructural component to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "name": "crowdLevel",
+            "in": "body",
+            "description": "new crowd level",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/crowdLevel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "12345678"
+        }
+      },
+      "crowdLevel": {
+        "type": "object",
+        "properties": {
+          "crowdLevel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crowdLevel"
+        ],
+        "example": {
+          "crowdLevel": "HIGH"
+        }
+      }
+    }
+  }
+}

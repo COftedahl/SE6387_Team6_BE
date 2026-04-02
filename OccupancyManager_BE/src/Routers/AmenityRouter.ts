@@ -3,13 +3,13 @@ import { checkSchema, validationResult, matchedData } from 'express-validator';
 import IDWithOccupancyDetailsSchema from '../Express-Validator Schemas/IDWithOccupancyDetails';
 import IOccupancyDetails from '../Types/IOccupancyDetails';
 
-const testRouter = express.Router();
+const amenityRouter = express.Router();
 
 /*
  * function to retrieve all the amenity occupancies
  * @return: IOccupancyDetails[] including all the amenity occupancy data
  */
-testRouter.get("/", async (req, res) => {
+amenityRouter.get("/", async (req, res) => {
   try {
     const result = await fetch(process.env.AMENITY_MANAGER_AMENITIES_ENDPOINT ?? "", {
       method: process.env.AMENITY_MANAGER_AMENITIES_ENDPOINT_METHOD ?? "GET",
@@ -30,7 +30,7 @@ testRouter.get("/", async (req, res) => {
  * @param id: string representing the ID of the amenity being updated
  * @param newOccupancy: IOccupancyDetails with the updated occupancy information
  */
-testRouter.post("/update", async (req, res) => {
+amenityRouter.post("/update", async (req, res) => {
   /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id of the amenity to update', required: true, schema: {$ref: "#/components/schemas/id"} } */
   /* #swagger.parameters['details'] = { in: 'body', name: 'details', description: 'new occupancy details', required: true, schema: {$ref: "#/components/schemas/occupancyDetails"} } */
   await checkSchema(IDWithOccupancyDetailsSchema).run(req);
@@ -64,4 +64,4 @@ testRouter.post("/update", async (req, res) => {
   }
 })
 
-export default testRouter;
+export default amenityRouter;

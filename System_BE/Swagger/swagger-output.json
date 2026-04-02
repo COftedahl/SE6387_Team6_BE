@@ -248,6 +248,42 @@
           }
         }
       }
+    },
+    "/infrastructure/updatecrowd": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the infrastructural component whose crowd level is being updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityID"
+            }
+          },
+          {
+            "name": "crowdLevel",
+            "in": "body",
+            "description": "new crowd level",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/crowdLevel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -405,6 +441,20 @@
           "capacity": 6,
           "status": "OPEN",
           "lastUpdated": "03/29/26, 10:10:31"
+        }
+      },
+      "crowdLevel": {
+        "type": "object",
+        "properties": {
+          "crowdLevel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crowdLevel"
+        ],
+        "example": {
+          "crowdLevel": "HIGH"
         }
       }
     }

@@ -11,6 +11,7 @@ import INFRASTRUCTURE_STATUS from '../Types/InfrastructureStatus';
 import UpdateHandler from '../TSObjects/UpdateHandler';
 import IDAndStatusSchema from '../Express-Validator Schemas/IDAndStatus';
 import IDAndStatusArrSchema from '../Express-Validator Schemas/IDAndStatusArr';
+import CROWD_LEVEL from '../Types/CrowdLevel';
 
 const hallwayRouter = express.Router();
 
@@ -29,7 +30,7 @@ let hallways: IHallway[] = ALL_HALLWAYS.map((hallway) => {
  * function to get all hallways
  * @return: IHallway[]
  */
-hallwayRouter.get("/hallways", async (req, res) => {
+hallwayRouter.get("/", async (req, res) => {
   res.status(200).json(hallways);
 })
 
@@ -56,7 +57,8 @@ hallwayRouter.post("/updatecrowd", async (req, res) => {
   const id: string = data.id;
   const newLevel: CROWD_LEVEL = data.crowdLevel;
 
-  if (hallways.find((hallway: IHallway) => hallway.id === id) === undefined) {
+  const hallwayIndex: number = hallways.findIndex((hallway: IHallway) => hallway.id === id);
+  if (hallwayIndex < 0) {
     res.status(422).json({ message: "Invalid id received: the id " + id + " does not correspond to a saved hallway" })
     return
   }
@@ -64,6 +66,7 @@ hallwayRouter.post("/updatecrowd", async (req, res) => {
   const newSpeed: number = SpeedConverter.crowdLevelToSpeed(newLevel);
   const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(id);
 
+  hallways[hallwayIndex].crowdLevel = newLevel;
   await UpdateHandler.saveUpdates(updateGroups.map((leg: ILeg) => { return { start: leg.start, end: leg.end, speed: newSpeed } }), res);
 })
 
@@ -95,6 +98,7 @@ hallwayRouter.post("/updateallcrowd", async (req, res) => {
 
   const allNodes: Set<{start: string, end: string, speed: number}> = new Set();
   for (let update of updates) {
+    (hallways.find((hallway: IHallway) => hallway.id === update.id) as IHallway).crowdLevel = update.crowdLevel;
     const newSpeed: number = SpeedConverter.crowdLevelToSpeed(update.crowdLevel);
     const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(update.id);
     for (let leg of updateGroups) {
@@ -138,6 +142,7 @@ hallwayRouter.post("/updatestatus", async (req, res) => {
   const newSpeed: number = SpeedConverter.statusToSpeed(hallways[hallwayIndex].crowdLevel, newStatus);
   const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(id);
 
+  hallways[hallwayIndex].status = newStatus;
   await UpdateHandler.saveUpdates(updateGroups.map((leg: ILeg) => { return { start: leg.start, end: leg.end, speed: newSpeed } }), res);
 })
 
@@ -169,6 +174,7 @@ hallwayRouter.post("/updateallstatus", async (req, res) => {
 
   const allNodes: Set<{start: string, end: string, speed: number}> = new Set();
   for (let update of updates) {
+    (hallways.find((hallway: IHallway) => hallway.id === update.id) as IHallway).status = update.status;
     const newSpeed: number = SpeedConverter.statusToSpeed(hallways.find((hall: IHallway) => hall.crowdLevel)?.crowdLevel ?? CROWD_LEVEL.EMPTY, update.status);
     const updateGroups: ILeg[] = await HallwayWaypointConverter.getHallwayWaypoints(update.id);
     for (let leg of updateGroups) {

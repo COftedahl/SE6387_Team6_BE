@@ -2,6 +2,7 @@ import express from 'express';
 import swaggerUI from "swagger-ui-express";
 const swaggerjsonFilePath = import("../Swagger/swagger-output.json");
 import amenitiesRouter from "./Routers/AmenitiesRouter";
+import infrastructureRouter from "./Routers/InfrastructureRouter";
 import navRouter from "./Routers/NavRouter";
 import testRouter from "./Routers/TestRouter";
 import { Server } from 'http';
@@ -21,6 +22,7 @@ const setupApp = async () => {
   appRouter.use("/", testRouter);
   appRouter.use("/nav/", navRouter);
   appRouter.use("/amenities/", amenitiesRouter);
+  appRouter.use("/infrastructure/", infrastructureRouter);
 
   server.listen(PORT, () => {
     console.log("App listening at port " + PORT)

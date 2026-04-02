@@ -1,3 +1,4 @@
+import CROWD_LEVEL from "../Types/CrowdLevel";
 import INFRASTRUCTURE_STATUS from "../Types/InfrastructureStatus";
 
 class SpeedConverter {

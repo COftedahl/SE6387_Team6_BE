@@ -1,5 +1,6 @@
 import INFRASTRUCTURE_STATUS from "./InfrastructureStatus";
 import ILocation from "./ILocation";
+import CROWD_LEVEL from "./CrowdLevel";
 
 export default interface IHallway {
   id: string, 
