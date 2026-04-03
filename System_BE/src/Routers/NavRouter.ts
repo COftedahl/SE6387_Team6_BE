@@ -6,6 +6,7 @@ import LocationPlusZoomSchema from '../Express-Validation Schemas/LocationPlusZo
 import IWSMessage from '../Types/_for_websockets/IWSMessage';
 import WS_MESSAGE_TYPE from '../Types/_for_websockets/WSMessageType';
 import IWSNavigateMessageBody from '../Types/_for_websockets/IWSNavigateMessageBody';
+import XYZMapTileSchema from '../Express-Validation Schemas/XYZMapTile';
 
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
@@ -13,14 +14,13 @@ const navigationSystem: NavigationSystem = new NavigationSystem();
 
 /*
  * function to get the map
- * @param location: the location of the user
- * @param zoom: number indicating the zoom level of the map
- * @return: map with amenities
+ * @param x, y: the location of the user
+ * @param z: number indicating the zoom level of the map
+ * @return: mapbox-style map tiles
  */
-navRouter.post("/map", async (req, res) => {
-  /* #swagger.parameters['location'] = { in: 'body', name: 'location', description: 'send the location of the user with zoom level to center the map', required: true, schema: {$ref: "#/components/schemas/locationWithZoom"} } */
+navRouter.get("/map/:z/:x/:y", async (req, res) => {
   //https://docs.mapbox.com/api/navigation/http-post/
-  await checkSchema(LocationPlusZoomSchema).run(req);
+  await checkSchema(XYZMapTileSchema).run(req);
   const error = validationResult(req);
 
   if (!error.isEmpty()) {
@@ -30,9 +30,9 @@ navRouter.post("/map", async (req, res) => {
   }
 
   //store the data corresponding to the item to delete
-  const data: any = matchedData(req); 
-  const location: ILocation = {x: data.x, y: data.y};
-  const zoom: number = data.zoom;
+  const data: {x: number, y: number, z: number} = matchedData(req); 
+  const location: ILocation = {x: "" + data.x, y: "" + data.y};
+  const zoom: number = data.z;
   const map: any = await navigationSystem.getMap(location, zoom);
   res.json({map: map});
 })

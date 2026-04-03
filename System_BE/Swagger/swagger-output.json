@@ -22,18 +22,27 @@
         }
       }
     },
-    "/nav/map": {
-      "post": {
+    "/nav/map/{z}/{x}/{y}": {
+      "get": {
         "description": "",
         "parameters": [
           {
-            "name": "location",
-            "in": "body",
-            "description": "send the location of the user with zoom level to center the map",
+            "name": "z",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/locationWithZoom"
-            }
+            "type": "string"
+          },
+          {
+            "name": "x",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "y",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
