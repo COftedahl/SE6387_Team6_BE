@@ -84,7 +84,8 @@ class NavigationSystem {
   public getPath = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean): Promise<IPath> => {
     const result = await fetch((process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT ?? "") + 
       (source.x + "," + source.y) + ";" + (target.x + "," + target.y)
-      + (useAccessibleRouting ? "?exclude=inaccessible" : ""), 
+      + "?steps=true"
+      + (useAccessibleRouting ? "&exclude=inaccessible" : ""), 
       {
         method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
       }
@@ -92,12 +93,9 @@ class NavigationSystem {
     return {
       source: source, 
       target: target, 
-      route: result.waypoints.map((waypoint: any) => { 
-        return {
-          x: waypoint.location[0], 
-          y: waypoint.location[1], 
-        }
-      }),
+      route: result.routes[0].legs.map((leg: any) => { 
+        return leg.steps.map((step: any) => step.intersections.map((intersection: any) => {return {x: intersection.location[0], y: intersection.location[1]}})).flat()
+      }).flat(),
     };
   }
 
