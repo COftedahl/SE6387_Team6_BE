@@ -84,7 +84,8 @@ class NavigationSystem {
   public getPath = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean): Promise<IPath> => {
     const result = await fetch((process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT ?? "") + 
       (source.x + "," + source.y) + ";" + (target.x + "," + target.y)
-      + (useAccessibleRouting ? "?exclude=inaccessible" : ""), 
+      + "?steps=true"
+      + (useAccessibleRouting ? "&exclude=inaccessible" : ""), 
       {
         method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
       }
@@ -92,12 +93,12 @@ class NavigationSystem {
     return {
       source: source, 
       target: target, 
-      route: result.waypoints.map((waypoint: any) => { 
-        return {
-          x: waypoint.location[0], 
-          y: waypoint.location[1], 
-        }
-      }),
+      route: result.routes[0].legs.map((leg: any) => { 
+        return leg.steps.map((step: any) => step.intersections.map((intersection: any) => {return {x: intersection.location[0], y: intersection.location[1]}})).flat()
+      }).flat(),
+      instructions: result.routes[0].legs.map((leg: any) => {
+        return leg.steps.map((step: any) => ((step.distance ? (step.distance + " meters straight, then ") : "") + (step.maneuver.modifier ? step.maneuver.modifier : "straight"))).flat()
+      }).flat(), 
     };
   }
 
@@ -108,13 +109,13 @@ class NavigationSystem {
    * SIDE EFFECTS: sends PATH message to the corresponding connection
    */
   public reroute = async (navID: string, newPath: IPath) => {
-    const removingConnection: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
-    if (removingConnection !== undefined) {
+    const rerouting: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
+    if (rerouting !== undefined) {
       const rerouteMessage: IWSMessage = {
         messageType: WS_MESSAGE_TYPE.SEND_PATH, 
         body: newPath, 
       }
-      removingConnection.connection.send(JSON.stringify(rerouteMessage));
+      rerouting.connection.send(JSON.stringify(rerouteMessage));
     }
     else {
       throw new Error("Invalid NavID \"" + navID + "\" for reroute request");
@@ -127,7 +128,6 @@ class NavigationSystem {
    * SIDE EFFECTS: removes corresponding IWSConnection object from this.navigationConnections and closes the websocket connection
    */
   public endNavigation = (navID: string) => {
-    console.log("Closing connection for ID ", navID);
     const removingConnectionIndex: number = this.navigationConnections.findIndex((wsConnection: IWSConnection) => wsConnection.navID === navID);
     if (removingConnectionIndex >= 0) {
       const removingConnection: IWSConnection = this.navigationConnections[removingConnectionIndex];

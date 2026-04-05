@@ -15,6 +15,8 @@ import IAmenityDetails from '../Types/IAmenityDetails';
 import IAmenity from '../Types/IAmenity';
 import AMENITY_SORTING_TYPE from '../Types/AmenitySortingType';
 import LocationPlusFiltersPlusSortMethodSchema from '../Express-Validation Schemas/LocationPlusFiltersPlusSortMethod';
+import IDWithOccupancyDetailsSchema from '../Express-Validation Schemas/IDWithOccupancyDetails';
+import IOccupancyDetails from '../Types/IOccupancyDetails';
 
 const amenitiesRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
@@ -146,6 +148,58 @@ amenitiesRouter.post("/filter", async (req, res) => {
   res.json(filteredAmenities);
 })
 
+/*
+ * function called when amenity occupancy changes (from the sensors)
+ * @param id: string containing the id of the amenity for which new occupancy data is being sent
+ * @param newData: IOccupancyData of the data being updated
+ */
+amenitiesRouter.post("/updateoccupancy", async (req, res) => {
+  /* #swagger.parameters['id'] = { in: 'body', name: 'id', description: 'id oft eh amenity whose occupancy is being updated', required: true, schema: {$ref: "#/components/schemas/amenityID"} } */
+  /* #swagger.parameters['details'] = { in: 'body', name: 'details', description: 'new occupancy data for the amenity', required: true, schema: {$ref: "#/components/schemas/occupancyDetails"} } */
+  await checkSchema(IDWithOccupancyDetailsSchema).run(req);
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    console.log(error.mapped());
+    res.status(422).send({ response: "Error in filters argument" });
+    return;
+  }
+
+  //store the data parsed
+  const data: any = matchedData(req);
+  const id: string = data.id;
+  const occupancyDetails: IOccupancyDetails = data.details;
+
+  const oldAmenityData: IAmenity = await amenityManager.getAmenityDetails(id);
+
+  const result = await fetch(process.env.AMENITY_MANAGER_UPDATE_AMENITY_DETAILS_ENDPOINT ?? "", {
+    method: process.env.AMENITY_MANAGER_UPDATE_AMENITY_DETAILS_ENDPOINT_METHOD ?? "POST", 
+    headers: {
+      "Content-Type": "application/json",
+    }, 
+    body: JSON.stringify({ 
+      oldID: oldAmenityData.id, 
+      id: id, 
+      type: oldAmenityData.type, 
+      room: oldAmenityData.room, 
+      location: oldAmenityData.location, 
+      accessibilityClass: oldAmenityData.accessibilityClass, 
+      currentOccupancy: occupancyDetails.currentOccupancy, 
+      currentAvailableSlots: occupancyDetails.currentAvailableSlots, 
+      capacity: occupancyDetails.capacity, 
+      status: occupancyDetails.status, 
+      lastUpdated: formatter.format(Date.now()), 
+    })
+  })
+
+  if (result.status === 200) {
+    res.status(200).json({ message: "Updated " + id })
+  }
+  else {
+    res.status(502).json(await result.json())
+  }
+})
+
 //date-time formatter
 const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat("en-US", {
   hour12: false, 
@@ -156,13 +210,5 @@ const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat("en-US", {
   minute: "2-digit", 
   second: "2-digit", 
 });
-
-/*
- * function called when the amenities are updated
- */
-amenitiesRouter.get("/notification", async (req, res) => {
-  // #swagger.description = 'This endpoint is called when the amenities are updated'
-  console.log("[" + formatter.format(Date.now()) + "] " + "Amenities update notification received");
-})
 
 export default amenitiesRouter;

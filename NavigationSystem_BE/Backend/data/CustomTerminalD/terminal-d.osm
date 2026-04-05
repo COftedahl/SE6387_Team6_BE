@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.0 (754339 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+  <bounds minlat="32.8814600" minlon="-97.0618500" maxlat="32.9136400" maxlon="-96.9948100"/>
+  <node id="0" lat="32.899349" lon="-97.041842" visible="true"/>
+  <node id="1" lat="32.899174" lon="-97.04337" visible="true"/>
+  <node id="2" lat="32.89915" lon="-97.044234" visible="true"/>
+  <node id="3" lat="32.89921" lon="-97.044305" visible="true"/>
+  <node id="4" lat="32.898509" lon="-97.044653" visible="true"/>
+  <node id="5" lat="32.897866" lon="-97.044767" visible="true"/>
+  <node id="6" lat="32.897256" lon="-97.044768" visible="true"/>
+  <node id="7" lat="32.89661" lon="-97.044659" visible="true"/>
+  <node id="8" lat="32.895937" lon="-97.044276" visible="true"/>
+  <node id="9" lat="32.895944" lon="-97.043376" visible="true"/>
+  <node id="10" lat="32.895706" lon="-97.042112" visible="true"/>
+  <node id="11" lat="32.899301" lon="-97.041842" visible="true"/>
+  <node id="12" lat="32.899217" lon="-97.043422" visible="true"/>
+  <node id="13" lat="32.899109" lon="-97.044274" visible="true"/>
+  <node id="14" lat="32.899176" lon="-97.044354" visible="true"/>
+  <node id="15" lat="32.898577" lon="-97.044589" visible="true"/>
+  <node id="16" lat="32.89794" lon="-97.04476" visible="true"/>
+  <node id="17" lat="32.897181" lon="-97.044761" visible="true"/>
+  <node id="18" lat="32.896544" lon="-97.044596" visible="true"/>
+  <node id="19" lat="32.895978" lon="-97.044325" visible="true"/>
+  <node id="20" lat="32.895899" lon="-97.043431" visible="true"/>
+  <node id="21" lat="32.895707" lon="-97.042172" visible="true"/>
+  <node id="22" lat="32.899295" lon="-97.041913" visible="true"/>
+  <node id="23" lat="32.899233" lon="-97.043373" visible="true"/>
+  <node id="24" lat="32.899106" lon="-97.044217" visible="true"/>
+  <node id="25" lat="32.898572" lon="-97.044669" visible="true"/>
+  <node id="26" lat="32.897878" lon="-97.044801" visible="true"/>
+  <node id="27" lat="32.897244" lon="-97.044803" visible="true"/>
+  <node id="28" lat="32.896549" lon="-97.044674" visible="true"/>
+  <node id="29" lat="32.896012" lon="-97.044224" visible="true"/>
+  <node id="30" lat="32.895886" lon="-97.043381" visible="true"/>
+  <node id="31" lat="32.895727" lon="-97.042126" visible="true"/>
+  <node id="32" lat="32.895728" lon="-97.042158" visible="true"/>
+  <node id="33" lat="32.895725194671364" lon="-97.04340855508178" visible="true"/>
+  <node id="34" lat="32.89598452487684" lon="-97.0442061919259" visible="true"/>
+  <node id="35" lat="32.896157411680484" lon="-97.04442622967599" visible="true"/>
+  <node id="36" lat="32.89590790458886" lon="-97.04478772026543" visible="true"/>
+  <node id="37" lat="32.89601399421837" lon="-97.0446521612944" visible="true"/>
+  <node id="38" lat="32.89662499189945" lon="-97.04502543962046" visible="true"/>
+  <node id="39" lat="32.89570751306645" lon="-97.04388399379181" visible="true"/>
+  <node id="40" lat="32.895845036660255" lon="-97.04487219904449" visible="true"/>
+  <node id="41" lat="32.89570161919814" lon="-97.044663949031" visible="true"/>
+  <node id="42" lat="32.89599827723622" lon="-97.04502151037492" visible="true"/>
+  <node id="43" lat="32.89647371594626" lon="-97.04478182639713" visible="true"/>
+  <node id="44" lat="32.895711442311985" lon="-97.04188990168153" visible="true"/>
+  <node id="45" lat="32.895725194671364" lon="-97.04219638283345" visible="true"/>
+  <node id="46" lat="32.89721044948454" lon="-97.04501168726105" visible="true"/>
+  <node id="47" lat="32.897900032076365" lon="-97.0450136518838" visible="true"/>
+  <node id="48" lat="32.89851299438021" lon="-97.04500579339273" visible="true"/>
+  <node id="49" lat="32.89892458285026" lon="-97.04446846906548" visible="true"/>
+  <node id="50" lat="32.89910139889945" lon="-97.04465510822851" visible="true"/>
+  <node id="51" lat="32.899213382397264" lon="-97.04478477333124" visible="true"/>
+  <node id="52" lat="32.899403950805834" lon="-97.04395570252284" visible="true"/>
+  <node id="53" lat="32.89940984467414" lon="-97.0447120822888" visible="true"/>
+  <node id="54" lat="32.8991544437142" lon="-97.04500874032688" visible="true"/>
+  <node id="55" lat="32.899305719667396" lon="-97.04488103984691" visible="true"/>
+  <node id="56" lat="32.898851891807816" lon="-97.04501070494965" visible="true"/>
+  <node id="57" lat="32.89940984467414" lon="-97.0443093346212" visible="true"/>
+  <node id="58" lat="32.89909550503114" lon="-97.04424843131538" visible="true"/>
+  <node id="59" lat="32.89863971254879" lon="-97.04478084408571" visible="true"/>
+  <node id="60" lat="32.899400021560304" lon="-97.04340364352481" visible="true"/>
+  <node id="61" lat="32.899403950805834" lon="-97.04202251371836" visible="true"/>
+  <node id="62" lat="32.895701619198135" lon="-97.04431522848947" visible="true"/>
+  <node id="63" lat="32.896275289046606" lon="-97.04501856344068" visible="true"/>
+  <way id="0" visible="true">
+    <nd ref="63"/>
+    <nd ref="37"/>
+    <nd ref="62"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="1" visible="true">
+    <nd ref="62"/>
+    <nd ref="37"/>
+    <nd ref="63"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="2" visible="true">
+    <nd ref="38"/>
+    <nd ref="43"/>
+    <nd ref="35"/>
+    <nd ref="34"/>
+    <nd ref="39"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="3" visible="true">
+    <nd ref="39"/>
+    <nd ref="34"/>
+    <nd ref="35"/>
+    <nd ref="43"/>
+    <nd ref="38"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="4" visible="true">
+    <nd ref="35"/>
+    <nd ref="37"/>
+    <nd ref="36"/>
+    <nd ref="40"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="5" visible="true">
+    <nd ref="40"/>
+    <nd ref="36"/>
+    <nd ref="37"/>
+    <nd ref="35"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="6" visible="true">
+    <nd ref="42"/>
+    <nd ref="36"/>
+    <nd ref="41"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="7" visible="true">
+    <nd ref="41"/>
+    <nd ref="36"/>
+    <nd ref="42"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="8" visible="true">
+    <nd ref="44"/>
+    <nd ref="45"/>
+    <nd ref="33"/>
+    <nd ref="39"/>
+    <nd ref="62"/>
+    <nd ref="41"/>
+    <nd ref="40"/>
+    <nd ref="42"/>
+    <nd ref="63"/>
+    <nd ref="38"/>
+    <nd ref="46"/>
+    <nd ref="47"/>
+    <nd ref="48"/>
+    <nd ref="56"/>
+    <nd ref="54"/>
+    <nd ref="55"/>
+    <nd ref="53"/>
+    <nd ref="57"/>
+    <nd ref="52"/>
+    <nd ref="60"/>
+    <nd ref="61"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="9" visible="true">
+    <nd ref="61"/>
+    <nd ref="60"/>
+    <nd ref="52"/>
+    <nd ref="57"/>
+    <nd ref="53"/>
+    <nd ref="55"/>
+    <nd ref="54"/>
+    <nd ref="56"/>
+    <nd ref="48"/>
+    <nd ref="47"/>
+    <nd ref="46"/>
+    <nd ref="38"/>
+    <nd ref="63"/>
+    <nd ref="42"/>
+    <nd ref="40"/>
+    <nd ref="41"/>
+    <nd ref="62"/>
+    <nd ref="39"/>
+    <nd ref="33"/>
+    <nd ref="45"/>
+    <nd ref="44"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="10" visible="true">
+    <nd ref="61"/>
+    <nd ref="22"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="11" visible="true">
+    <nd ref="22"/>
+    <nd ref="61"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="12" visible="true">
+    <nd ref="61"/>
+    <nd ref="11"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="13" visible="true">
+    <nd ref="11"/>
+    <nd ref="61"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="14" visible="true">
+    <nd ref="61"/>
+    <nd ref="0"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="15" visible="true">
+    <nd ref="0"/>
+    <nd ref="61"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="16" visible="true">
+    <nd ref="60"/>
+    <nd ref="12"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="17" visible="true">
+    <nd ref="12"/>
+    <nd ref="60"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="18" visible="true">
+    <nd ref="60"/>
+    <nd ref="23"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="19" visible="true">
+    <nd ref="23"/>
+    <nd ref="60"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="20" visible="true">
+    <nd ref="60"/>
+    <nd ref="1"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="21" visible="true">
+    <nd ref="1"/>
+    <nd ref="60"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="22" visible="true">
+    <nd ref="52"/>
+    <nd ref="58"/>
+    <nd ref="49"/>
+    <nd ref="59"/>
+    <nd ref="48"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="23" visible="true">
+    <nd ref="48"/>
+    <nd ref="59"/>
+    <nd ref="49"/>
+    <nd ref="58"/>
+    <nd ref="52"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="24" visible="true">
+    <nd ref="56"/>
+    <nd ref="50"/>
+    <nd ref="57"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="25" visible="true">
+    <nd ref="57"/>
+    <nd ref="50"/>
+    <nd ref="56"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="26" visible="true">
+    <nd ref="53"/>
+    <nd ref="51"/>
+    <nd ref="54"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="27" visible="true">
+    <nd ref="54"/>
+    <nd ref="51"/>
+    <nd ref="53"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="28" visible="true">
+    <nd ref="55"/>
+    <nd ref="51"/>
+    <nd ref="50"/>
+    <nd ref="49"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="29" visible="true">
+    <nd ref="49"/>
+    <nd ref="50"/>
+    <nd ref="51"/>
+    <nd ref="55"/>
+    <tag k="wheelchair" v="no"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="30" visible="true">
+    <nd ref="58"/>
+    <nd ref="13"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="31" visible="true">
+    <nd ref="13"/>
+    <nd ref="58"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="32" visible="true">
+    <nd ref="58"/>
+    <nd ref="2"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="33" visible="true">
+    <nd ref="2"/>
+    <nd ref="58"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="34" visible="true">
+    <nd ref="58"/>
+    <nd ref="24"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="35" visible="true">
+    <nd ref="24"/>
+    <nd ref="58"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="36" visible="true">
+    <nd ref="58"/>
+    <nd ref="3"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="37" visible="true">
+    <nd ref="3"/>
+    <nd ref="58"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="38" visible="true">
+    <nd ref="58"/>
+    <nd ref="14"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="39" visible="true">
+    <nd ref="14"/>
+    <nd ref="58"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="40" visible="true">
+    <nd ref="59"/>
+    <nd ref="25"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="41" visible="true">
+    <nd ref="25"/>
+    <nd ref="59"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="42" visible="true">
+    <nd ref="59"/>
+    <nd ref="15"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="43" visible="true">
+    <nd ref="15"/>
+    <nd ref="59"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="44" visible="true">
+    <nd ref="59"/>
+    <nd ref="4"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="45" visible="true">
+    <nd ref="4"/>
+    <nd ref="59"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="46" visible="true">
+    <nd ref="47"/>
+    <nd ref="26"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="47" visible="true">
+    <nd ref="26"/>
+    <nd ref="47"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="48" visible="true">
+    <nd ref="47"/>
+    <nd ref="5"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="49" visible="true">
+    <nd ref="5"/>
+    <nd ref="47"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="50" visible="true">
+    <nd ref="16"/>
+    <nd ref="47"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="51" visible="true">
+    <nd ref="47"/>
+    <nd ref="16"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="52" visible="true">
+    <nd ref="46"/>
+    <nd ref="27"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="53" visible="true">
+    <nd ref="27"/>
+    <nd ref="46"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="54" visible="true">
+    <nd ref="6"/>
+    <nd ref="46"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="55" visible="true">
+    <nd ref="46"/>
+    <nd ref="6"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="56" visible="true">
+    <nd ref="17"/>
+    <nd ref="46"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="57" visible="true">
+    <nd ref="46"/>
+    <nd ref="17"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="58" visible="true">
+    <nd ref="43"/>
+    <nd ref="28"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="59" visible="true">
+    <nd ref="28"/>
+    <nd ref="43"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="60" visible="true">
+    <nd ref="43"/>
+    <nd ref="18"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="61" visible="true">
+    <nd ref="18"/>
+    <nd ref="43"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="62" visible="true">
+    <nd ref="43"/>
+    <nd ref="7"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="63" visible="true">
+    <nd ref="7"/>
+    <nd ref="43"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="64" visible="true">
+    <nd ref="34"/>
+    <nd ref="29"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="65" visible="true">
+    <nd ref="29"/>
+    <nd ref="34"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="66" visible="true">
+    <nd ref="34"/>
+    <nd ref="19"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="67" visible="true">
+    <nd ref="19"/>
+    <nd ref="34"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="68" visible="true">
+    <nd ref="34"/>
+    <nd ref="8"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="69" visible="true">
+    <nd ref="8"/>
+    <nd ref="34"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="70" visible="true">
+    <nd ref="33"/>
+    <nd ref="20"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="71" visible="true">
+    <nd ref="20"/>
+    <nd ref="33"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="72" visible="true">
+    <nd ref="9"/>
+    <nd ref="33"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="73" visible="true">
+    <nd ref="33"/>
+    <nd ref="9"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="74" visible="true">
+    <nd ref="30"/>
+    <nd ref="33"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="75" visible="true">
+    <nd ref="33"/>
+    <nd ref="30"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="76" visible="true">
+    <nd ref="45"/>
+    <nd ref="21"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="77" visible="true">
+    <nd ref="21"/>
+    <nd ref="45"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="78" visible="true">
+    <nd ref="45"/>
+    <nd ref="32"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="79" visible="true">
+    <nd ref="32"/>
+    <nd ref="45"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="80" visible="true">
+    <nd ref="45"/>
+    <nd ref="31"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="81" visible="true">
+    <nd ref="31"/>
+    <nd ref="45"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="82" visible="true">
+    <nd ref="45"/>
+    <nd ref="10"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="83" visible="true">
+    <nd ref="10"/>
+    <nd ref="45"/>
+    <tag k="wheelchair" v="yes"/>
+    <tag k="foot" v="yes"/>
+    <tag k="highway" v="residential"/>
+  </way>
+</osm>

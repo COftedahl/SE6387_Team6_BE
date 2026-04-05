@@ -1,0 +1,249 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Infrastructure Manager Backend API",
+    "description": "Backend API\nReference https://swagger-autogen.github.io/docs/ for details on configuring the swagger output. ",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5005",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/hallways/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/hallways/updatecrowd": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the hallway to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "name": "crowdLevel",
+            "in": "body",
+            "description": "new crowd level of hallway",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/crowdLevel"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/hallways/updateallcrowd": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "updates",
+            "in": "body",
+            "description": "array of hallways to update with their new crowd levels",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/crowdUpdatesArr"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/hallways/updatestatus": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the hallway to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "new status of hallway",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/status"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/hallways/updateallstatus": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "updates",
+            "in": "body",
+            "description": "array of hallways to update with their new statuses",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/statusUpdatesArr"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/hallways/synchronize": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "example": {
+          "id": "12345678"
+        }
+      },
+      "crowdLevel": {
+        "type": "object",
+        "properties": {
+          "crowdLevel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crowdLevel"
+        ],
+        "example": {
+          "crowdLevel": "HIGH"
+        }
+      },
+      "status": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "example": {
+          "status": "OPEN"
+        }
+      },
+      "crowdUpdatesArr": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "crowdLevel": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "crowdLevel"
+          ],
+          "example": {
+            "id": "12345678",
+            "crowdLevel": "HIGH"
+          }
+        },
+        "example": [
+          {
+            "id": "12345678",
+            "crowdLevel": "HIGH"
+          }
+        ]
+      },
+      "statusUpdatesArr": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "status"
+          ],
+          "example": {
+            "id": "12345678",
+            "status": "OPEN"
+          }
+        },
+        "example": [
+          {
+            "id": "12345678",
+            "status": "OPEN"
+          }
+        ]
+      }
+    }
+  }
+}
