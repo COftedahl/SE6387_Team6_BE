@@ -2,7 +2,6 @@ import { Router } from 'websocket-express';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
 import ILocation from '../Types/ILocation';
 import NavigationSystem from '../TSObjects/NavigationSystem';
-import LocationPlusZoomSchema from '../Express-Validation Schemas/LocationPlusZoom';
 import IWSMessage from '../Types/_for_websockets/IWSMessage';
 import WS_MESSAGE_TYPE from '../Types/_for_websockets/WSMessageType';
 import IWSNavigateMessageBody from '../Types/_for_websockets/IWSNavigateMessageBody';
@@ -83,7 +82,12 @@ navRouter.ws('/', async (req, res) => {
   });
 
   ws.on("close", () => {
-    navigationSystem.endNavigation(navID);
+    try {
+      navigationSystem.endNavigation(navID);
+    }
+    catch (e) {
+      
+    }
   })
 });
 

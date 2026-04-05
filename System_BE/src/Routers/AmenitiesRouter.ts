@@ -211,12 +211,4 @@ const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat("en-US", {
   second: "2-digit", 
 });
 
-/*
- * function called when the amenities are updated
- */
-amenitiesRouter.get("/notification", async (req, res) => {
-  // #swagger.description = 'This endpoint is called when the amenities are updated'
-  console.log("[" + formatter.format(Date.now()) + "] " + "Amenities update notification received");
-})
-
 export default amenitiesRouter;

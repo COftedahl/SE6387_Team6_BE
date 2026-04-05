@@ -248,16 +248,6 @@
         }
       }
     },
-    "/amenities/notification": {
-      "get": {
-        "description": "This endpoint is called when the amenities are updated",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/infrastructure/updatecrowd": {
       "post": {
         "description": "",

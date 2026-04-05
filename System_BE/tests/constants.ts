@@ -1,12 +1,17 @@
 import AmenityManager from "../src/TSObjects/AmenityManager";
 import FilteringSystem from "../src/TSObjects/FilteringSystem";
+import NavigationSystem from "../src/TSObjects/NavigationSystem";
+import RecommendationSystem from "../src/TSObjects/RecommendationSystem";
 import ACCESSIBILITY_CLASS from "../src/Types/AccessibilityClass";
 import AMENITY_STATUS from "../src/Types/AmenityStatus";
 import AMENITY_TYPE from "../src/Types/AmenityType";
 import IAmenity from "../src/Types/IAmenity";
 import IAmenityDetails from "../src/Types/IAmenityDetails";
+import appRouter from '../src/index';
 
+// export const TESTING_APP_ROUTER = appRouter;
 export const TESTING_AMENITIES_ROUTE_PATH: string = "/amenities";
+export const TESTING_INFRASTRUCTURE_ROUTE_PATH: string = "/infrastructure";
 export const TESTING_NAV_ROUTE_PATH: string = "/nav";
 export const TESTING_ORIGINAL_LOG = console.log;
 export const TESTING_EMPTY_AMENITY_DETAILS: IAmenityDetails = {
@@ -50,6 +55,8 @@ export const TESTING_AMENITY_MANAGER_LOCAL: AmenityManager = new AmenityManager(
     return [testAmenityDetails1, testAmenityDetails2, testAmenityDetails3];
   }
 export const TESTING_FILTERING_SYSTEM: FilteringSystem = new FilteringSystem(TESTING_AMENITY_MANAGER_LOCAL);
+export const TESTING_RECOMMENDATION_SYSTEM: RecommendationSystem = new RecommendationSystem(TESTING_FILTERING_SYSTEM);
+export const TESTING_NAVIGATION_SYSTEM: NavigationSystem = new NavigationSystem();
 export const testAmenity1: IAmenity = {
   id: '1',
   type: AMENITY_TYPE.BAR,

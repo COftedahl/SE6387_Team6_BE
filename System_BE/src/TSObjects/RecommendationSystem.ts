@@ -61,18 +61,6 @@ class RecommendationSystem {
   }
 
   /* 
-   * function that computes distance between 2 locations
-   * @param location1: ILocation[] 
-   * @param location2: ILocation[] 
-   * @return: number representing the distance between locations
-   */
-  private static distanceBetween = (location1: ILocation, location2: ILocation): number => {
-    return Math.sqrt(Math.pow(Math.abs(Number.parseFloat(location1.x) - (Number.parseFloat(location2.x))), 2) 
-                   + Math.pow(Math.abs(Number.parseFloat(location1.x) - (Number.parseFloat(location2.x))), 2)
-    );
-  }
-
-  /* 
    * function to get the sorting function based on user's preferences
    * @param sortBy: AMENITY_SORTING_TYPE indicating user's preferences
    * @return: function of the form (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => number used to sort amenities
@@ -85,18 +73,15 @@ class RecommendationSystem {
         : 
           1
         );
-        break;
       case AMENITY_SORTING_TYPE.LEAST_WALKING: 
         return (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => (a.distanceToAmenity !== undefined && b.distanceToAmenity !== undefined ? 
           (a.distanceToAmenity > b.distanceToAmenity ? 1 : -1)
         : 
           1
         );
-        break;
       default: 
       case AMENITY_SORTING_TYPE.LEAST_WAIT_TIME: 
         return (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => (a.currentAvailableSlots > b.currentAvailableSlots ? 1 : 0);
-        break;
     }
   }
 }
