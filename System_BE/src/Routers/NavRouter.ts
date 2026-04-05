@@ -59,6 +59,7 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
   const data: {x: number, y: number, z: number} = matchedData(req); 
   const location: ILocation = {x: "" + data.x, y: "" + data.y};
   const zoom: number = data.z;
+  console.log("Data received: ", "x: ", data.x, ", y: ", data.y, ", zoom: ", zoom);
   const tileNum: ITileNumber = NavigationSystem.latLonToTileNum(Number.parseFloat(location.x), Number.parseFloat(location.y), zoom);
   const fullEndpoint: string = ENDPOINT + tileNum.z + "/" + tileNum.x + "/" + tileNum.y + ".png"
   console.log("FETCHING FROM: ", fullEndpoint);
