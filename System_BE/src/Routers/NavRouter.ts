@@ -60,7 +60,11 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
   const location: ILocation = {x: "" + data.x, y: "" + data.y};
   const zoom: number = data.z;
   const tileNum: ITileNumber = NavigationSystem.latLonToTileNum(Number.parseFloat(location.x), Number.parseFloat(location.y), zoom);
-  const result = await fetch(ENDPOINT + tileNum.z + "/" + tileNum.x + "/" + tileNum.y + ".png");
+  const result = await fetch(ENDPOINT + tileNum.z + "/" + tileNum.x + "/" + tileNum.y + ".png", {
+    headers: {
+      "User-Agent": "DFWAirportApp/1.0 (student project; cxo220001@utdallas.edu)"
+    }
+  });
   console.log(result);
   console.log(result.body);
   res.send(result.body);
