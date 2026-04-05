@@ -4,4 +4,5 @@ export default interface IPath {
   source: ILocation, 
   target: ILocation, 
   route: ILocation[], 
+  instructions: string[], 
 }

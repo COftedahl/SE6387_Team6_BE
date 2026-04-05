@@ -62,7 +62,7 @@ describe("Navigation System unit tests", () => {
     testConnection.send = (data: any) => {carryData = JSON.parse(data).body;};
     // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
     const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
-    await TESTING_NAVIGATION_SYSTEM.reroute(navID, {source: sampleLocation, target: sampleLocation, route: []});
+    await TESTING_NAVIGATION_SYSTEM.reroute(navID, {source: sampleLocation, target: sampleLocation, route: [], instructions: []});
     let route: any = carryData.route;
     expect(route.length).toBe(0);
     TESTING_NAVIGATION_SYSTEM.endNavigation(navID);

@@ -96,6 +96,9 @@ class NavigationSystem {
       route: result.routes[0].legs.map((leg: any) => { 
         return leg.steps.map((step: any) => step.intersections.map((intersection: any) => {return {x: intersection.location[0], y: intersection.location[1]}})).flat()
       }).flat(),
+      instructions: result.routes[0].legs.map((leg: any) => {
+        return leg.steps.map((step: any) => ((step.distance ? (step.distance + " meters straight, then ") : "") + (step.maneuver.modifier ? step.maneuver.modifier : "straight"))).flat()
+      }).flat(), 
     };
   }
 
