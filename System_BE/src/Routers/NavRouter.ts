@@ -59,20 +59,20 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
   //store the data corresponding to the item to delete
   const data: {x: number, y: number, z: number} = matchedData(req); 
   const location: ILocation = {x: "" + data.x, y: "" + data.y};
-  const zoom: number = data.z;
-  console.log("Data received: ", "x: ", data.x, ", y: ", data.y, ", zoom: ", zoom);
+  const zoom: number = Math.min(Math.max(15, data.z), 19);
+  // console.log("Data received: ", "x: ", data.x, ", y: ", data.y, ", zoom: ", zoom);
   // const tileNum: ITileNumber = NavigationSystem.latLonToTileNum(Number.parseFloat(location.x), Number.parseFloat(location.y), zoom);
   // const fullEndpoint: string = ENDPOINT + tileNum.z + "/" + tileNum.x + "/" + tileNum.y + ".png"
   const fullEndpoint: string = ENDPOINT + zoom + "/" + location.x + "/" + location.y + ".png"
-  console.log("FETCHING FROM: ", fullEndpoint);
+  // console.log("FETCHING FROM: ", fullEndpoint);
   try {
     const result = await fetch(fullEndpoint, {
       headers: {
         "User-Agent": "DFWAirportApp/1.0 (student project; cxo220001@utdallas.edu)"
       }
     });
-    console.log(result);
-    console.log(result.body);
+    // console.log(result);
+    // console.log(result.body);
 
 
     res.status(result.status);
