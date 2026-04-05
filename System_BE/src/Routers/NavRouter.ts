@@ -45,9 +45,9 @@ const navigationSystem: NavigationSystem = new NavigationSystem();
  */
 navRouter.get("/map/:z/:x/:y", async (req, res) => {
   //https://docs.mapbox.com/api/navigation/http-post/
-  console.log(req);
-  console.log("HEADERS: ", req.headers);
-  console.log("URL: ", req.originalUrl);
+  // console.log(req);
+  // console.log("HEADERS: ", req.headers);
+  // console.log("URL: ", req.originalUrl);
   await checkSchema(XYZMapTileSchema).run(req);
   const error = validationResult(req);
 
@@ -62,11 +62,13 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
   //store the data corresponding to the item to delete
   const data: {x: number, y: number, z: number} = matchedData(req); 
   const location: ILocation = {x: "" + data.x, y: "" + data.y};
-  const zoom: number = Math.min(Math.max(15, data.z), 19);
-  // console.log("Data received: ", "x: ", data.x, ", y: ", data.y, ", zoom: ", zoom);
+  // const zoom: number = Math.min(Math.max(15, data.z), 19);
+  const zoom: number = data.z;
+  console.log("Data received: ", "x: ", data.x, ", y: ", data.y, ", zoom: ", zoom);
   // const tileNum: ITileNumber = NavigationSystem.latLonToTileNum(Number.parseFloat(location.x), Number.parseFloat(location.y), zoom);
   // const fullEndpoint: string = ENDPOINT + tileNum.z + "/" + tileNum.x + "/" + tileNum.y + ".png"
   const fullEndpoint: string = ENDPOINT + zoom + "/" + location.x + "/" + location.y + ".png"
+  console.log("FETCHING FROM: ", fullEndpoint);
   // console.log("FETCHING FROM: ", fullEndpoint);
   try {
     const result = await fetch(fullEndpoint, {
@@ -76,7 +78,6 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
     });
     // console.log(result);
     // console.log(result.body);
-
 
     res.status(result.status);
     // Forward important headers if present
