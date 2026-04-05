@@ -10,6 +10,7 @@ const ALL_AMENITIES: IAmenity[] = ALL_AMENITIES_GEO_JSON.features.map((feature, 
     room: "" + index, 
     location: {x: "" + feature.geometry.coordinates[0], y: "" + feature.geometry.coordinates[1]}, 
     accessibilityClass: feature.properties.accessible ? ACCESSIBILITY_CLASS.ACCESSIBLE: ACCESSIBILITY_CLASS.INACCESSIBLE, 
+    amenityInformation: feature.properties.type, 
   }
 })
 

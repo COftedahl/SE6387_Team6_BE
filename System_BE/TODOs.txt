@@ -9,3 +9,4 @@
 -add in crowd sensor BE - provides API to accept specific hallways and their updates, converts to the CSV format and calls the NavigationBE
 -add in InfrastructureBE - mark hallways as closed
 -add DBs as backups for the external systems, add in the exception catching mechanism to use them
+-add exception handling for amenity retrieval if the nav system is inaccessible

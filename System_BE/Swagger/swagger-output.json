@@ -25,6 +25,9 @@
     "/nav/map/{z}/{x}/{y}": {
       "get": {
         "description": "",
+        "produces": [
+          "error"
+        ],
         "parameters": [
           {
             "name": "z",
@@ -51,6 +54,12 @@
           },
           "422": {
             "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       }

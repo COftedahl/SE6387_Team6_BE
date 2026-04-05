@@ -8,4 +8,5 @@ export default interface IAmenity {
   room: string, 
   location: ILocation, 
   accessibilityClass: ACCESSIBILITY_CLASS, 
+  amenityInformation: any, 
 }

@@ -5,7 +5,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 1
+                "fid": 1, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -18,7 +19,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 2
+                "fid": 2, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -31,7 +33,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 3
+                "fid": 3, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -44,7 +47,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 4
+                "fid": 4, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -57,7 +61,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 5
+                "fid": 5, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -70,7 +75,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 6
+                "fid": 6, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -83,7 +89,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 7
+                "fid": 7, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -96,7 +103,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 8
+                "fid": 8, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -109,7 +117,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 9
+                "fid": 9, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -122,7 +131,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 10
+                "fid": 10, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -135,7 +145,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 11
+                "fid": 11, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -148,7 +159,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 12
+                "fid": 12, 
+		"type": "female", 
             },
             "geometry": {
                 "type": "Point",
@@ -161,7 +173,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 13
+                "fid": 13, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -174,7 +187,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 14
+                "fid": 14, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -187,7 +201,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 15
+                "fid": 15, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -200,7 +215,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 16
+                "fid": 16, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -213,7 +229,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 17
+                "fid": 17, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -226,7 +243,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 18
+                "fid": 18, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -239,7 +257,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 19
+                "fid": 19, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -252,7 +271,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 20
+                "fid": 20, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -265,7 +285,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 21
+                "fid": 21, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -278,7 +299,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 22
+                "fid": 22, 
+		"type": "male", 
             },
             "geometry": {
                 "type": "Point",
@@ -292,6 +314,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 23,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -306,6 +329,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 24,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -319,7 +343,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 25,
+                "fid": 25, 
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -334,6 +359,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 26,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -348,6 +374,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 27,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -362,6 +389,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 28,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -376,6 +404,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 29,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -389,7 +418,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 30,
+                "fid": 30, 
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -404,6 +434,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 31,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -417,7 +448,8 @@ const ALL_AMENITIES_GEO_JSON = {
         {
             "type": "Feature",
             "properties": {
-                "fid": 32,
+                "fid": 32, 
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
@@ -432,6 +464,7 @@ const ALL_AMENITIES_GEO_JSON = {
             "type": "Feature",
             "properties": {
                 "fid": 33,
+		"type": "accessible", 
                 "accessible": true
             },
             "geometry": {
