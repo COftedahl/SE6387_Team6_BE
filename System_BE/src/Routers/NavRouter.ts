@@ -45,6 +45,9 @@ const navigationSystem: NavigationSystem = new NavigationSystem();
  */
 navRouter.get("/map/:z/:x/:y", async (req, res) => {
   //https://docs.mapbox.com/api/navigation/http-post/
+  console.log(req);
+  console.log("HEADERS: ", req.headers);
+  console.log("URL: ", req.originalUrl);
   await checkSchema(XYZMapTileSchema).run(req);
   const error = validationResult(req);
 
@@ -79,6 +82,8 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
     // Forward important headers if present
     const ct = result.headers.get("content-type");
     if (ct) res.setHeader("Content-Type", ct);
+    const cache = result.headers.get("cache-control") || result.headers.get("expires");
+    if (cache) res.setHeader("Cache-Control", cache);
     // If body is null or not ok, end early
     if (!result.body) {
       // fallback: read as buffer and send
