@@ -54,7 +54,7 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
   }
 
 
-  const ENDPOINT: string = "https://tile/openstreetmap.org/";
+  const ENDPOINT: string = "https://tile.openstreetmap.org/";
   //store the data corresponding to the item to delete
   const data: {x: number, y: number, z: number} = matchedData(req); 
   const location: ILocation = {x: "" + data.x, y: "" + data.y};
