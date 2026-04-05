@@ -7,6 +7,7 @@ import WS_MESSAGE_TYPE from '../Types/_for_websockets/WSMessageType';
 import IWSNavigateMessageBody from '../Types/_for_websockets/IWSNavigateMessageBody';
 import XYZMapTileSchema from '../Express-Validation Schemas/XYZMapTile';
 import ITileNumber from '../Types/ITileNumber';
+import { Readable } from 'stream';
 
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
@@ -72,13 +73,38 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
     });
     console.log(result);
     console.log(result.body);
+
+
+    res.status(result.status);
+    // Forward important headers if present
+    const ct = result.headers.get("content-type");
+    if (ct) res.setHeader("Content-Type", ct);
+    // If body is null or not ok, end early
+    if (!result.body) {
+      // fallback: read as buffer and send
+      const buf = Buffer.from(await result.arrayBuffer());
+      return res.send(buf);
+    }// Convert WHATWG ReadableStream to Node Readable and pipe
+    const nodeStream = Readable.fromWeb(result.body as any);
+      nodeStream.on("error", (err) => {
+        console.error("Stream error:", err);
+        if (!res.headersSent) res.sendStatus(500);
+        else res.end();
+      });
+      nodeStream.pipe(res);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      res.sendStatus(502);
+    }
+
     // console.log(result.text());
     // res.send(result.body);
-    res.json(result);
-  }
-  catch (e) {
-    console.log(e);
-  }
+    // res.json(result);
+  //   // res.send(result.text);
+  // }
+  // catch (e) {
+  //   console.log(e);
+  // }
 })
 
 /*
