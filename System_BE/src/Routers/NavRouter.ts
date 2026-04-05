@@ -72,7 +72,9 @@ navRouter.get("/map/:z/:x/:y", async (req, res) => {
     });
     console.log(result);
     console.log(result.body);
-    res.send(result.body);
+    console.log(result.text());
+    // res.send(result.body);
+    res.json(result);
   }
   catch (e) {
     console.log(e);
