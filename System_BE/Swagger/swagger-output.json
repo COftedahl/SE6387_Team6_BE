@@ -22,18 +22,30 @@
         }
       }
     },
-    "/nav/map": {
-      "post": {
+    "/nav/map/{z}/{x}/{y}": {
+      "get": {
         "description": "",
+        "produces": [
+          "error"
+        ],
         "parameters": [
           {
-            "name": "location",
-            "in": "body",
-            "description": "send the location of the user with zoom level to center the map",
+            "name": "z",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/locationWithZoom"
-            }
+            "type": "string"
+          },
+          {
+            "name": "x",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "y",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -42,6 +54,12 @@
           },
           "422": {
             "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       }
@@ -203,12 +221,74 @@
         }
       }
     },
-    "/amenities/notification": {
-      "get": {
-        "description": "This endpoint is called when the amenities are updated",
+    "/amenities/updateoccupancy": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id oft eh amenity whose occupancy is being updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityID"
+            }
+          },
+          {
+            "name": "details",
+            "in": "body",
+            "description": "new occupancy data for the amenity",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/occupancyDetails"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
+          }
+        }
+      }
+    },
+    "/infrastructure/updatecrowd": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the infrastructural component whose crowd level is being updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityID"
+            }
+          },
+          {
+            "name": "crowdLevel",
+            "in": "body",
+            "description": "new crowd level",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/crowdLevel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       }
@@ -335,6 +415,54 @@
         ],
         "example": {
           "amenityType": "RESTROOM"
+        }
+      },
+      "occupancyDetails": {
+        "type": "object",
+        "properties": {
+          "currentOccupancy": {
+            "type": "number"
+          },
+          "currentAvailableSlots": {
+            "type": "number"
+          },
+          "capacity": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "lastUpdated": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currentOccupancy",
+          "currentAvailableSlots",
+          "capacity",
+          "status",
+          "lastUpdated"
+        ],
+        "example": {
+          "currentOccupancy": 2,
+          "currentAvailableSlots": 4,
+          "capacity": 6,
+          "status": "OPEN",
+          "lastUpdated": "03/29/26, 10:10:31"
+        }
+      },
+      "crowdLevel": {
+        "type": "object",
+        "properties": {
+          "crowdLevel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crowdLevel"
+        ],
+        "example": {
+          "crowdLevel": "HIGH"
         }
       }
     }

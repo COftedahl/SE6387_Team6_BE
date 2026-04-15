@@ -12,6 +12,7 @@ class ReroutingSystem {
       source: {x: "", y: ""},
       target: {x: "", y: ""},
       route: [],
+      instructions: [], 
     }
   }
 }

@@ -8,6 +8,7 @@ const convertDetailsToAmenityData = (details: IAmenityDetails): IAmenity => {
     room: details.room,
     location: details.location,
     accessibilityClass: details.accessibilityClass, 
+    amenityInformation: details.amenityInformation, 
   }
 }
 

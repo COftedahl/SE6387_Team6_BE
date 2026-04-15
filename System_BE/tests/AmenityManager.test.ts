@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { testAmenity1, testAmenity2, testAmenity3, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_AMENITY_MANAGER, TESTING_ORIGINAL_LOG } from "./constants";
 import { BLANK_AMENITY_DETAILS } from '../src/constants';
+import { beforeAll, afterAll, describe, test, expect } from '@jest/globals';
 
 const logs: string[] = [];
 
@@ -22,7 +23,7 @@ beforeAll(async () => {
     }, 
     body: JSON.stringify({data: [testAmenityDetails1, testAmenityDetails2, testAmenityDetails3]})
   }).catch(() => {
-    fail("Failed to set the data in the amenity manager external system - make sure the system is running before executing amenity manager tests.")
+    throw new Error("Failed to set the data in the amenity manager external system - make sure the system is running before executing amenity manager tests.")
   });
 });
 
