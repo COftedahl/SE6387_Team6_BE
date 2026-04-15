@@ -19,7 +19,7 @@ const hallwayRouter = express.Router();
 let hallways: IHallway[] = ALL_HALLWAYS.map((hallway) => {
   return {
     id: hallway.id, 
-    name: hallway.name, 
+    // name: hallway.name, 
     crowdLevel: CROWD_LEVEL.EMPTY, 
     start: { x: hallway.start.lon, y: hallway.start.lat }, 
     end: { x: hallway.end.lon, y: hallway.end.lat }, 

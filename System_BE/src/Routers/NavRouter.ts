@@ -149,7 +149,8 @@ navRouter.ws('/', async (req, res) => {
           await navigationSystem.navigate(messageBody.source, messageBody.target, messageBody.useAccessibleRouting, navID);
           break;
         case WS_MESSAGE_TYPE.UPDATE_POSITION: 
-
+            const newLocation: ILocation = message.body;
+            
           break;
       }
     }

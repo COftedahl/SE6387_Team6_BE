@@ -4,7 +4,7 @@ import CROWD_LEVEL from "./CrowdLevel";
 
 export default interface IHallway {
   id: string, 
-  name: string, 
+  // name: string, 
   start: ILocation, 
   end: ILocation, 
   status: INFRASTRUCTURE_STATUS, 
