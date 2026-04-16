@@ -6,12 +6,69 @@ import IWSMessage from '../Types/_for_websockets/IWSMessage';
 import WS_MESSAGE_TYPE from '../Types/_for_websockets/WSMessageType';
 import IWSNavigateMessageBody from '../Types/_for_websockets/IWSNavigateMessageBody';
 import XYZMapTileSchema from '../Express-Validation Schemas/XYZMapTile';
-import ITileNumber from '../Types/ITileNumber';
 import { Readable } from 'stream';
+import REROUTE_REASON from '../Types/RerouteReason';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
 const navigationSystem: NavigationSystem = new NavigationSystem();
+const subscriptionEndpoints: {method: string, endpoint: string, reasonPath: string}[] = [
+  {
+    method: process.env.AMENITY_MANAGER_SUBSCRIBE_ENDPOINT_METHOD ?? "", 
+    endpoint: process.env.AMENITY_MANAGER_SUBSCRIBE_ENDPOINT ?? "",
+    reasonPath: "amenities",
+  }, 
+  {
+    method: process.env.INFRASTRUCTURE_MANAGER_SUBSCRIBE_ENDPOINT_METHOD ?? "", 
+    endpoint: process.env.INFRASTRUCTURE_MANAGER_SUBSCRIBE_ENDPOINT ?? "",
+    reasonPath: "infrastructure",
+  }, 
+];
+let subscribed: boolean[] = subscriptionEndpoints.map((_) => false);
+const subscriptionBackoffIntervalsInSeconds: number[] = [ 5, 5, 20, 60, ];
+let currBackoffIntervalIndex: number = 0;
+
+/* 
+ * function to handle subscribing to alerts from external systems
+ */
+const attemptToSubscribe = async () => {
+  for (let i = 0; i < subscriptionEndpoints.length; i += 1) {
+    const subscription = subscriptionEndpoints[i];
+    if (subscription.endpoint.length > 0 && subscription.method.length > 0) {
+      if (!subscribed[i]) {
+        try {
+          const result = await fetch(subscription.endpoint, {
+            method: subscription.method, 
+            headers: {
+              "Content-Type": "application/json",
+            }, 
+            body: JSON.stringify({ endpoint: ("http://localhost:5000/nav/notify/" + subscription.reasonPath) })
+          })
+          if (result.status === 200) {
+            subscribed[i] = true;
+            console.log("Subscribed to \"" + subscription.endpoint + "\"");
+          }
+          else {
+            console.log("Error subscribing to \"" + subscription.endpoint + "\"");
+          }
+        }
+        catch (e) {
+          console.log("Error subscribing to \"" + subscription.endpoint + "\" ", e);
+        }
+      }
+    }
+  }
+  currBackoffIntervalIndex = Math.min(currBackoffIntervalIndex + 1, subscriptionBackoffIntervalsInSeconds.length - 1);
+  setTimeout(async () => {
+    await attemptToSubscribe();
+  }, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
+}
+
+setTimeout(async () => {
+  await attemptToSubscribe();
+}, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
 
 // /*
 //  * function to get the map
@@ -138,7 +195,7 @@ navRouter.ws('/', async (req, res) => {
       const message: IWSMessage = JSON.parse(messageString);
       switch(message.messageType) {
         case WS_MESSAGE_TYPE.ACCEPT_REROUTE: 
-          
+          navigationSystem.reroute(navID);
           break;
         case WS_MESSAGE_TYPE.CANCEL_NAVIGATION: 
           navigationSystem.endNavigation(navID);
@@ -149,8 +206,9 @@ navRouter.ws('/', async (req, res) => {
           await navigationSystem.navigate(messageBody.source, messageBody.target, messageBody.useAccessibleRouting, navID);
           break;
         case WS_MESSAGE_TYPE.UPDATE_POSITION: 
-            const newLocation: ILocation = message.body;
-            
+          //expect body of message to be an ILocation
+          const newLocation: ILocation = message.body;
+          navigationSystem.updateLocation(navID, newLocation);
           break;
       }
     }
@@ -168,5 +226,43 @@ navRouter.ws('/', async (req, res) => {
     }
   })
 });
+
+/*
+ * function to notify the navigation system about an update from the amenities system
+ */
+navRouter.get("/notify/amenities", async (req, res) => {
+  try {
+    navigationSystem.checkAllForReroute(REROUTE_REASON.AMENITIES_CHANGED);
+    res.json({ message: "Checked all for reroutes from amenities change" });
+  }
+  catch (e) {
+    console.log("Error checking for reroutes ", e);
+  }
+})
+
+/*
+ * function to notify the navigation system about an update from the amenities system
+ */
+navRouter.get("/notify/infrastructure", async (req, res) => {
+  try {
+    navigationSystem.checkAllForReroute(REROUTE_REASON.INFRASTRUCTURE_CHANGED);
+    res.json({ message: "Checked all for reroutes from infrastructure change" });
+  }
+  catch (e) {
+    console.log("Error checking for reroutes ", e);
+  }
+})
+
+/*
+ * function to attempt to resubscribe to notification endpoints without restarting the server
+ */
+navRouter.get("/resetsubscriptions", async (req, res) => {
+  subscribed = subscriptionEndpoints.map((_) => false);
+  currBackoffIntervalIndex = 0;
+  setTimeout(async () => {
+    await attemptToSubscribe();
+  }, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
+  res.json({ message: "Subscriptions reset" });
+})
 
 export default navRouter;
