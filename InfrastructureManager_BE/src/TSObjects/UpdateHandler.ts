@@ -1,3 +1,5 @@
+import SubscriptionManager from "./SubscriptionManager";
+
 class UpdateHandler {
   /* 
    * function to convert an array of objects describing updates into a CSV update string
@@ -28,6 +30,10 @@ class UpdateHandler {
       }, 
       body: JSON.stringify({fileContents: updateString}), 
     });
+
+    setTimeout(() => {
+      SubscriptionManager.notifySubscribers();
+    }, 5 * 1000);
 
     if (result.status === 200) {
       res.status(200).json({ message: (await result.json()).message })

@@ -237,6 +237,7 @@ navRouter.ws('/', async (req, res) => {
  * function to notify the navigation system about an update from the amenities system
  */
 navRouter.get("/notify/amenities", async (req, res) => {
+  console.log("Received notification from amenities BE");
   try {
     navigationSystem.checkAllForReroute(REROUTE_REASON.AMENITIES_CHANGED);
     res.json({ message: "Checked all for reroutes from amenities change" });
@@ -250,6 +251,7 @@ navRouter.get("/notify/amenities", async (req, res) => {
  * function to notify the navigation system about an update from the amenities system
  */
 navRouter.get("/notify/infrastructure", async (req, res) => {
+  console.log("Received notification from infrastructure BE");
   try {
     navigationSystem.checkAllForReroute(REROUTE_REASON.INFRASTRUCTURE_CHANGED);
     res.json({ message: "Checked all for reroutes from infrastructure change" });

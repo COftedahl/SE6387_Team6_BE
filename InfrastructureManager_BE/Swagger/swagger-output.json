@@ -142,6 +142,57 @@
           }
         }
       }
+    },
+    "/subscription/subscribe": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "endpoint",
+            "in": "body",
+            "description": "endpoint to call when an update occurs",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/endpoint"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/subscription/unsubscribe": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "id of the subscriber to unsubscribe",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/amenityID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
     }
   },
   "components": {
