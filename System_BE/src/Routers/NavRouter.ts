@@ -201,7 +201,7 @@ navRouter.ws('/', async (req, res) => {
       const message: IWSMessage = JSON.parse(messageString);
       switch(message.messageType) {
         case WS_MESSAGE_TYPE.ACCEPT_REROUTE: 
-          navigationSystem.reroute(navID);
+          await navigationSystem.reroute(navID);
           break;
         case WS_MESSAGE_TYPE.CANCEL_NAVIGATION: 
           navigationSystem.endNavigation(navID);
@@ -214,7 +214,7 @@ navRouter.ws('/', async (req, res) => {
         case WS_MESSAGE_TYPE.UPDATE_POSITION: 
           //expect body of message to be an ILocation
           const newLocation: ILocation = message.body;
-          navigationSystem.updateLocation(navID, newLocation);
+          await navigationSystem.updateLocation(navID, newLocation);
           break;
       }
     }
