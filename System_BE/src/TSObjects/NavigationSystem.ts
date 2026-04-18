@@ -2,10 +2,13 @@ import IWSConnection from "../Types/_for_websockets/IWSConnection";
 import IWSMessage from "../Types/_for_websockets/IWSMessage";
 import IWSOfferRerouteMessageBody from "../Types/_for_websockets/IWSOfferRerouteMessageBody";
 import WS_MESSAGE_TYPE from "../Types/_for_websockets/WSMessageType";
+import AMENITY_SORTING_TYPE from "../Types/AmenitySortingType";
+import IAmenity from "../Types/IAmenity";
 import ILocation from "../Types/ILocation";
 import IPath from "../Types/IPath";
 import ITileNumber from "../Types/ITileNumber";
 import REROUTE_REASON from "../Types/RerouteReason";
+import RecommendationSystem from "./RecommendationSystem";
 import ReroutingSystem from "./ReroutingSystem";
 
 class NavigationSystem {
@@ -13,8 +16,10 @@ class NavigationSystem {
   private static readonly NAV_ID_PREFIX: string = "NAVID_";
   private nextNavID: number = 1;
   private reroutingSystem: ReroutingSystem;
+  private recommendationSystem: RecommendationSystem;
 
-  constructor() {
+  constructor(recommendationSystem: RecommendationSystem) {
+    this.recommendationSystem = recommendationSystem;
     this.reroutingSystem = new ReroutingSystem();
   }
   /* 
@@ -162,22 +167,42 @@ class NavigationSystem {
     if (updating !== undefined) {
       //check if user is currently navigating
       if (updating.currentLocation !== null && updating.target !== null && updating.currentPath !== null) {
-        //check if we need to reroute user
-        const newPath: IPath = await this.getPath(updating.currentLocation, updating.target , updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
-        const shouldReroute: boolean = this.reroutingSystem.checkShouldReroute(newPath, updating.currentPath);
-        if (shouldReroute) {
+        //check if there is a more optimal amenity to route to instead of the one currently routing to
+        const recommendedAmenities: IAmenity[] = await this.recommendationSystem.getMapSuggestions([{filterKey: "status", value: "OPEN"}, {filterKey: "currentAvailableSlots", value: {ge: 1}}], updating.currentLocation, AMENITY_SORTING_TYPE.BEST_ROUTE);
+        if (recommendedAmenities.length > 0 && JSON.stringify(recommendedAmenities[0].location) !== JSON.stringify(updating.target)) {
+          //new amenity -> user should reroute
+          const newPath: IPath = await this.getPath(updating.currentLocation, recommendedAmenities[0].location, updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
           //save data to use if accept route later
-          updating.suggestedPath = newPath;
-          //send OFFER_REROUTE message
-          const rerouteMessageBody: IWSOfferRerouteMessageBody = {
-            newRoute: newPath,
-            rerouteReason: REROUTE_REASON.LOCATION_CHANGED, 
+            updating.suggestedPath = newPath;
+            //send OFFER_REROUTE message
+            const rerouteMessageBody: IWSOfferRerouteMessageBody = {
+              newRoute: newPath,
+              rerouteReason: reason, 
+            }
+            const offerRerouteMessage: IWSMessage = {
+              messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
+              body: rerouteMessageBody, 
+            }
+            updating.connection.send(JSON.stringify(offerRerouteMessage));
+        }
+        else {
+          //check if we need to reroute user
+          const newPath: IPath = await this.getPath(updating.currentLocation, updating.target , updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
+          const shouldReroute: boolean = this.reroutingSystem.checkShouldReroute(newPath, updating.currentPath);
+          if (shouldReroute) {
+            //save data to use if accept route later
+            updating.suggestedPath = newPath;
+            //send OFFER_REROUTE message
+            const rerouteMessageBody: IWSOfferRerouteMessageBody = {
+              newRoute: newPath,
+              rerouteReason: reason, 
+            }
+            const offerRerouteMessage: IWSMessage = {
+              messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
+              body: rerouteMessageBody, 
+            }
+            updating.connection.send(JSON.stringify(offerRerouteMessage));
           }
-          const offerRerouteMessage: IWSMessage = {
-            messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
-            body: rerouteMessageBody, 
-          }
-          updating.connection.send(JSON.stringify(offerRerouteMessage));
         }
       }
     }

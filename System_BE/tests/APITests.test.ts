@@ -172,11 +172,11 @@ describe("Infrastructure Router Tests", () => {
     expect(result.status).toBe(422);
   });
   test("/updatecrowd failed request", async () => {
-    const result = await request(server).post(TESTING_INFRASTRUCTURE_ROUTE_PATH + "/updatecrowd").send({id: "1", crowdLevel: "HIGH"});
+    const result = await request(server).post(TESTING_INFRASTRUCTURE_ROUTE_PATH + "/updatecrowd").send({id: "99999999", crowdLevel: "HIGH"});
     expect(result.status).toBe(502);
   });
   test("/updatecrowd correct post body", async () => {
-    const result = await request(server).post(TESTING_INFRASTRUCTURE_ROUTE_PATH + "/updatecrowd").send({id: "00000001", crowdLevel: "HIGH"});
+    const result = await request(server).post(TESTING_INFRASTRUCTURE_ROUTE_PATH + "/updatecrowd").send({id: "1", crowdLevel: "HIGH"});
     expect(result.status).toBe(200);
   });
 });

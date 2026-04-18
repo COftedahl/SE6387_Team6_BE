@@ -50,7 +50,35 @@ class FilteringSystem {
    * @return: IAmenity[] of the filtered amenities
    */
   private filter = (amenities: IAmenity[], filters: IFilter[]): IAmenity[] => {
-    return amenities.filter((amenity: IAmenity) => filters.reduce((accumValue: boolean, currFilter: IFilter) => accumValue && (amenity as any)[currFilter.filterKey] !== undefined && (amenity as any)[currFilter.filterKey] === currFilter.value, true));
+    return amenities.filter((amenity: IAmenity) => filters.reduce((accumValue: boolean, currFilter: IFilter) => {
+      if (typeof currFilter.value === "string") {
+        return (
+          accumValue && (amenity as any)[currFilter.filterKey] !== undefined && (amenity as any)[currFilter.filterKey] === currFilter.value
+        )
+      }
+      else {
+        if (currFilter.filterKey !== undefined && (amenity as any)[currFilter.filterKey] !== undefined) {
+          //binary operand filter
+          let filterSatisfied: boolean = true;
+          if (currFilter.value.gt !== undefined) {
+            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] > currFilter.value.gt
+          }
+          if (currFilter.value.ge !== undefined) {
+            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] >= currFilter.value.ge
+          }
+          if (currFilter.value.le !== undefined) {
+            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] <= currFilter.value.le
+          }
+          if (currFilter.value.lt !== undefined) {
+            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] < currFilter.value.lt
+          }
+          return accumValue && filterSatisfied;
+        }
+        else {
+          return false;
+        }
+      }
+    }, true));
   }
 
   /* 
@@ -60,7 +88,8 @@ class FilteringSystem {
    * @return: IAmenityDetails[] of the filtered amenity details
    */
   private filterDetails = (amenities: IAmenityDetails[], filters: IFilter[]): IAmenityDetails[] => {
-    return amenities.filter((amenity: IAmenityDetails) => filters.reduce((accumValue: boolean, currFilter: IFilter) => accumValue && (amenity as any)[currFilter.filterKey] !== undefined && (amenity as any)[currFilter.filterKey] === currFilter.value, true));;
+    // return amenities.filter((amenity: IAmenityDetails) => filters.reduce((accumValue: boolean, currFilter: IFilter) => accumValue && (amenity as any)[currFilter.filterKey] !== undefined && (amenity as any)[currFilter.filterKey] === currFilter.value, true));;
+    return this.filter(amenities as IAmenity[], filters) as IAmenityDetails[];
   }
 }
 

@@ -56,7 +56,7 @@ export const TESTING_AMENITY_MANAGER_LOCAL: AmenityManager = new AmenityManager(
   }
 export const TESTING_FILTERING_SYSTEM: FilteringSystem = new FilteringSystem(TESTING_AMENITY_MANAGER_LOCAL);
 export const TESTING_RECOMMENDATION_SYSTEM: RecommendationSystem = new RecommendationSystem(TESTING_FILTERING_SYSTEM);
-export const TESTING_NAVIGATION_SYSTEM: NavigationSystem = new NavigationSystem();
+export const TESTING_NAVIGATION_SYSTEM: NavigationSystem = new NavigationSystem(TESTING_RECOMMENDATION_SYSTEM);
 export const testAmenity1: IAmenity = {
   id: '1',
   type: AMENITY_TYPE.BAR,

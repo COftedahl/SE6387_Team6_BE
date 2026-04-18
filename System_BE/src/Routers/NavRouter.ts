@@ -9,11 +9,17 @@ import XYZMapTileSchema from '../Express-Validation Schemas/XYZMapTile';
 import { Readable } from 'stream';
 import REROUTE_REASON from '../Types/RerouteReason';
 import dotenv from 'dotenv';
+import RecommendationSystem from '../TSObjects/RecommendationSystem';
+import FilteringSystem from '../TSObjects/FilteringSystem';
+import AmenityManager from '../TSObjects/AmenityManager';
 
 dotenv.config();
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
-const navigationSystem: NavigationSystem = new NavigationSystem();
+const amenityManager: AmenityManager = new AmenityManager();
+const filteringSystem: FilteringSystem = new FilteringSystem(amenityManager);
+const recommendationSystem: RecommendationSystem = new RecommendationSystem(filteringSystem);
+const navigationSystem: NavigationSystem = new NavigationSystem(recommendationSystem);
 const subscriptionEndpoints: {method: string, endpoint: string, reasonPath: string}[] = [
   {
     method: process.env.AMENITY_MANAGER_SUBSCRIBE_ENDPOINT_METHOD ?? "", 
