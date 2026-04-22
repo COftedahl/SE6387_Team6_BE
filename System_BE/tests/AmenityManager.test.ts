@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
-import { testAmenity1, testAmenity2, testAmenity3, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_AMENITY_MANAGER, TESTING_ORIGINAL_LOG } from "./constants";
+import { afterAllTimeoutMS, beforeAllTimeoutMS, closeServerForTesting, testAmenity1, testAmenity2, testAmenity3, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_AMENITY_MANAGER, TESTING_ORIGINAL_LOG, testingBeforeAllFn } from "./constants";
 import { BLANK_AMENITY_DETAILS } from '../src/constants';
 import { beforeAll, afterAll, describe, test, expect } from '@jest/globals';
+import { Server } from 'http';
 
 const logs: string[] = [];
+let server: Server;
 
 /* 
  * eliminates console logging output during tests to unclutter the test report;
@@ -11,11 +13,8 @@ const logs: string[] = [];
  * or just run the pertient code in the afterAll function when you need to see the log
  */
 beforeAll(async () => {
-  logs.splice(0,logs.length);
-  console.log = (...args) => {
-    logs.push(args.join(' '));
-  };
-  dotenv.config();
+  const res = await testingBeforeAllFn(logs, server, "Amenity Manager");
+  server = res.server;
   await fetch(process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT ?? "", {
     method: process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT_METHOD ?? "", 
     headers: {
@@ -25,14 +24,15 @@ beforeAll(async () => {
   }).catch(() => {
     throw new Error("Failed to set the data in the amenity manager external system - make sure the system is running before executing amenity manager tests.")
   });
-});
+}, beforeAllTimeoutMS);
 
 /* 
  * restores the console.log function to regular operation
  */
 afterAll(async () => {
   console.log = TESTING_ORIGINAL_LOG;
-});
+  await closeServerForTesting(server as Server, "Filtering system");
+}, afterAllTimeoutMS);
 
 //NOTE: the amenity manager external system must be running for these tests 
 describe("Amenity Manager unit tests", () => {

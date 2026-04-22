@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --roots \"tests\" --collectCoverageFrom **/{TSObjects,Routers}/**",
+    "jest": "jest", 
     "api tests": "jest --roots \"tests\" --runTestsByPath \"tests/APITests.test.ts\" --collectCoverageFrom **/Routers/**",
     "unit tests": "jest --roots \"tests\" --testPathIgnorePatterns tests/APITests.test.ts --collectCoverageFrom **/{TSObjects,Routers}/**",
     "start": "node Swagger/swagger-prestartup.js",

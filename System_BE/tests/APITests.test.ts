@@ -1,11 +1,15 @@
 import request from 'superwstest';
 import dotenv from 'dotenv';
-import { testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_AMENITIES_ROUTE_PATH, TESTING_INFRASTRUCTURE_ROUTE_PATH, TESTING_NAV_ROUTE_PATH, TESTING_ORIGINAL_LOG } from './constants';
+import { afterAllTimeoutMS, closeServerForTesting, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_AMENITIES_ROUTE_PATH, TESTING_INFRASTRUCTURE_ROUTE_PATH, TESTING_NAV_ROUTE_PATH, TESTING_ORIGINAL_LOG, WS_REQUEST_OPTIONS } from './constants';
 import { beforeAll, afterAll, describe, test, expect } from '@jest/globals';
-import server from '../src/index';
 import WS_MESSAGE_TYPE from '../src/Types/_for_websockets/WSMessageType';
+import setupApp from '../src/index_no_startup'
+import { Server } from 'http';
+import REROUTE_REASON from '../src/Types/RerouteReason';
+import { setTimeout } from 'timers/promises';
 
 const logs: string[] = [];
+let server: Server;
 
 /* 
  * eliminates console logging output during tests to unclutter the test report;
@@ -18,6 +22,7 @@ beforeAll(async () => {
     logs.push(args.join(' '));
   };
   dotenv.config();
+  server = await setupApp(0);
   await fetch(process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT ?? "", {
     method: process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT_METHOD ?? "", 
     headers: {
@@ -41,11 +46,10 @@ beforeAll(async () => {
 /* 
  * restores the console.log function to regular operation
  */
-afterAll(() => {
+afterAll(async () => {
   console.log = TESTING_ORIGINAL_LOG;
-  server.close();
-  server.closeAllConnections();
-});
+  await closeServerForTesting(server as Server, "Filtering system");
+}, afterAllTimeoutMS);
 
 describe("Amenities Router Tests", () => {
   test("/all incorrect post body", async () => {
@@ -164,6 +168,108 @@ describe("Nav Router Tests", () => {
       body: {}
     }).expectClosed();
   });
+  test("/notify/amenities successful get request with none subscribed", async () => {
+    const result = await request(server).get(TESTING_NAV_ROUTE_PATH + "/notify/amenities");
+    expect(result.status).toBe(200);
+  });
+  test("/notify/amenities successful get request with subscribers", async () => {
+    //outline: set env vars -> request reset subs -> subscribe -> open ws -> send update request -> get notification via ws -> [teardown] set env vars -> reset subs
+    process.env.BUILD_VERSION = "production";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+    await setTimeout(6000);
+    await request(server as Server, WS_REQUEST_OPTIONS).ws(TESTING_NAV_ROUTE_PATH).waitForJson().sendJson({
+      messageType: WS_MESSAGE_TYPE.REQUEST_NAVIGATE, 
+      body: {
+        source: {x: "-97.045009", y: "32.899154"},
+        target: {x: "-97.044781", y: "32.89864"},
+        useAccessibleRouting: false, 
+      }
+    }).waitForJson().exec(async () => {
+      await request(server).get(TESTING_NAV_ROUTE_PATH + "/notify/amenities");
+    }).waitForJson((offerRerouteResponse: any) => {
+      return offerRerouteResponse.body.rerouteReason === REROUTE_REASON.AMENITIES_CHANGED;
+    }).close().expectClosed();
+    process.env.BUILD_VERSION = "testing";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+  }, 13 * 1000);
+  test("/notify/amenities reroute accepted works correctly", async () => {
+    //outline: set env vars -> request reset subs -> subscribe -> open ws -> send update request -> get notification via ws -> [teardown] set env vars -> reset subs
+    process.env.BUILD_VERSION = "production";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+    await setTimeout(6000);
+    await request(server as Server, WS_REQUEST_OPTIONS).ws(TESTING_NAV_ROUTE_PATH).waitForJson().sendJson({
+      messageType: WS_MESSAGE_TYPE.REQUEST_NAVIGATE, 
+      body: {
+        source: {x: "-97.045009", y: "32.899154"},
+        target: {x: "-97.044781", y: "32.89864"},
+        useAccessibleRouting: false, 
+      }
+    }).waitForJson().exec(async () => {
+      await request(server).get(TESTING_NAV_ROUTE_PATH + "/notify/amenities");
+    }).waitForJson((offerRerouteResponse: any) => {
+      return offerRerouteResponse.body.rerouteReason === REROUTE_REASON.AMENITIES_CHANGED;
+    }).sendJson({
+      messageType: WS_MESSAGE_TYPE.ACCEPT_REROUTE, 
+      body: ""
+    }).expectJson((navResponse: any) => navResponse.body.route.length > 0).close().expectClosed();
+    process.env.BUILD_VERSION = "testing";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+  }, 13 * 1000);
+  test("/notify/infrastructure successful get request with none subscribed", async () => {
+    const result = await request(server).get(TESTING_NAV_ROUTE_PATH + "/notify/infrastructure");
+    expect(result.status).toBe(200);
+  });
+  test("/notify/infrastructure successful get request with subscribers", async () => {
+    //outline: set env vars -> request reset subs -> subscribe -> open ws -> send update request -> get notification via ws -> [teardown] set env vars -> reset subs
+    process.env.BUILD_VERSION = "production";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+    await setTimeout(6000);
+    await request(server as Server, WS_REQUEST_OPTIONS).ws(TESTING_NAV_ROUTE_PATH).waitForJson().sendJson({
+      messageType: WS_MESSAGE_TYPE.REQUEST_NAVIGATE, 
+      body: {
+        source: {x: "-97.045009", y: "32.899154"},
+        target: {x: "-97.044781", y: "32.89864"},
+        useAccessibleRouting: false, 
+      }
+    }).waitForJson().exec(async () => {
+      await request(server).get(TESTING_NAV_ROUTE_PATH + "/notify/infrastructure");
+    }).waitForJson((offerRerouteResponse: any) => {
+      return offerRerouteResponse.body.rerouteReason === REROUTE_REASON.INFRASTRUCTURE_CHANGED;
+    }).close().expectClosed();
+    process.env.BUILD_VERSION = "testing";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+  }, 13 * 1000);
+  test("/resetsubscriptions successful get request with none subscribed", async () => {
+    const result = await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+    expect(result.status).toBe(200);
+  });
+  test("/resetsubscriptions successful get request with subscribers", async () => {
+    process.env.BUILD_VERSION = "production";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+    //wait for system to subscribe
+    await setTimeout(6000);
+    request(server).ws(TESTING_NAV_ROUTE_PATH).waitForJson().sendJson({
+      messageType: WS_MESSAGE_TYPE.REQUEST_NAVIGATE, 
+      body: {
+        source: {x: "-97.045009", y: "32.899154"},
+        target: {x: "-97.044781", y: "32.89864"},
+        useAccessibleRouting: false, 
+      }, 
+    }).waitForJson()
+    .sendJson({
+      messageType: WS_MESSAGE_TYPE.UPDATE_POSITION,
+      body: {
+        x: "-97.044781", 
+        y: "32.89864", 
+      }, 
+    })
+    .expectJson((offerRerouteResponse: any) => {
+      return (offerRerouteResponse.body.rerouteReason === REROUTE_REASON.LOCATION_CHANGED);
+    })
+    .close().expectClosed();
+    process.env.BUILD_VERSION = "testing";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+  }, 13 * 1000);
 });
 
 describe("Infrastructure Router Tests", () => {
@@ -178,5 +284,5 @@ describe("Infrastructure Router Tests", () => {
   test("/updatecrowd correct post body", async () => {
     const result = await request(server).post(TESTING_INFRASTRUCTURE_ROUTE_PATH + "/updatecrowd").send({id: "1", crowdLevel: "HIGH"});
     expect(result.status).toBe(200);
-  });
+  }, 10 * 1000);
 });

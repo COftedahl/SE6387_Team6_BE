@@ -35,46 +35,53 @@ const subscriptionEndpoints: {method: string, endpoint: string, reasonPath: stri
 let subscribed: boolean[] = subscriptionEndpoints.map((_) => false);
 const subscriptionBackoffIntervalsInSeconds: number[] = [ 5, 5, 20, 60, ];
 let currBackoffIntervalIndex: number = 0;
+let currTimer: NodeJS.Timeout | null = null;
 
 /* 
  * function to handle subscribing to alerts from external systems
  */
-const attemptToSubscribe = async () => {
-  for (let i = 0; i < subscriptionEndpoints.length; i += 1) {
-    const subscription = subscriptionEndpoints[i];
-    if (subscription.endpoint.length > 0 && subscription.method.length > 0) {
-      if (!subscribed[i]) {
-        try {
-          const result = await fetch(subscription.endpoint, {
-            method: subscription.method, 
-            headers: {
-              "Content-Type": "application/json",
-            }, 
-            body: JSON.stringify({ endpoint: ("http://localhost:5000/nav/notify/" + subscription.reasonPath) })
-          })
-          if (result.status === 200) {
-            subscribed[i] = true;
-            console.log("Subscribed to \"" + subscription.endpoint + "\"");
+export const attemptToSubscribe = async () => {
+  if (process.env.BUILD_VERSION !== undefined && process.env.BUILD_VERSION === "production") {
+    for (let i = 0; i < subscriptionEndpoints.length; i += 1) {
+      const subscription = subscriptionEndpoints[i];
+      if (subscription.endpoint.length > 0 && subscription.method.length > 0) {
+        if (!subscribed[i]) {
+          try {
+            const result = await fetch(subscription.endpoint, {
+              method: subscription.method, 
+              headers: {
+                "Content-Type": "application/json",
+              }, 
+              body: JSON.stringify({ endpoint: ("http://localhost:5000/nav/notify/" + subscription.reasonPath) })
+            })
+            if (result.status === 200) {
+              subscribed[i] = true;
+              console.log("Subscribed to \"" + subscription.endpoint + "\"");
+            }
+            else {
+              console.log("Error subscribing to \"" + subscription.endpoint + "\"");
+            }
           }
-          else {
-            console.log("Error subscribing to \"" + subscription.endpoint + "\"");
+          catch (e) {
+            console.log("Error subscribing to \"" + subscription.endpoint + "\" ", e);
           }
-        }
-        catch (e) {
-          console.log("Error subscribing to \"" + subscription.endpoint + "\" ", e);
         }
       }
     }
+    currBackoffIntervalIndex = Math.min(currBackoffIntervalIndex + 1, subscriptionBackoffIntervalsInSeconds.length - 1);
+    currTimer = setTimeout(async () => {
+      await attemptToSubscribe();
+    }, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
   }
-  currBackoffIntervalIndex = Math.min(currBackoffIntervalIndex + 1, subscriptionBackoffIntervalsInSeconds.length - 1);
-  setTimeout(async () => {
-    await attemptToSubscribe();
-  }, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
 }
 
-setTimeout(async () => {
-  await attemptToSubscribe();
-}, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
+export const stopTimers = () => {
+  console.log("Stopping timers");
+  if (currTimer !== null) {
+    clearInterval(currTimer);
+    console.log("Timers stopped");
+  }
+}
 
 // /*
 //  * function to get the map
@@ -267,7 +274,7 @@ navRouter.get("/notify/infrastructure", async (req, res) => {
 navRouter.get("/resetsubscriptions", async (req, res) => {
   subscribed = subscriptionEndpoints.map((_) => false);
   currBackoffIntervalIndex = 0;
-  setTimeout(async () => {
+  currTimer = setTimeout(async () => {
     await attemptToSubscribe();
   }, subscriptionBackoffIntervalsInSeconds[currBackoffIntervalIndex] * 1000);
   res.json({ message: "Subscriptions reset" });

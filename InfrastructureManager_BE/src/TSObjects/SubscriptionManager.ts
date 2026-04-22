@@ -45,13 +45,14 @@ class SubscriptionManager {
   /* 
    * function to notify all subscribers
    */
-  public static notifySubscribers = () => {
+  public static notifySubscribers = async () => {
     for (let subscriber of SubscriptionManager.subscribers) {
       try {
-        fetch(subscriber.notificationEndpoint, {method: "GET"});
+        await fetch(subscriber.notificationEndpoint, {method: "GET"});
       }
       catch (e) {
         console.log("Error notifying subscriber <" + subscriber.id + "> at endpoint \"" + subscriber.notificationEndpoint + "\"");
+        SubscriptionManager.removeSubscriber(subscriber.id);
       }
     }
   }

@@ -1,10 +1,12 @@
-import dotenv from 'dotenv';
-import { TESTING_NAVIGATION_SYSTEM, TESTING_ORIGINAL_LOG } from "./constants";
+import { afterAllTimeoutMS, beforeAllTimeoutMS, closeServerForTesting, TESTING_NAV_ROUTE_PATH, TESTING_NAVIGATION_SYSTEM, TESTING_ORIGINAL_LOG, testingBeforeAllFn } from "./constants";
 import { beforeAll, afterAll, describe, test, expect } from '@jest/globals';
 import NavigationSystem from '../src/TSObjects/NavigationSystem';
 import ILocation from '../src/Types/ILocation';
+import { Server } from 'http';
+import request from 'superwstest';
 
 const logs: string[] = [];
+let server: Server;
 
 /* 
  * eliminates console logging output during tests to unclutter the test report;
@@ -12,11 +14,8 @@ const logs: string[] = [];
  * or just run the pertient code in the afterAll function when you need to see the log
  */
 beforeAll(async () => {
-  logs.splice(0,logs.length);
-  console.log = (...args) => {
-    logs.push(args.join(' '));
-  };
-  dotenv.config();
+  const res = await testingBeforeAllFn(logs, server, "Filtering System");
+  server = res.server;
   await fetch(process.env.INFRASTRUCTURE_MANAGER_UPDATE_CROWD_LEVEL_ENDPOINT ?? "", {
     method: process.env.INFRASTRUCTURE_MANAGER_UPDATE_CROWD_LEVEL_ENDPOINT_METHOD ?? "", 
     headers: {
@@ -26,14 +25,15 @@ beforeAll(async () => {
   }).catch(() => {
     throw new Error("Failed to set the data in the infrastructure manager external system - make sure the system is running before executing API tests.")
   });
-});
+}, beforeAllTimeoutMS);
 
 /* 
  * restores the console.log function to regular operation
  */
 afterAll(async () => {
   console.log = TESTING_ORIGINAL_LOG;
-});
+  await closeServerForTesting(server as Server, "Filtering system");
+}, afterAllTimeoutMS);
 
 //NOTE: the navigation external system must be running for these tests
 describe("Navigation System unit tests", () => {
@@ -66,5 +66,28 @@ describe("Navigation System unit tests", () => {
     let route: any = carryData.route;
     expect(route.length).toBe(0);
     TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
+  });
+  test("navigate fails on invalid navID", async () => {
+    expect(async () => {
+      await TESTING_NAVIGATION_SYSTEM.navigate({x: "-97.0419", y: "32.897257"},{x: "-97.0419", y: "32.897257"},false,"ABC999");
+    }).rejects.toThrow();
+  });
+  test("reroute fails on invalid navID", async () => {
+    expect(async () => {
+      await TESTING_NAVIGATION_SYSTEM.reroute("ABC999", {
+        source: {x: "-97.0419", y: "32.897257"},
+        target: {x: "-97.0419", y: "32.897257"},
+        route: [{x: "-97.0419", y: "32.897257"}],
+        instructions: []
+      });
+    }).rejects.toThrow();
+  });
+  test("reroute fails on no saved path", async () => {
+    let navID: string = "";
+    request(server).ws(TESTING_NAV_ROUTE_PATH).waitForJson((response) => navID = response).exec(async () => {
+      expect(async () => {
+        await TESTING_NAVIGATION_SYSTEM.reroute(navID);
+      }).rejects.toThrow();
+    }).close().expectClosed();
   });
 });

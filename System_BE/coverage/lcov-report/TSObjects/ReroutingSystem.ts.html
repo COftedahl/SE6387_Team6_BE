@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>10/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.14% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/14</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,27 +107,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,27 +141,27 @@ class ReroutingSystem {
    * @param oldPath: IPath containing the old path
    * @return: boolean indicating whether new path should be taken
    */
-  public checkShouldReroute = <span class="fstat-no" title="function not covered" >(n</span>ewPath: IPath, oldPath: IPath): boolean =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (newPath.route.length &lt; 1) {</span>
-<span class="cstat-no" title="statement not covered" >      return false;</span>
+  public checkShouldReroute = (newPath: IPath, oldPath: IPath): boolean =&gt; {
+    if (newPath.route.length &lt; 1) {
+      return false;
     }
-    const indexOfNewFirstLegInOldPath: number = <span class="cstat-no" title="statement not covered" >oldPath.route.findIndex(<span class="fstat-no" title="function not covered" >(c</span>urr: ILocation) =&gt; <span class="cstat-no" title="statement not covered" >JSON.stringify(curr) === JSON.stringify(newPath.route[0]))</span> ?? -1;</span>
-    const indexOfOldFirstLegInNewPath: number = <span class="cstat-no" title="statement not covered" >newPath.route.findIndex(<span class="fstat-no" title="function not covered" >(c</span>urr: ILocation) =&gt; <span class="cstat-no" title="statement not covered" >JSON.stringify(curr) === JSON.stringify(oldPath.route[0]))</span> ?? -1;</span>
-    const maxIndexOfCommonLeg: number = <span class="cstat-no" title="statement not covered" >Math.max(indexOfNewFirstLegInOldPath, indexOfOldFirstLegInNewPath);</span>
-    const oldPathIndexAdjustment: number = (<span class="cstat-no" title="statement not covered" >maxIndexOfCommonLeg === indexOfNewFirstLegInOldPath ? 0 : maxIndexOfCommonLeg)</span>;
-    const newPathIndexAdjustment: number = (<span class="cstat-no" title="statement not covered" >maxIndexOfCommonLeg === indexOfOldFirstLegInNewPath ? 0 : maxIndexOfCommonLeg)</span>;
+    const indexOfNewFirstLegInOldPath: number = oldPath.route.findIndex((curr: ILocation) =&gt; JSON.stringify(curr) === JSON.stringify(newPath.route[0])) ?? <span class="branch-1 cbranch-no" title="branch not covered" >-1;</span>
+    const indexOfOldFirstLegInNewPath: number = newPath.route.findIndex((curr: ILocation) =&gt; JSON.stringify(curr) === JSON.stringify(oldPath.route[0])) ?? <span class="branch-1 cbranch-no" title="branch not covered" >-1;</span>
+    const maxIndexOfCommonLeg: number = Math.max(indexOfNewFirstLegInOldPath, indexOfOldFirstLegInNewPath);
+    const oldPathIndexAdjustment: number = (maxIndexOfCommonLeg === indexOfNewFirstLegInOldPath ? 0 : <span class="branch-1 cbranch-no" title="branch not covered" >maxIndexOfCommonLeg)</span>;
+    const newPathIndexAdjustment: number = (maxIndexOfCommonLeg === indexOfOldFirstLegInNewPath ? 0 : <span class="branch-1 cbranch-no" title="branch not covered" >maxIndexOfCommonLeg)</span>;
     //after getting the maxIndexOfCommonLeg, if &lt; 0 then suggest reroute; else check each leg from that index on to see if matches with old route; if any different then suggest reroute
-<span class="cstat-no" title="statement not covered" >    if (maxIndexOfCommonLeg &lt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >      return true;</span>
+    if (maxIndexOfCommonLeg &lt; 0) {
+      return true;
     }
-<span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >maxIndexOfCommonLeg;</span> i &lt; newPath.route.length; i += 1) {</span>
+    for (let i = maxIndexOfCommonLeg; i &lt; newPath.route.length; i += 1) {
       //check if the current legs being compared are different
-<span class="cstat-no" title="statement not covered" >      if (JSON.stringify(newPath.route[i + newPathIndexAdjustment]) !== JSON.stringify(oldPath.route[i + oldPathIndexAdjustment])) {</span>
-<span class="cstat-no" title="statement not covered" >        return true;</span>
+      if (JSON.stringify(newPath.route[i + newPathIndexAdjustment]) !== JSON.stringify(oldPath.route[i + oldPathIndexAdjustment])) {
+        return true;
       }
     }
     //if all remaining legs of the route are the same, we say the new route is equivalent to the old route and no need to reroute
-<span class="cstat-no" title="statement not covered" >    return false;</span>
+    return false;
   }
 }
 &nbsp;
@@ -172,7 +172,7 @@ export default ReroutingSystem;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-18T14:45:02.637Z
+                at 2026-04-22T20:16:55.590Z
             </div>
         <script src="../prettify.js"></script>
         <script>

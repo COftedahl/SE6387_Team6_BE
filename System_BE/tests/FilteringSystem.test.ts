@@ -1,27 +1,28 @@
 import AMENITY_TYPE from '../src/Types/AmenityType';
-import { testAmenity1, testAmenity2, testAmenity3, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_FILTERING_SYSTEM, TESTING_ORIGINAL_LOG } from './constants';
+import { afterAllTimeoutMS, beforeAllTimeoutMS, closeServerForTesting, testAmenity1, testAmenity2, testAmenity3, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_FILTERING_SYSTEM, TESTING_ORIGINAL_LOG, testingBeforeAllFn } from './constants';
 import { beforeAll, afterAll, describe, test, expect } from '@jest/globals';
+import { Server } from 'http';
 
 const logs: string[] = [];
+let server: Server;
 
 /* 
  * eliminates console logging output during tests to unclutter the test report;
  * if need to see console logs during tests, then comment out the beforeAll function 
  * or just run the pertient code in the afterAll function when you need to see the log
  */
-beforeAll(() => {
-  logs.splice(0,logs.length);
-  console.log = (...args) => {
-    logs.push(args.join(' '));
-  };
-});
+beforeAll(async () => {
+  const res = await testingBeforeAllFn(logs, server, "Filtering System");
+  server = res.server;
+}, beforeAllTimeoutMS);
 
 /* 
  * restores the console.log function to regular operation
  */
-afterAll(() => {
+afterAll(async () => {
   console.log = TESTING_ORIGINAL_LOG;
-});
+  await closeServerForTesting(server as Server, "Filtering system");
+}, afterAllTimeoutMS);
 
 describe("Filtering System unit tests", () => {
   test("get available amenities succeeds with no filters", async () => {

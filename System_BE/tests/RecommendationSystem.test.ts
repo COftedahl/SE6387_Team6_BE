@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
-import { testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_ORIGINAL_LOG, TESTING_RECOMMENDATION_SYSTEM } from "./constants";
+import { afterAllTimeoutMS, closeServerForTesting, testAmenityDetails1, testAmenityDetails2, testAmenityDetails3, TESTING_ORIGINAL_LOG, TESTING_RECOMMENDATION_SYSTEM, testingBeforeAllFn } from "./constants";
 import { beforeAll, afterAll, describe, test, expect } from '@jest/globals';
 import AMENITY_SORTING_TYPE from '../src/Types/AmenitySortingType';
+import { request, Server } from 'http';
 
 const logs: string[] = [];
+let server: Server;
 
 /* 
  * eliminates console logging output during tests to unclutter the test report;
@@ -11,11 +13,8 @@ const logs: string[] = [];
  * or just run the pertient code in the afterAll function when you need to see the log
  */
 beforeAll(async () => {
-  logs.splice(0,logs.length);
-  console.log = (...args) => {
-    logs.push(args.join(' '));
-  };
-  dotenv.config();
+  const res = await testingBeforeAllFn(logs, server, "Filtering System");
+  server = res.server;
   await fetch(process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT ?? "", {
     method: process.env.AMENITY_MANAGER_SET_AMENITY_DETAILS_ENDPOINT_METHOD ?? "", 
     headers: {
@@ -41,7 +40,8 @@ beforeAll(async () => {
  */
 afterAll(async () => {
   console.log = TESTING_ORIGINAL_LOG;
-});
+  await closeServerForTesting(server as Server, "Filtering system");
+}, afterAllTimeoutMS);
 
 //NOTE: the amenity manager and navigation external systems must be running for these tests
 describe("Recommendation System unit tests", () => {
