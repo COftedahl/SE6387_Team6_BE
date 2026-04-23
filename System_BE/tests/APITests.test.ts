@@ -215,6 +215,25 @@ describe("Nav Router Tests", () => {
     process.env.BUILD_VERSION = "testing";
     await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
   }, 13 * 1000);
+  test("websocket reroute accepted without saved route fails", async () => {
+    //outline: set env vars -> request reset subs -> subscribe -> open ws -> send update request -> get notification via ws -> [teardown] set env vars -> reset subs
+    process.env.BUILD_VERSION = "production";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+    await setTimeout(6000);
+    await request(server as Server, WS_REQUEST_OPTIONS).ws(TESTING_NAV_ROUTE_PATH).waitForJson().sendJson({
+      messageType: WS_MESSAGE_TYPE.REQUEST_NAVIGATE, 
+      body: {
+        source: {x: "-97.045009", y: "32.899154"},
+        target: {x: "-97.044781", y: "32.89864"},
+        useAccessibleRouting: false, 
+      }
+    }).waitForJson().sendJson({
+      messageType: WS_MESSAGE_TYPE.ACCEPT_REROUTE, 
+      body: ""
+    }).wait(500).close().expectClosed();
+    process.env.BUILD_VERSION = "testing";
+    await request(server).get(TESTING_NAV_ROUTE_PATH + "/resetsubscriptions");
+  }, 13 * 1000);
   test("/notify/infrastructure successful get request with none subscribed", async () => {
     const result = await request(server).get(TESTING_NAV_ROUTE_PATH + "/notify/infrastructure");
     expect(result.status).toBe(200);
@@ -253,7 +272,7 @@ describe("Nav Router Tests", () => {
       body: {
         source: {x: "-97.045009", y: "32.899154"},
         target: {x: "-97.044781", y: "32.89864"},
-        useAccessibleRouting: false, 
+        useAccessibleRouting: true, 
       }, 
     }).waitForJson()
     .sendJson({

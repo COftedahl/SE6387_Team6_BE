@@ -228,7 +228,7 @@ class NavigationSystem {
    * @param newLocation: ILocation with user's new location
    * SIDE EFFECTS: may send OFFER_REROUTE message to the corresponding connection
    */
-  public updateLocation = async (navID: string, newLocation: ILocation) => {
+  public updateLocation = (navID: string, newLocation: ILocation) => {
     const updating: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
     if (updating !== undefined) {
       updating.currentLocation = newLocation;

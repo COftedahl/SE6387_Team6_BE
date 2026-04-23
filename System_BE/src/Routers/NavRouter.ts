@@ -16,10 +16,10 @@ import AmenityManager from '../TSObjects/AmenityManager';
 dotenv.config();
 const navRouter = new Router();
 //initialize all objects needed by the router once to be used for the duration of the server
-const amenityManager: AmenityManager = new AmenityManager();
-const filteringSystem: FilteringSystem = new FilteringSystem(amenityManager);
-const recommendationSystem: RecommendationSystem = new RecommendationSystem(filteringSystem);
-const navigationSystem: NavigationSystem = new NavigationSystem(recommendationSystem);
+export const amenityManager: AmenityManager = new AmenityManager();
+export const filteringSystem: FilteringSystem = new FilteringSystem(amenityManager);
+export const recommendationSystem: RecommendationSystem = new RecommendationSystem(filteringSystem);
+export const navigationSystem: NavigationSystem = new NavigationSystem(recommendationSystem);
 const subscriptionEndpoints: {method: string, endpoint: string, reasonPath: string}[] = [
   {
     method: process.env.AMENITY_MANAGER_SUBSCRIBE_ENDPOINT_METHOD ?? "", 

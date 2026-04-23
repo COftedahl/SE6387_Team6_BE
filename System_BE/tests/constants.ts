@@ -166,9 +166,9 @@ export const testingBeforeAllFn = async (logs: string[], server: Server | null, 
   jest.resetModules();
   await setTimeout(preTestWaitTimeMS);
   logs.splice(0,logs.length);
-  console.log = (...args) => {
-    logs.push(args.join(' '));
-  };
+  // console.log = (...args) => {
+  //   logs.push(args.join(' '));
+  // };
   dotenv.config();
   process.env.BUILD_VERSION = "testing";
   server = await setupApp(0);
