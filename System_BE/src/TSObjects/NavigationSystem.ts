@@ -168,24 +168,24 @@ class NavigationSystem {
       //check if user is currently navigating
       if (updating.currentLocation !== null && updating.target !== null && updating.currentPath !== null) {
         //check if there is a more optimal amenity to route to instead of the one currently routing to
-        const recommendedAmenities: IAmenity[] = await this.recommendationSystem.getMapSuggestions([{filterKey: "status", value: "OPEN"}, {filterKey: "currentAvailableSlots", value: {ge: 1}}], updating.currentLocation, AMENITY_SORTING_TYPE.BEST_ROUTE);
-        if (recommendedAmenities.length > 0 && JSON.stringify(recommendedAmenities[0].location) !== JSON.stringify(updating.target)) {
-          //new amenity -> user should reroute
-          const newPath: IPath = await this.getPath(updating.currentLocation, recommendedAmenities[0].location, updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
-          //save data to use if accept route later
-            updating.suggestedPath = newPath;
-            //send OFFER_REROUTE message
-            const rerouteMessageBody: IWSOfferRerouteMessageBody = {
-              newRoute: newPath,
-              rerouteReason: reason, 
-            }
-            const offerRerouteMessage: IWSMessage = {
-              messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
-              body: rerouteMessageBody, 
-            }
-            updating.connection.send(JSON.stringify(offerRerouteMessage));
-        }
-        else {
+        // const recommendedAmenities: IAmenity[] = await this.recommendationSystem.getMapSuggestions([{filterKey: "status", value: "OPEN"}, {filterKey: "currentAvailableSlots", value: {ge: 1}}], updating.currentLocation, AMENITY_SORTING_TYPE.BEST_ROUTE);
+        // if (recommendedAmenities.length > 0 && JSON.stringify(recommendedAmenities[0].location) !== JSON.stringify(updating.target)) {
+        //   //new amenity -> user should reroute
+        //   const newPath: IPath = await this.getPath(updating.currentLocation, recommendedAmenities[0].location, updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
+        //   //save data to use if accept route later
+        //     updating.suggestedPath = newPath;
+        //     //send OFFER_REROUTE message
+        //     const rerouteMessageBody: IWSOfferRerouteMessageBody = {
+        //       newRoute: newPath,
+        //       rerouteReason: reason, 
+        //     }
+        //     const offerRerouteMessage: IWSMessage = {
+        //       messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
+        //       body: rerouteMessageBody, 
+        //     }
+        //     updating.connection.send(JSON.stringify(offerRerouteMessage));
+        // }
+        // else {
           //check if we need to reroute user
           const newPath: IPath = await this.getPath(updating.currentLocation, updating.target , updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
           const shouldReroute: boolean = this.reroutingSystem.checkShouldReroute(newPath, updating.currentPath);
@@ -203,7 +203,7 @@ class NavigationSystem {
             }
             updating.connection.send(JSON.stringify(offerRerouteMessage));
           }
-        }
+        // }
       }
     }
     else {
