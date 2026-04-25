@@ -82,7 +82,11 @@ class RecommendationSystem {
         );
       default: 
       case AMENITY_SORTING_TYPE.LEAST_WAIT_TIME: 
-        return (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => (a.status !== AMENITY_STATUS.OPEN ? 1 : (a.currentAvailableSlots > b.currentAvailableSlots ? -1 : 1));
+        return (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => (a.status !== AMENITY_STATUS.OPEN ? 1 : 
+          (b.status !== AMENITY_STATUS.OPEN ? -1 : 
+            (a.currentAvailableSlots > b.currentAvailableSlots ? -1 : 1)
+          )
+        );
     }
   }
 }
