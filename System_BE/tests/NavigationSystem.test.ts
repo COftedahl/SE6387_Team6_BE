@@ -7,6 +7,8 @@ import REROUTE_REASON from "../src/Types/RerouteReason";
 import AMENITY_SORTING_TYPE from "../src/Types/AmenitySortingType";
 import IFilter from "../src/Types/IFilter";
 import IAmenity from "../src/Types/IAmenity";
+import IPath from "../src/Types/IPath";
+import WS_MESSAGE_TYPE from "../src/Types/_for_websockets/WSMessageType";
 
 const logs: string[] = [];
 let server: Server;
@@ -47,7 +49,8 @@ describe("Navigation System unit tests", () => {
     expect((await TESTING_NAVIGATION_SYSTEM.getMap({x: "-97.0419", y: "32.897257"}, 18)).length).toBeGreaterThanOrEqual(1);
   });
   test("get path returns non-empty string", async () => {
-    expect((await TESTING_NAVIGATION_SYSTEM.getPath({x: "-97.0419", y: "32.897257"},{x: "-97.0419", y: "32.897257"}, false)).route.length).toBeGreaterThanOrEqual(1);
+    const result: IPath | null = (await TESTING_NAVIGATION_SYSTEM.getPath({x: "-97.0419", y: "32.897257"},{x: "-97.0419", y: "32.897257"}, false));
+    expect((result as IPath).route.length).toBeGreaterThanOrEqual(1);
   });
   test("tileNumToLatLon returns correct values", async () => {
     const testLat: number = 32.897257;
@@ -87,7 +90,7 @@ describe("Navigation System unit tests", () => {
     }).rejects.toThrow();
   });
   test("update location with invalid navID fails", async () => {
-    expect(() => {TESTING_NAVIGATION_SYSTEM.updateLocation("ABC999", {x: "1", y: "2"})}).toThrow();
+    expect(async () => {await TESTING_NAVIGATION_SYSTEM.updateLocation("ABC999", {x: "1", y: "2"})}).rejects.toThrow();
   });
   test("check for reroute operates correctly if no reroute is needed", async () => {
     const testConnection: any = {};
@@ -100,9 +103,11 @@ describe("Navigation System unit tests", () => {
     }
     // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
     const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
-    await TESTING_NAVIGATION_SYSTEM.navigate({x: "1", y: "1"}, {x: "1", y: "1"}, false, navID);
+    console.log("received NAVID = " + navID);
+    await TESTING_NAVIGATION_SYSTEM.navigate({x: "2", y: "2"}, {x: "2", y: "2"}, false, navID);
     carryData = "";
     await TESTING_NAVIGATION_SYSTEM.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
+    TESTING_ORIGINAL_LOG("Carry Data: ", carryData);
     expect(carryData.length).toBe(0);
     TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
     TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = OLD_MAP_SUGGESTIONS_FN;
@@ -129,6 +134,112 @@ describe("Navigation System unit tests", () => {
   test("check for reroute with invalid navID fails", async () => {
     expect(async () => {
       await (TESTING_NAVIGATION_SYSTEM.checkForReroute("ABC999", REROUTE_REASON.LOCATION_CHANGED));
-  }).rejects.toThrow();
+    }).rejects.toThrow();
+  });
+  test("check for reroute operates correctly with no recommended amenities and no matching amenity", async () => {
+    const testConnection: any = {};
+    let carryData: any = "";
+    let messageType: WS_MESSAGE_TYPE | null = null;
+    testConnection.close = (..._data: any) => {};
+    testConnection.send = (data: any) => {carryData = carryData + JSON.stringify(JSON.parse(data).body); messageType = JSON.parse(data).messageType};
+    const OLD_MAP_SUGGESTIONS_FN = TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions;
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = async (_a: IFilter[], _b: ILocation, _c: AMENITY_SORTING_TYPE): Promise<IAmenity[]> => {
+      return []
+    }
+    // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
+    const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
+    await TESTING_NAVIGATION_SYSTEM.navigate({x: "0", y: "0"}, {x: "100", y: "89"}, false, navID);
+    carryData = "";
+    await TESTING_NAVIGATION_SYSTEM.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
+    expect(carryData.length).toBe(0);
+    TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = OLD_MAP_SUGGESTIONS_FN;
+  });
+  test("check for reroute operates correctly with no recommended amenities", async () => {
+    const testConnection: any = {};
+    let carryData: any = "";
+    let messageType: WS_MESSAGE_TYPE | null = null;
+    testConnection.close = (..._data: any) => {};
+    testConnection.send = (data: any) => {carryData = carryData + JSON.stringify(JSON.parse(data).body); messageType = JSON.parse(data).messageType};
+    const OLD_MAP_SUGGESTIONS_FN = TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions;
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = async (_a: IFilter[], _b: ILocation, _c: AMENITY_SORTING_TYPE): Promise<IAmenity[]> => {
+      return []
+    }
+    // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
+    const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
+    await TESTING_NAVIGATION_SYSTEM.navigate({x: "2", y: "2"}, {x: "2", y: "2"}, false, navID);
+    const OLD_NAVIGATE_FN = TESTING_NAVIGATION_SYSTEM.getPath;
+    TESTING_NAVIGATION_SYSTEM.getPath = async (_source: ILocation, _target: ILocation, _useAccessibleRouting?: boolean): Promise<IPath | null> => {
+      return null
+    }
+    carryData = "";
+    await TESTING_NAVIGATION_SYSTEM.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
+    expect(carryData.length).toBe(0);
+    TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = OLD_MAP_SUGGESTIONS_FN;
+    TESTING_NAVIGATION_SYSTEM.getPath = OLD_NAVIGATE_FN;
+  });
+  test("check for reroute operates correctly with recommended amenities and null path", async () => {
+    const testConnection: any = {};
+    let carryData: any = "";
+    let messageType: WS_MESSAGE_TYPE | null = null;
+    testConnection.close = (..._data: any) => {};
+    testConnection.send = (data: any) => {carryData = carryData + JSON.stringify(JSON.parse(data).body); messageType = JSON.parse(data).messageType};
+    const OLD_MAP_SUGGESTIONS_FN = TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions;
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = async (_a: IFilter[], _b: ILocation, _c: AMENITY_SORTING_TYPE): Promise<IAmenity[]> => {
+      return [testAmenity1, testAmenity2, testAmenity3]
+    }
+    // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
+    const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
+    await TESTING_NAVIGATION_SYSTEM.navigate({x: "2", y: "2"}, {x: "2", y: "2"}, false, navID);
+    const OLD_NAVIGATE_FN = TESTING_NAVIGATION_SYSTEM.getPath;
+    TESTING_NAVIGATION_SYSTEM.getPath = async (_source: ILocation, _target: ILocation, _useAccessibleRouting?: boolean): Promise<IPath | null> => {
+      return null
+    }
+    carryData = "";
+    await TESTING_NAVIGATION_SYSTEM.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
+    expect(carryData.length).toBe(0);
+    TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = OLD_MAP_SUGGESTIONS_FN;
+    TESTING_NAVIGATION_SYSTEM.getPath = OLD_NAVIGATE_FN;
+  });
+  test("check for reroute operates correctly with matching amenity and valid route", async () => {
+    const testConnection: any = {};
+    let carryData: any = "";
+    let messageType: WS_MESSAGE_TYPE | null = null;
+    testConnection.close = (..._data: any) => {};
+    testConnection.send = (data: any) => {carryData = carryData + JSON.stringify(JSON.parse(data).body); messageType = JSON.parse(data).messageType};
+    const OLD_MAP_SUGGESTIONS_FN = TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions;
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = async (_a: IFilter[], _b: ILocation, _c: AMENITY_SORTING_TYPE): Promise<IAmenity[]> => {
+      return [testAmenity1, testAmenity2, testAmenity3]
+    }
+    // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
+    const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
+    await TESTING_NAVIGATION_SYSTEM.navigate({x: "2", y: "2"}, {x: "2", y: "2"}, false, navID);
+    carryData = "";
+    await TESTING_NAVIGATION_SYSTEM.updateLocation(navID, {x: "-94", y: "35"});//this line already calls checkForReroute
+    // await TESTING_NAVIGATION_SYSTEM.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
+    console.log(carryData);
+    expect(messageType).toBe(WS_MESSAGE_TYPE.OFFER_REROUTE);
+    TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
+    TESTING_RECOMMENDATION_SYSTEM.getMapSuggestions = OLD_MAP_SUGGESTIONS_FN;
+  });
+  test("navigate sends correct message on no route available", async () => {
+    const testConnection: any = {};
+    let carryData: any = "";
+    let messageType: WS_MESSAGE_TYPE | null = null;
+    testConnection.close = (..._data: any) => {};
+    testConnection.send = (data: any) => {carryData = carryData + JSON.stringify(JSON.parse(data).body); messageType = JSON.parse(data).messageType};
+    const OLD_NAVIGATE_FN = TESTING_NAVIGATION_SYSTEM.getPath;
+    TESTING_NAVIGATION_SYSTEM.getPath = async (_source: ILocation, _target: ILocation, _useAccessibleRouting?: boolean): Promise<IPath | null> => {
+      return null
+    }
+    // testConnection.on = (eventName: string, callback: ((data: any) => void)) => {};
+    const navID: string = TESTING_NAVIGATION_SYSTEM.initializeConnection(testConnection);
+    await TESTING_NAVIGATION_SYSTEM.navigate({x: "0", y: "0"}, {x: "100", y: "89"}, false, navID);
+    console.log("Carry data: ", carryData);
+    expect(messageType).toBe(WS_MESSAGE_TYPE.ROUTING_FAILED);
+    TESTING_NAVIGATION_SYSTEM.endNavigation(navID);
+    TESTING_NAVIGATION_SYSTEM.getPath = OLD_NAVIGATE_FN;
   });
 });

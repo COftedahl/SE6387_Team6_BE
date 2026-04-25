@@ -19,7 +19,8 @@ const navRouter = new Router();
 export const amenityManager: AmenityManager = new AmenityManager();
 export const filteringSystem: FilteringSystem = new FilteringSystem(amenityManager);
 export const recommendationSystem: RecommendationSystem = new RecommendationSystem(filteringSystem);
-export const navigationSystem: NavigationSystem = new NavigationSystem(recommendationSystem);
+// export const navigationSystem: NavigationSystem = new NavigationSystem(recommendationSystem);
+export const navigationSystem: NavigationSystem = new NavigationSystem(filteringSystem, recommendationSystem);
 const subscriptionEndpoints: {method: string, endpoint: string, reasonPath: string}[] = [
   {
     method: process.env.AMENITY_MANAGER_SUBSCRIBE_ENDPOINT_METHOD ?? "", 
@@ -244,28 +245,40 @@ navRouter.ws('/', async (req, res) => {
  * function to notify the navigation system about an update from the amenities system
  */
 navRouter.get("/notify/amenities", async (req, res) => {
-  console.log("Received notification from amenities BE");
-  try {
-    navigationSystem.checkAllForReroute(REROUTE_REASON.AMENITIES_CHANGED);
-    res.json({ message: "Checked all for reroutes from amenities change" });
+  const notify = async () => {
+    console.log("Received notification from amenities BE");
+    try {
+      navigationSystem.checkAllForReroute(REROUTE_REASON.AMENITIES_CHANGED);
+      res.json({ message: "Checked all for reroutes from amenities change" });
+    }
+    catch (e) {
+      console.log("Error checking for reroutes ", e);
+      setTimeout(() => {
+        notify();
+      }, 7 * 1000);
+    }
   }
-  catch (e) {
-    console.log("Error checking for reroutes ", e);
-  }
+  notify();
 })
 
 /*
  * function to notify the navigation system about an update from the amenities system
  */
 navRouter.get("/notify/infrastructure", async (req, res) => {
-  console.log("Received notification from infrastructure BE");
-  try {
-    navigationSystem.checkAllForReroute(REROUTE_REASON.INFRASTRUCTURE_CHANGED);
-    res.json({ message: "Checked all for reroutes from infrastructure change" });
+  const notify = async () => {
+    console.log("Received notification from infrastructure BE");
+    try {
+      await navigationSystem.checkAllForReroute(REROUTE_REASON.INFRASTRUCTURE_CHANGED);
+      res.json({ message: "Checked all for reroutes from infrastructure change" });
+    }
+    catch (e) {
+      console.log("Error checking for reroutes ", e);
+      setTimeout(() => {
+        notify();
+      }, 7 * 1000);
+    }
   }
-  catch (e) {
-    console.log("Error checking for reroutes ", e);
-  }
+  notify();
 })
 
 /*

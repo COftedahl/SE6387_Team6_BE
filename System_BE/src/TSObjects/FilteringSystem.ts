@@ -51,26 +51,40 @@ class FilteringSystem {
    */
   private filter = (amenities: IAmenity[], filters: IFilter[]): IAmenity[] => {
     return amenities.filter((amenity: IAmenity) => filters.reduce((accumValue: boolean, currFilter: IFilter) => {
+      let filterKey: string = currFilter.filterKey;
+      let currObj: any = amenity;
+      while (filterKey.includes(".")) {
+        const index: number = filterKey.indexOf(".");
+        const currField: string = filterKey.substring(0, index);
+        if (currObj[currField] !== undefined) {
+          currObj = currObj[currField];
+          filterKey = filterKey.substring(index + 1);
+        }
+        else {
+          //field searching for does not exist
+          return false;
+        }
+      }
       if (typeof currFilter.value === "string") {
         return (
-          accumValue && (amenity as any)[currFilter.filterKey] !== undefined && (amenity as any)[currFilter.filterKey] === currFilter.value
+          accumValue && (currObj)[filterKey] !== undefined && (currObj)[filterKey] === currFilter.value
         )
       }
       else {
-        if (currFilter.filterKey !== undefined && (amenity as any)[currFilter.filterKey] !== undefined) {
+        if (currObj !== undefined && (currObj)[filterKey] !== undefined) {
           //binary operand filter
           let filterSatisfied: boolean = true;
           if (currFilter.value.gt !== undefined) {
-            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] > currFilter.value.gt
+            filterSatisfied = filterSatisfied && (currObj)[filterKey] > currFilter.value.gt
           }
           if (currFilter.value.ge !== undefined) {
-            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] >= currFilter.value.ge
+            filterSatisfied = filterSatisfied && (currObj)[filterKey] >= currFilter.value.ge
           }
           if (currFilter.value.le !== undefined) {
-            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] <= currFilter.value.le
+            filterSatisfied = filterSatisfied && (currObj)[filterKey] <= currFilter.value.le
           }
           if (currFilter.value.lt !== undefined) {
-            filterSatisfied = filterSatisfied && (amenity as any)[currFilter.filterKey] < currFilter.value.lt
+            filterSatisfied = filterSatisfied && (currObj)[filterKey] < currFilter.value.lt
           }
           return accumValue && filterSatisfied;
         }

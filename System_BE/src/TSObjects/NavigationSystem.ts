@@ -4,10 +4,12 @@ import IWSOfferRerouteMessageBody from "../Types/_for_websockets/IWSOfferReroute
 import WS_MESSAGE_TYPE from "../Types/_for_websockets/WSMessageType";
 import AMENITY_SORTING_TYPE from "../Types/AmenitySortingType";
 import IAmenity from "../Types/IAmenity";
+import IAmenityDetails from "../Types/IAmenityDetails";
 import ILocation from "../Types/ILocation";
 import IPath from "../Types/IPath";
 import ITileNumber from "../Types/ITileNumber";
 import REROUTE_REASON from "../Types/RerouteReason";
+import FilteringSystem from "./FilteringSystem";
 import RecommendationSystem from "./RecommendationSystem";
 import ReroutingSystem from "./ReroutingSystem";
 
@@ -16,10 +18,13 @@ class NavigationSystem {
   private static readonly NAV_ID_PREFIX: string = "NAVID_";
   private nextNavID: number = 1;
   private reroutingSystem: ReroutingSystem;
+  private filteringSystem: FilteringSystem;
   private recommendationSystem: RecommendationSystem;
 
-  constructor(recommendationSystem: RecommendationSystem) {
+  // constructor(recommendationSystem: RecommendationSystem) {
+  constructor(filteringSystem: FilteringSystem, recommendationSystem: RecommendationSystem) {
     this.recommendationSystem = recommendationSystem;
+    this.filteringSystem = filteringSystem;
     this.reroutingSystem = new ReroutingSystem();
   }
   /* 
@@ -76,20 +81,30 @@ class NavigationSystem {
    * @return: IPath containing the path to use for navigation
    * SIDE EFFECTS: sends PATH message to the corresponding connection
    */
-  public navigate = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean, navID: string): Promise<IPath> => {
+  public navigate = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean, navID: string): Promise<IPath | null> => {
     const connection: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
     if (connection !== undefined) {
-      const path: IPath = await this.getPath(source, target, useAccessibleRouting);
-      connection.currentLocation = source;
-      connection.target = target;
-      connection.currentPath = path;
-      connection.usingAccessibleRouting = useAccessibleRouting;
-      const pathMessage: IWSMessage = {
-        messageType: WS_MESSAGE_TYPE.SEND_PATH, 
-        body: path, 
+      const path: IPath | null = await this.getPath(source, target, useAccessibleRouting);
+      if (path !== null) {
+        connection.currentLocation = source;
+        connection.target = target;
+        connection.currentPath = path;
+        connection.usingAccessibleRouting = useAccessibleRouting;
+        const pathMessage: IWSMessage = {
+          messageType: WS_MESSAGE_TYPE.SEND_PATH, 
+          body: path, 
+        }
+        connection.connection.send(JSON.stringify(pathMessage));
+        return path
       }
-      connection.connection.send(JSON.stringify(pathMessage));
-      return path
+      else {
+        const routingFailedMessage: IWSMessage = {
+          messageType: WS_MESSAGE_TYPE.ROUTING_FAILED, 
+          body: "No route available",
+        };
+        connection.connection.send(JSON.stringify(routingFailedMessage));
+        return null;
+      }
     }
     else {
       throw new Error("Invalid NavID \"" + navID + "\" for navigate request");
@@ -103,25 +118,33 @@ class NavigationSystem {
    * @param useAccessibleRouting: boolean indicating whether accessible routing is needed
    * @return: IPath to follow
    */
-  public getPath = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean): Promise<IPath> => {
-    const result = await fetch((process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT ?? "") + 
-      (source.x + "," + source.y) + ";" + (target.x + "," + target.y)
-      + "?steps=true"
-      + (useAccessibleRouting ? "&exclude=inaccessible" : ""), 
-      {
-        method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
-      }
-    ).then((res) => res.json());
-    return {
-      source: source, 
-      target: target, 
-      route: result.routes[0].legs.map((leg: any) => { 
-        return leg.steps.map((step: any) => step.intersections.map((intersection: any) => {return {x: intersection.location[0], y: intersection.location[1]}})).flat()
-      }).flat(),
-      instructions: result.routes[0].legs.map((leg: any) => {
-        return leg.steps.map((step: any) => ((step.distance ? (step.distance + " meters straight, then ") : "") + (step.maneuver.modifier ? step.maneuver.modifier : "straight"))).flat()
-      }).flat(), 
-    };
+  public getPath = async (source: ILocation, target: ILocation, useAccessibleRouting: boolean): Promise<IPath | null> => {
+    console.log("Fetching path: ", source , " to ", target);
+    try {
+      const result = await fetch((process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT ?? "") + 
+        (source.x + "," + source.y) + ";" + (target.x + "," + target.y)
+        + "?steps=true"
+        + (useAccessibleRouting ? "&exclude=inaccessible" : ""), 
+        {
+          method: process.env.NAVIGATION_SYSTEM_NAV_ENDPOINT_METHOD ?? "GET", 
+        }
+      ).then((res) => {console.log("Fetched result"); return res;}).then(async (res) => await res.json());
+      console.log("JSON parsed result");
+      return {
+        source: source, 
+        target: target, 
+        route: result.routes[0].legs.map((leg: any) => { 
+          return leg.steps.map((step: any) => step.intersections.map((intersection: any) => {return {x: intersection.location[0], y: intersection.location[1]}})).flat()
+        }).flat(),
+        instructions: result.routes[0].legs.map((leg: any) => {
+          return leg.steps.map((step: any) => ((step.distance ? (step.distance + " meters straight, then ") : "") + (step.maneuver.modifier ? step.maneuver.modifier : "straight"))).flat()
+        }).flat(), 
+      };
+    }
+    catch (e) {
+      //if fetch fails, or if no valid route is found, return  null
+      return null;
+    }
   }
 
   /* 
@@ -139,10 +162,12 @@ class NavigationSystem {
         }
         else {
           rerouting.currentPath = rerouting.suggestedPath;
+          rerouting.target = rerouting.suggestedPath.target;
         }
       }
       else {
         rerouting.currentPath = newPath;
+          rerouting.target = newPath.target;
       }
       rerouting.suggestedPath = null;
       const rerouteMessage: IWSMessage = {
@@ -187,15 +212,69 @@ class NavigationSystem {
         // }
         // else {
           //check if we need to reroute user
-          const newPath: IPath = await this.getPath(updating.currentLocation, updating.target , updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
-          const shouldReroute: boolean = this.reroutingSystem.checkShouldReroute(newPath, updating.currentPath);
-          if (shouldReroute) {
+          let shouldReroute: boolean = false;
+          let newPath: IPath | null = null;
+          let targetAmenityID: string | null = null;
+          //first see if the amenity being routed to is full / unavailable
+          const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "status", value: "OPEN"}, {filterKey: "currentAvailableSlots", value: {ge: 1}},{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
+          if (matchingAmenities.length < 1) {
+            console.log("No matching amenity found");
+            //no matching available amenity found -> should reroute to different amenity
+            shouldReroute = true;
+            //get recommended best amenities
+            const suggestedAmenities: IAmenity[] = await this.recommendationSystem.getMapSuggestions([{filterKey: "status", value: "OPEN"}, {filterKey: "currentAvailableSlots", value: {ge: 1}}], updating.currentLocation, AMENITY_SORTING_TYPE.BEST_ROUTE);
+            if (suggestedAmenities.length > 0) {
+              //if found a suggested amenity, try routing to it
+              targetAmenityID = suggestedAmenities[0].id;
+              console.log("Suggested new amenity: ", targetAmenityID)
+              newPath = await this.getPath(updating.currentLocation, suggestedAmenities[0].location, updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
+            }
+            if (suggestedAmenities.length < 1 || newPath === null) {
+              //if no suggested amenity was found, or no path to it found, there is no good solution -> no available amenities -> should just stay on user's selected route
+              shouldReroute = false;
+              console.log("No valid path found");
+            }
+          }
+          else {
+            newPath = await this.getPath(updating.currentLocation, updating.target , updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
+            if (newPath !== null) {
+              shouldReroute = this.reroutingSystem.checkShouldReroute(newPath, updating.currentPath);
+            }
+            else {
+              console.log("No path to current amenity found");
+              //no path found to the current amenity
+              //get recommended best amenities
+              const suggestedAmenities: IAmenity[] = await this.recommendationSystem.getMapSuggestions([{filterKey: "status", value: "OPEN"}, {filterKey: "currentAvailableSlots", value: {ge: 1}}], updating.currentLocation, AMENITY_SORTING_TYPE.BEST_ROUTE);
+              if (suggestedAmenities.length > 0) {
+                //if found a suggested amenity, try routing to it
+                targetAmenityID = suggestedAmenities[0].id;
+                console.log("Suggested new amenity: ", targetAmenityID)
+                newPath = await this.getPath(updating.currentLocation, suggestedAmenities[0].location, updating.usingAccessibleRouting !== null ? updating.usingAccessibleRouting : false);
+              }
+              if (suggestedAmenities.length < 1 || newPath === null) {
+                //if no suggested amenity was found, or no path to it found, there is no good solution -> no available amenities -> should just stay on user's selected route
+                shouldReroute = false;
+                console.log("No valid path found");
+              }
+            }
+          }
+          
+          if (shouldReroute && newPath !== null) {
             //save data to use if accept route later
             updating.suggestedPath = newPath;
+            //get the ID of the amenity routing to
+            if (targetAmenityID === null) {
+              const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
+              if (matchingAmenities.length > 0) {
+                targetAmenityID = matchingAmenities[0].id;
+              }
+            }
+
             //send OFFER_REROUTE message
             const rerouteMessageBody: IWSOfferRerouteMessageBody = {
               newRoute: newPath,
               rerouteReason: reason, 
+              targetAmenityID: targetAmenityID ?? "", 
             }
             const offerRerouteMessage: IWSMessage = {
               messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
@@ -228,11 +307,11 @@ class NavigationSystem {
    * @param newLocation: ILocation with user's new location
    * SIDE EFFECTS: may send OFFER_REROUTE message to the corresponding connection
    */
-  public updateLocation = (navID: string, newLocation: ILocation) => {
+  public updateLocation = async (navID: string, newLocation: ILocation) => {
     const updating: IWSConnection | undefined = this.navigationConnections.find((wsConnection: IWSConnection) => wsConnection.navID === navID);
     if (updating !== undefined) {
       updating.currentLocation = newLocation;
-      this.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
+      await this.checkForReroute(navID, REROUTE_REASON.LOCATION_CHANGED);
     }
     else {
       throw new Error("Invalid NavID \"" + navID + "\" for update location request");

@@ -4,4 +4,5 @@ import REROUTE_REASON from "../RerouteReason";
 export default interface IWSOfferRerouteMessageBody {
   newRoute: IPath, 
   rerouteReason: REROUTE_REASON, 
+  targetAmenityID: string, 
 }

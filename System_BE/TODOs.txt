@@ -3,3 +3,4 @@
   
 -add DBs as backups for the external systems, add in the exception catching mechanism to use them
 -add exception handling for amenity retrieval if the nav system is inaccessible
+-add exception handling for navigation retrieval if destination is unreachable

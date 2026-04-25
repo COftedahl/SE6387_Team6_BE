@@ -1,4 +1,5 @@
 import AMENITY_SORTING_TYPE from "../Types/AmenitySortingType";
+import AMENITY_STATUS from "../Types/AmenityStatus";
 import IAmenity from "../Types/IAmenity";
 import IAmenityDetails from "../Types/IAmenityDetails";
 import IFilter from "../Types/IFilter";
@@ -81,7 +82,7 @@ class RecommendationSystem {
         );
       default: 
       case AMENITY_SORTING_TYPE.LEAST_WAIT_TIME: 
-        return (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => (a.currentAvailableSlots > b.currentAvailableSlots ? -1 : 1);
+        return (a: IExtendedAmenityDetails, b: IExtendedAmenityDetails) => (a.status !== AMENITY_STATUS.OPEN ? 1 : (a.currentAvailableSlots > b.currentAvailableSlots ? -1 : 1));
     }
   }
 }
