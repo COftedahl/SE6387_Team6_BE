@@ -270,11 +270,19 @@ class NavigationSystem {
               }
             }
 
+            let targetAmenity: IAmenity | null = null;
+            if (targetAmenityID !== null && targetAmenityID.length > 0) {
+              const matchingAmenities: IAmenity[] = await this.filteringSystem.getAvailableAmenities([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}])
+              if (matchingAmenities.length > 0) {
+                targetAmenity = matchingAmenities[0];
+              }
+            }
+
             //send OFFER_REROUTE message
             const rerouteMessageBody: IWSOfferRerouteMessageBody = {
               newRoute: newPath,
               rerouteReason: reason, 
-              targetAmenityID: targetAmenityID ?? "", 
+              targetAmenity: targetAmenity,  
             }
             const offerRerouteMessage: IWSMessage = {
               messageType: WS_MESSAGE_TYPE.OFFER_REROUTE, 
