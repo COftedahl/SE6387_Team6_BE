@@ -263,12 +263,12 @@ class NavigationSystem {
             //save data to use if accept route later
             updating.suggestedPath = newPath;
             //get the ID of the amenity routing to
-            // if (targetAmenityID === null) {
-            //   const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
-            //   if (matchingAmenities.length > 0) {
-            //     targetAmenityID = matchingAmenities[0].id;
-            //   }
-            // }
+            if (targetAmenityID === null) {
+              const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
+              if (matchingAmenities.length > 0) {
+                targetAmenityID = matchingAmenities[0].id;
+              }
+            }
 
             let targetAmenity: IAmenity | null = null;
             if (targetAmenityID !== null && targetAmenityID.length > 0) {
