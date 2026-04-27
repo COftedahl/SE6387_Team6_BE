@@ -263,20 +263,25 @@ class NavigationSystem {
             //save data to use if accept route later
             updating.suggestedPath = newPath;
             //get the ID of the amenity routing to
-            if (targetAmenityID === null) {
-              const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
-              if (matchingAmenities.length > 0) {
-                targetAmenityID = matchingAmenities[0].id;
-              }
-            }
+            // if (targetAmenityID === null) {
+            //   const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
+            //   if (matchingAmenities.length > 0) {
+            //     targetAmenityID = matchingAmenities[0].id;
+            //   }
+            // }
+            // const matchingAmenities: IAmenityDetails[] = await this.filteringSystem.getAmenityDetails([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}]);
+            // if (matchingAmenities.length > 0) {
+            //   targetAmenityID = matchingAmenities[0].id;
+            // }
 
             let targetAmenity: IAmenity | null = null;
-            if (targetAmenityID !== null && targetAmenityID.length > 0) {
-              const matchingAmenities: IAmenity[] = await this.filteringSystem.getAvailableAmenities([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}])
-              if (matchingAmenities.length > 0) {
-                targetAmenity = matchingAmenities[0];
-              }
+            // if (targetAmenityID !== null && targetAmenityID.length > 0) {
+            // const matchingAmenities: IAmenity[] = await this.filteringSystem.getAvailableAmenities([{filterKey: "location.x", value: updating.target.x},{filterKey: "location.y", value: updating.target.y}])
+            const matchingAmenities: IAmenity[] = await this.filteringSystem.getAvailableAmenities([{filterKey: "location.x", value: newPath.target.x},{filterKey: "location.y", value: newPath.target.y}])
+            if (matchingAmenities.length > 0) {
+              targetAmenity = matchingAmenities[0];
             }
+            // }
 
             //send OFFER_REROUTE message
             const rerouteMessageBody: IWSOfferRerouteMessageBody = {
